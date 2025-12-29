@@ -13,24 +13,30 @@
             color: #222;
         }
         .header {
-            width: 100%;
+            width: 100% !important;
+            max-width: 100% !important;
             background-color: #ffffffe6;
             padding: 24px 0 16px 0;
             box-shadow: 0 2px 8px rgba(180,180,180,0.05);
             position: relative;
+            margin: 0 !important;
+            box-sizing: border-box !important;
         }
         .header .header-content {
             max-width: 1200px !important;
+            width: 100% !important;
             margin: 0 auto !important;
             padding: 0 20px !important;
+            box-sizing: border-box !important;
         }
         .header .nav-menu {
             display: flex !important;
             justify-content: center !important;
             gap: 0 !important;
-            flex-wrap: wrap !important;
+            flex-wrap: nowrap !important;
             border-top: 1px solid #e5e7eb !important;
             padding-top: 12px !important;
+            overflow: hidden !important;
         }
         .logo-section {
             text-align: center;
@@ -96,9 +102,10 @@
             display: flex;
             justify-content: center;
             gap: 0;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             border-top: 1px solid #e5e7eb;
             padding-top: 12px;
+            overflow: hidden;
         }
         .mobile-menu {
             display: none;
@@ -322,34 +329,49 @@
             }
         }
         @media (max-width: 1280px) {
-            .nav-links {
-                position: static;
-                justify-content: center;
-                margin-bottom: 16px;
-                flex-wrap: wrap;
+            html body .header .nav-links {
+                position: static !important;
+                justify-content: center !important;
+                margin-bottom: 16px !important;
+                flex-wrap: wrap !important;
+                top: auto !important;
+                right: auto !important;
             }
-            .header {
-                padding: 16px 0;
+            html body .header {
+                padding: 16px 0 !important;
             }
-            .logo-section {
-                justify-content: center;
-                padding: 0 20px 0 60px;
-                margin-bottom: 0;
-                text-align: center;
-                position: relative;
+            html body .header .logo-section {
+                justify-content: center !important;
+                padding: 0 20px 0 60px !important;
+                margin-bottom: 0 !important;
+                text-align: center !important;
+                position: relative !important;
             }
-            .logo-main {
-                font-size: 1.5rem;
+            html body .header .logo-main {
+                font-size: 1.5rem !important;
             }
-            .hamburger-btn {
-                display: flex;
+            html body .header .hamburger-btn {
+                display: flex !important;
             }
-            .nav-menu {
-                display: none;
+            html body .header .nav-menu {
+                display: none !important;
             }
-            .mobile-menu {
-                display: block;
+            html body .header .mobile-menu {
+                display: block !important;
             }
+        }
+        
+        /* メニューが収まらない場合のハンバーガーメニュー切り替え用クラス */
+        .header.menu-overflow .nav-menu {
+            display: none !important;
+        }
+        
+        .header.menu-overflow .hamburger-btn {
+            display: flex !important;
+        }
+        
+        .header.menu-overflow .mobile-menu {
+            display: block;
         }
         @media (max-width: 550px) {
             .logo-main {
@@ -359,6 +381,268 @@
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Sans+JP:wght@400;600&display=swap" rel="stylesheet">
     @stack('styles')
+    <style>
+        /* ヘッダーエリアを完全に分離・保護 - コンテンツ部分のスタイルが一切影響しないように */
+        html body .header {
+            width: 100% !important;
+            max-width: 100% !important;
+            min-height: auto !important;
+            height: auto !important;
+            margin: 0 !important;
+            padding: 24px 0 16px 0 !important;
+            box-sizing: border-box !important;
+            display: block !important;
+            position: relative !important;
+            overflow: visible !important;
+            background-color: #ffffffe6 !important;
+            box-shadow: 0 2px 8px rgba(180,180,180,0.05) !important;
+        }
+        
+        html body .header .header-content {
+            max-width: 1200px !important;
+            width: 100% !important;
+            min-height: auto !important;
+            height: auto !important;
+            margin: 0 auto !important;
+            padding: 0 20px !important;
+            box-sizing: border-box !important;
+            display: block !important;
+            overflow: visible !important;
+        }
+        
+        html body .header .nav-links {
+            position: absolute !important;
+            top: 24px !important;
+            right: 20px !important;
+            display: flex !important;
+            gap: 12px !important;
+            align-items: center !important;
+            z-index: 100 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            min-height: auto !important;
+            height: auto !important;
+            box-sizing: border-box !important;
+        }
+        
+        html body .header .logo-section {
+            text-align: center !important;
+            margin-bottom: 16px !important;
+            margin-top: 0 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 12px !important;
+            position: relative !important;
+            min-height: auto !important;
+            height: auto !important;
+            padding: 0 !important;
+            box-sizing: border-box !important;
+            line-height: normal !important;
+        }
+        
+        html body .header .logo-link {
+            display: inline-block !important;
+            text-decoration: none !important;
+            color: inherit !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            line-height: normal !important;
+        }
+        
+        html body .header .nav-menu {
+            max-width: 100% !important;
+            width: 100% !important;
+            display: flex !important;
+            justify-content: center !important;
+            box-sizing: border-box !important;
+            flex-wrap: nowrap !important;
+            margin: 0 !important;
+            padding-top: 12px !important;
+            padding-bottom: 0 !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            min-height: auto !important;
+            height: auto !important;
+            line-height: normal !important;
+        }
+        
+        html body .header .nav-item {
+            margin: 0 !important;
+            padding: 8px 16px !important;
+            min-height: auto !important;
+            height: auto !important;
+            box-sizing: border-box !important;
+            line-height: normal !important;
+            font-size: 0.9rem !important;
+        }
+        
+        html body .header .nav-item-main {
+            display: block !important;
+            line-height: normal !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        
+        html body .header .nav-item-sub {
+            display: block !important;
+            font-size: 0.7rem !important;
+            margin-top: 2px !important;
+            margin-bottom: 0 !important;
+            padding: 0 !important;
+            line-height: normal !important;
+            opacity: 0.8 !important;
+        }
+        
+        html body .header .nav-link,
+        html body .header a.nav-link {
+            margin: 0 !important;
+            padding: 6px 12px !important;
+            min-height: auto !important;
+            height: auto !important;
+            box-sizing: border-box !important;
+            display: inline-block !important;
+            font-size: 0.9rem !important;
+            color: #1160E6 !important;
+            text-decoration: none !important;
+            border-radius: 4px !important;
+            transition: background-color 0.2s !important;
+            cursor: pointer !important;
+            position: relative !important;
+            pointer-events: auto !important;
+            border: none !important;
+            background-color: transparent !important;
+            font-family: 'Noto Sans JP', 'Noto Sans Devanagari', Arial, sans-serif !important;
+            line-height: normal !important;
+            vertical-align: baseline !important;
+        }
+        
+        html body .header .nav-link:hover,
+        html body .header a.nav-link:hover {
+            background-color: #f0f4ff !important;
+            color: #1160E6 !important;
+        }
+        
+        html body .header .nav-link-btn,
+        html body .header button.nav-link-btn,
+        html body .header form .nav-link-btn,
+        html body .header a.nav-link-btn {
+            margin: 0 !important;
+            padding: 6px 12px !important;
+            min-height: auto !important;
+            height: auto !important;
+            box-sizing: border-box !important;
+            display: inline-block !important;
+            font-size: 0.9rem !important;
+            color: #fff !important;
+            text-decoration: none !important;
+            border-radius: 4px !important;
+            transition: background-color 0.2s !important;
+            cursor: pointer !important;
+            position: relative !important;
+            pointer-events: auto !important;
+            border: none !important;
+            background-color: #1160E6 !important;
+            font-family: 'Noto Sans JP', 'Noto Sans Devanagari', Arial, sans-serif !important;
+            line-height: normal !important;
+            vertical-align: baseline !important;
+        }
+        
+        html body .header .nav-link-btn:hover,
+        html body .header button.nav-link-btn:hover,
+        html body .header form .nav-link-btn:hover,
+        html body .header a.nav-link-btn:hover {
+            background-color: #0346b0 !important;
+            color: #fff !important;
+        }
+        
+        html body .header .nav-link span,
+        html body .header .nav-link-btn span,
+        html body .header button.nav-link-btn span,
+        html body .header form .nav-link-btn span,
+        html body .header a.nav-link-btn span {
+            display: block !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            line-height: normal !important;
+            font-size: 0.7rem !important;
+            opacity: 0.9 !important;
+        }
+        
+        html body .header .nav-links form {
+            display: inline !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            line-height: normal !important;
+        }
+        
+        html body .header .nav-links form button {
+            margin: 0 !important;
+            padding: 6px 12px !important;
+            line-height: normal !important;
+        }
+        
+        html body .header .hamburger-btn {
+            margin: 0 !important;
+            padding: 8px !important;
+            min-height: auto !important;
+            height: auto !important;
+            box-sizing: border-box !important;
+        }
+        
+        html body .header .logo-main {
+            font-size: 2rem !important;
+            font-weight: 600 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            min-height: auto !important;
+            height: auto !important;
+            line-height: 1.2 !important;
+            letter-spacing: 0.07em !important;
+        }
+        
+        html body .header .logo-sub {
+            font-size: 0.92rem !important;
+            margin-top: 2px !important;
+            margin-bottom: 0 !important;
+            padding: 0 !important;
+            min-height: auto !important;
+            height: auto !important;
+            line-height: normal !important;
+            display: block !important;
+        }
+        
+        /* Tailwind CSSやその他のスタイルがヘッダーに影響しないように完全に保護 */
+        html body .header * {
+            box-sizing: border-box !important;
+        }
+        
+        /* コンテンツ部分のスタイルがヘッダーに影響しないように明示的に分離 */
+        .main-content,
+        .resume-container {
+            /* ヘッダーとは完全に分離 */
+        }
+        
+        /* より詳細度を上げて保護 - コンテンツ部分のスタイルがヘッダーに影響しないように */
+        html body .header,
+        html body .header *:not(.main-content):not(.main-content *):not(.resume-container):not(.resume-container *) {
+            /* ヘッダー内の要素を保護 */
+        }
+        
+        /* コンテンツ部分のスタイルがヘッダーに影響しないように */
+        .main-content,
+        .main-content *,
+        .resume-container,
+        .resume-container * {
+            /* ヘッダーに影響を与えない */
+        }
+        
+        /* より詳細度を上げて保護 */
+        html body .header,
+        html body .header *:not(.main-content):not(.main-content *) {
+            /* ヘッダー内の要素を保護 */
+        }
+    </style>
 </head>
 <body>
     <header class="header">
@@ -518,6 +802,52 @@
         document.addEventListener('DOMContentLoaded', function() {
             const hamburgerBtn = document.getElementById('hamburgerBtn');
             const mobileMenu = document.getElementById('mobileMenu');
+            const desktopMenu = document.getElementById('desktopMenu');
+            const header = document.querySelector('.header');
+            
+            // メニューが収まらないかチェックする関数
+            function checkMenuOverflow() {
+                if (!desktopMenu || !header) return;
+                
+                // 1280px以下の場合は常にハンバーガーメニュー
+                if (window.innerWidth <= 1280) {
+                    header.classList.add('menu-overflow');
+                    return;
+                }
+                
+                // デスクトップメニューを一時的に表示してチェック
+                const originalDisplay = desktopMenu.style.display;
+                desktopMenu.style.display = 'flex';
+                
+                const menuItems = desktopMenu.querySelectorAll('.nav-item');
+                let totalWidth = 0;
+                menuItems.forEach(item => {
+                    totalWidth += item.offsetWidth;
+                });
+                
+                const menuContainer = desktopMenu.parentElement;
+                const availableWidth = menuContainer.offsetWidth - 40; // padding分を考慮
+                
+                // 元の表示状態に戻す
+                desktopMenu.style.display = originalDisplay || '';
+                
+                // メニューが収まらない場合はハンバーガーメニューに切り替え
+                if (totalWidth > availableWidth) {
+                    header.classList.add('menu-overflow');
+                } else {
+                    header.classList.remove('menu-overflow');
+                }
+            }
+            
+            // 初回チェック
+            checkMenuOverflow();
+            
+            // リサイズ時にチェック
+            let resizeTimer;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(checkMenuOverflow, 100);
+            });
             
             if (hamburgerBtn && mobileMenu) {
                 hamburgerBtn.addEventListener('click', function() {

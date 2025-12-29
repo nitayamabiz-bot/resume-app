@@ -1,4 +1,20 @@
+<script>
+    // Tailwind CSSのプリフライト（リセット）を無効化して、ヘッダーに影響しないようにする
+    // CDN読み込み前に設定する必要があるため、window.tailwindConfigを使用
+    if (typeof window.tailwindConfig === 'undefined') {
+        window.tailwindConfig = {
+            corePlugins: {
+                preflight: false, // プリフライトを無効化
+            }
+        };
+    }
+</script>
 <script src="https://cdn.tailwindcss.com"></script>
+<script>
+    // CDN読み込み後に再度設定を適用
+    if (typeof tailwind !== 'undefined') {
+        tailwind.config = window.tailwindConfig;
+    }
 <div class="w-full bg-white rounded-lg shadow-md p-6">
     <h2 class="text-2xl font-bold mb-4 text-center">内容確認 / विवरण जाँच गर्नुहोस्</h2>
     
