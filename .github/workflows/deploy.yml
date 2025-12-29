@@ -12,16 +12,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # 【追加】ZIPコマンドを使えるようにする
+      - name: Install zip
+        run: sudo apt-get update && sudo apt-get install -y zip
+
       # 1. サーバーで動くための部品(vendor)をGitHub側で高速に集める
       - name: Install Dependencies
         run: composer install --no-dev --optimize-autoloader
 
-      # 2. 全ファイルを1つのZIPに固める（転送時間を短縮）
+      # 2. 全ファイルを1つのZIPに固める
       - name: Create Deployment Archive
         run: zip -r deploy.zip . -x ".git*" ".github*"
 
-      # 3. ZIPファイルを1回で転送し、サーバー側で解凍する
-      - name: Deploy via FTP and Extract
+      # 3. ZIPファイルだけを転送する
+      - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
@@ -29,9 +33,6 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /hamro-life-japan.com/
           local-dir: ./
-          # deploy.zip だけを送る設定
           exclude: |
             **
             !deploy.zip
-
-      # 4. サーバー側でZIPを解凍する（SSHが使えない環境を想定したPHP経由の解凍が必要な場合がありますが、まずはこれで試します）
