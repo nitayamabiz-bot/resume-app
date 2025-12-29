@@ -1,8 +1,12 @@
 <?php
-echo "Starting installation...<br>";
-// ロリポップのPHP8.xのフルパスを指定
-$phpPath = '/usr/local/php/8.2/bin/php'; 
-exec("{$phpPath} /usr/local/bin/composer install 2>&1", $output, $return_var);
+echo "Starting installation for PHP 8.4...<br>";
+
+// ロリポップ PHP 8.4 のフルパスを指定
+$phpPath = '/usr/local/php/8.4/bin/php';
+$composerPath = '/usr/local/bin/composer';
+
+// 実行
+exec("{$phpPath} {$composerPath} install 2>&1", $output, $return_var);
 
 echo "<pre>" . implode("\n", $output) . "</pre>";
 if ($return_var === 0) {
