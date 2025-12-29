@@ -1,12 +1,13 @@
 <?php
-echo "Starting installation for PHP 8.4 (LiteSpeed)...<br>";
+echo "Starting installation with PATH fix...<br>";
 
-// ロリポップ PHP 8.4 (LiteSpeed版) のフルパス候補
-$phpPath = '/usr/local/php/8.4-litespeed/bin/php';
+// 1. PHP 8.4 へのパスを一時的に環境変数 PATH に追加
+$phpDir = '/usr/local/php/8.4/bin';
+putenv("PATH=" . $phpDir . ":" . getenv("PATH"));
+
+// 2. 実行
 $composerPath = '/usr/local/bin/composer';
-
-// 実行
-exec("{$phpPath} {$composerPath} install 2>&1", $output, $return_var);
+exec("{$composerPath} install 2>&1", $output, $return_var);
 
 echo "<pre>" . implode("\n", $output) . "</pre>";
 if ($return_var === 0) {
