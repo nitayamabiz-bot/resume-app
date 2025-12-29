@@ -327,6 +327,152 @@
             .footer {
                 padding: 10px 0;
             }
+            
+            /* スマホ表示時のヘッダーレイアウト */
+            .header .header-content {
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: stretch !important;
+                padding: 0 16px !important;
+            }
+            
+            /* ハンバーガーメニュー：タイトル（就労支援）の縦軸に合わせる */
+            .header .logo-section {
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                position: relative !important;
+                margin: 0 !important;
+                padding: 12px 0 12px 0 !important;
+            }
+            
+            .header .hamburger-btn {
+                display: flex !important;
+                position: absolute !important;
+                left: 0 !important;
+                top: 40% !important;
+                transform: translateY(-50%) !important;
+                margin: 0 !important;
+                padding: 8px !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+            
+            .header .logo-link {
+                display: block !important;
+                text-align: center !important;
+            }
+            
+            .header .logo-main {
+                font-size: 1.25rem !important;
+                line-height: 1.4 !important;
+                display: block !important;
+            }
+            
+            .header .logo-sub {
+                font-size: 0.75rem !important;
+                display: block !important;
+                margin-top: 2px !important;
+            }
+            
+            /* ログインボタンとユーザー名：header-contentの下に完全に切り分けたブロックとして配置 */
+            html body .header > .nav-links {
+                position: static !important;
+                top: auto !important;
+                right: auto !important;
+                left: auto !important;
+                display: flex !important;
+                justify-content: center !important;
+                align-items: center !important;
+                padding: 8px 16px !important;
+                margin: 0 !important;
+                gap: 4px !important;
+                flex-wrap: nowrap !important;
+                z-index: auto !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+            
+            .header .nav-link,
+            .header .nav-link-btn {
+                padding: 4px 8px !important;
+                font-size: 0.65rem !important;
+                border-radius: 8px !important;
+                white-space: nowrap !important;
+            }
+            
+            /* ユーザー名（span.nav-link）は緑背景にしない */
+            .header span.nav-link {
+                border-radius: 4px !important;
+                background-color: transparent !important;
+                color: #1160E6 !important;
+                transition: background-color 0.2s !important;
+            }
+            
+            .header span.nav-link:hover {
+                background-color: #f0f4ff !important;
+                color: #1160E6 !important;
+            }
+            
+            /* ログインボタン（a.nav-link）は緑色の背景 */
+            .header a.nav-link {
+                border-radius: 8px !important;
+                background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+                box-shadow: 0 2px 4px rgba(16, 185, 129, 0.25) !important;
+                transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                font-weight: 500 !important;
+                color: #fff !important;
+            }
+            
+            .header a.nav-link:hover {
+                background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+                box-shadow: 0 3px 8px rgba(16, 185, 129, 0.35) !important;
+                transform: translateY(-1px) scale(1.02) !important;
+                color: #fff !important;
+            }
+            
+            /* 新規登録ボタン：青色の背景 */
+            .header .nav-link-btn {
+                border-radius: 8px !important;
+                background: linear-gradient(135deg, #1160E6 0%, #0d4fc7 100%) !important;
+                box-shadow: 0 2px 4px rgba(17, 96, 230, 0.25) !important;
+                transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                font-weight: 500 !important;
+            }
+            
+            .header .nav-link-btn:hover {
+                background: linear-gradient(135deg, #0346b0 0%, #023a9e 100%) !important;
+                box-shadow: 0 3px 8px rgba(17, 96, 230, 0.35) !important;
+                transform: translateY(-1px) scale(1.02) !important;
+            }
+            
+            .header .nav-link span,
+            .header .nav-link-btn span {
+                font-size: 0.55rem !important;
+                line-height: 1.2 !important;
+                display: inline !important;
+                white-space: nowrap !important;
+            }
+            
+            /* ボタン内のspanを1行で表示 */
+            .header .nav-link span.block,
+            .header .nav-link-btn span.block {
+                display: inline !important;
+            }
+            
+            /* ハンバーガーメニューの縦位置を「就労支援」の漢字に合わせる */
+            .header .hamburger-btn {
+                align-items: center !important;
+                justify-content: center !important;
+            }
+            
+            .header .nav-menu {
+                display: none !important;
+            }
+            
+            .header .mobile-menu {
+                display: block !important;
+            }
         }
         @media (max-width: 1280px) {
             html body .header .nav-links {
@@ -494,8 +640,8 @@
             opacity: 0.8 !important;
         }
         
-        html body .header .nav-link,
-        html body .header a.nav-link {
+        /* ユーザー名（span.nav-link）は緑背景にしない */
+        html body .header span.nav-link {
             margin: 0 !important;
             padding: 6px 12px !important;
             min-height: auto !important;
@@ -517,10 +663,36 @@
             vertical-align: baseline !important;
         }
         
-        html body .header .nav-link:hover,
+        /* ログインボタン（a.nav-link）は緑背景 */
+        html body .header a.nav-link {
+            margin: 0 !important;
+            padding: 6px 12px !important;
+            min-height: auto !important;
+            height: auto !important;
+            box-sizing: border-box !important;
+            display: inline-block !important;
+            font-size: 0.9rem !important;
+            color: #fff !important;
+            text-decoration: none !important;
+            border-radius: 8px !important;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            cursor: pointer !important;
+            position: relative !important;
+            pointer-events: auto !important;
+            border: none !important;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+            box-shadow: 0 2px 4px rgba(16, 185, 129, 0.25) !important;
+            font-family: 'Noto Sans JP', 'Noto Sans Devanagari', Arial, sans-serif !important;
+            line-height: normal !important;
+            vertical-align: baseline !important;
+            font-weight: 500 !important;
+        }
+        
         html body .header a.nav-link:hover {
-            background-color: #f0f4ff !important;
-            color: #1160E6 !important;
+            background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+            box-shadow: 0 3px 8px rgba(16, 185, 129, 0.35) !important;
+            transform: translateY(-1px) scale(1.02) !important;
+            color: #fff !important;
         }
         
         html body .header .nav-link-btn,
@@ -556,17 +728,24 @@
             color: #fff !important;
         }
         
+        /* PC表示時も1行で表示、日本語とネパール語の間に「 / 」を追加 */
         html body .header .nav-link span,
         html body .header .nav-link-btn span,
         html body .header button.nav-link-btn span,
         html body .header form .nav-link-btn span,
-        html body .header a.nav-link-btn span {
-            display: block !important;
+        html body .header a.nav-link-btn span,
+        html body .header .nav-link span.inline-text,
+        html body .header .nav-link-btn span.inline-text,
+        html body .header button.nav-link-btn span.inline-text,
+        html body .header form .nav-link-btn span.inline-text,
+        html body .header a.nav-link-btn span.inline-text {
+            display: inline !important;
             margin: 0 !important;
             padding: 0 !important;
             line-height: normal !important;
             font-size: 0.7rem !important;
             opacity: 0.9 !important;
+            white-space: nowrap !important;
         }
         
         html body .header .nav-links form {
@@ -588,6 +767,53 @@
             min-height: auto !important;
             height: auto !important;
             box-sizing: border-box !important;
+        }
+        
+        /* スマホ表示時のボタンスタイル（保護スタイルの後に読み込まれるため、確実に適用される） */
+        @media (max-width: 768px) {
+            html body .header .nav-link,
+            html body .header a.nav-link {
+                padding: 3px 8px !important;
+                font-size: 0.7rem !important;
+                border-radius: 6px !important;
+            }
+            
+            html body .header .nav-link-btn,
+            html body .header button.nav-link-btn,
+            html body .header form .nav-link-btn,
+            html body .header a.nav-link-btn {
+                padding: 4px 12px !important;
+                font-size: 0.7rem !important;
+                border-radius: 10px !important;
+                background: linear-gradient(135deg, #1160E6 0%, #0d4fc7 100%) !important;
+                box-shadow: 0 2px 6px rgba(17, 96, 230, 0.3) !important;
+                transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                font-weight: 500 !important;
+            }
+            
+            html body .header .nav-link-btn:hover,
+            html body .header button.nav-link-btn:hover,
+            html body .header form .nav-link-btn:hover,
+            html body .header a.nav-link-btn:hover {
+                background: linear-gradient(135deg, #0346b0 0%, #023a9e 100%) !important;
+                box-shadow: 0 4px 12px rgba(17, 96, 230, 0.4) !important;
+                transform: translateY(-1px) scale(1.02) !important;
+            }
+            
+            html body .header .nav-link span,
+            html body .header .nav-link-btn span,
+            html body .header button.nav-link-btn span,
+            html body .header form .nav-link-btn span,
+            html body .header a.nav-link-btn span {
+                font-size: 0.6rem !important;
+                line-height: 1.3 !important;
+            }
+            
+            /* ボタン内のspanを1行で表示 */
+            html body .header .nav-link span.block,
+            html body .header .nav-link-btn span.block {
+                display: inline !important;
+            }
         }
         
         html body .header .logo-main {
@@ -647,18 +873,6 @@
 <body>
     <header class="header">
         <div class="header-content">
-            <div class="nav-links">
-                @auth
-                    <span class="nav-link">{{ Auth::user()->name }}</span>
-                    <form method="POST" action="{{ route('logout') }}" style="display: inline;">
-                        @csrf
-                        <button type="submit" class="nav-link-btn">ログアウト<span class="block text-xs" style="font-size: 0.7rem; opacity: 0.9;">लगआउट</span></button>
-                    </form>
-                @else
-                    <a href="{{ route('login') }}" class="nav-link" style="display: inline-block; text-decoration: none; cursor: pointer; pointer-events: auto;">ログイン<span class="block text-xs" style="font-family: 'Noto Sans Devanagari', Arial, sans-serif;">लगइन</span></a>
-                    <a href="{{ route('register') }}" class="nav-link-btn" style="display: inline-block; text-decoration: none; cursor: pointer; pointer-events: auto;">新規登録<span class="block text-xs" style="font-size: 0.7rem; opacity: 0.9;">दर्ता</span></a>
-                @endauth
-            </div>
             <div class="logo-section">
                 <button class="hamburger-btn" id="hamburgerBtn" aria-label="メニュー">
                     <span></span>
@@ -747,6 +961,18 @@
                     <span class="nav-item-sub">कामको अनुभव</span>
                 </a>
             </nav>
+        </div>
+        <div class="nav-links">
+            @auth
+                <span class="nav-link">{{ Auth::user()->name }}</span>
+                <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+                    @csrf
+                    <button type="submit" class="nav-link-btn">ログアウト <span class="inline-text" style="font-size: 0.7rem; opacity: 0.9;">/ लगआउट</span></button>
+                </form>
+            @else
+                <a href="{{ route('login') }}" class="nav-link" style="display: inline-block; text-decoration: none; cursor: pointer; pointer-events: auto;">ログイン <span class="inline-text" style="font-family: 'Noto Sans Devanagari', Arial, sans-serif;">/ लगइन</span></a>
+                <a href="{{ route('register') }}" class="nav-link-btn" style="display: inline-block; text-decoration: none; cursor: pointer; pointer-events: auto;">新規登録 <span class="inline-text" style="font-size: 0.7rem; opacity: 0.9;">/ दर्ता</span></a>
+            @endauth
         </div>
     </header>
     <main class="main-content">
