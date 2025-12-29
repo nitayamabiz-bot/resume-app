@@ -4,7 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>会員登録またはログイン</title>
+    <script>
+        // Tailwind CSSのプリフライト（リセット）を無効化して、ヘッダーに影響しないようにする
+        // CDN読み込み前に設定する必要があるため、window.tailwindConfigを使用
+        if (typeof window.tailwindConfig === 'undefined') {
+            window.tailwindConfig = {
+                corePlugins: {
+                    preflight: false, // プリフライトを無効化
+                }
+            };
+        }
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // CDN読み込み後に再度設定を適用
+        if (typeof tailwind !== 'undefined') {
+            tailwind.config = window.tailwindConfig;
+        }
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Sans+JP:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
