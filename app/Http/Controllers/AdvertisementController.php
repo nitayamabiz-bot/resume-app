@@ -54,11 +54,22 @@ class AdvertisementController extends Controller
     private function sendEmail(Advertisement $advertisement)
     {
         try {
+            \Log::info('広告募集メール送信開始', [
+                'to' => 'info@hamro-life-japan.com',
+                'advertisement_id' => $advertisement->id,
+            ]);
+            
             Mail::to('info@hamro-life-japan.com')
                 ->send(new AdvertisementApplication($advertisement));
+            
+            \Log::info('広告募集メール送信成功');
         } catch (\Exception $e) {
             // メール送信エラーはログに記録するが、処理は続行
-            \Log::error('広告募集メール送信エラー: ' . $e->getMessage());
+            \Log::error('広告募集メール送信エラー', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'advertisement_id' => $advertisement->id ?? null,
+            ]);
         }
     }
 }
