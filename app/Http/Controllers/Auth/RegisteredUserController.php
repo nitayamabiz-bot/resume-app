@@ -51,6 +51,6 @@ class RegisteredUserController extends Controller
             return $resumeController->saveResume();
         }
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect(route('home', absolute: false));
     }
 }
