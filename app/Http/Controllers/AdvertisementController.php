@@ -54,7 +54,7 @@ class AdvertisementController extends Controller
     private function sendEmail(Advertisement $advertisement)
     {
         try {
-            Mail::to('nitayama.biz@gmail.com')
+            Mail::to('info@hamro-life-japan.com')
                 ->send(new AdvertisementApplication($advertisement));
         } catch (\Exception $e) {
             // メール送信エラーはログに記録するが、処理は続行
