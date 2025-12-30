@@ -49,8 +49,8 @@
         box-sizing: border-box !important;
     }
     
-    html body .header .nav-link,
-    html body .header a.nav-link {
+    /* ユーザー名（span.nav-link）のみ青文字 */
+    html body .header span.nav-link {
         margin: 0 !important;
         padding: 6px 12px !important;
         min-height: auto !important;
@@ -72,10 +72,41 @@
         vertical-align: baseline !important;
     }
     
-    html body .header .nav-link:hover,
-    html body .header a.nav-link:hover {
+    html body .header span.nav-link:hover {
         background-color: #f0f4ff !important;
         color: #1160E6 !important;
+    }
+    
+    /* ログインボタン（a.nav-link）は緑背景で白文字 */
+    html body .header a.nav-link {
+        margin: 0 !important;
+        padding: 6px 12px !important;
+        min-height: auto !important;
+        height: auto !important;
+        box-sizing: border-box !important;
+        display: inline-block !important;
+        font-size: 0.9rem !important;
+        color: #fff !important;
+        text-decoration: none !important;
+        border-radius: 8px !important;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        cursor: pointer !important;
+        position: relative !important;
+        pointer-events: auto !important;
+        border: none !important;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+        box-shadow: 0 2px 4px rgba(16, 185, 129, 0.25) !important;
+        font-family: 'Noto Sans JP', 'Noto Sans Devanagari', Arial, sans-serif !important;
+        line-height: normal !important;
+        vertical-align: baseline !important;
+        font-weight: 500 !important;
+    }
+    
+    html body .header a.nav-link:hover {
+        background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+        box-shadow: 0 3px 8px rgba(16, 185, 129, 0.35) !important;
+        transform: translateY(-1px) scale(1.02) !important;
+        color: #fff !important;
     }
     
     html body .header .nav-link-btn,
@@ -275,8 +306,8 @@
         opacity: 0.8 !important;
     }
     
-    html body .header .nav-link,
-    html body .header a.nav-link {
+    /* ユーザー名（span.nav-link）のみ青文字 */
+    html body .header span.nav-link {
         margin: 0 !important;
         padding: 6px 12px !important;
         min-height: auto !important;
@@ -298,10 +329,41 @@
         vertical-align: baseline !important;
     }
     
-    html body .header .nav-link:hover,
-    html body .header a.nav-link:hover {
+    html body .header span.nav-link:hover {
         background-color: #f0f4ff !important;
         color: #1160E6 !important;
+    }
+    
+    /* ログインボタン（a.nav-link）は緑背景で白文字 */
+    html body .header a.nav-link {
+        margin: 0 !important;
+        padding: 6px 12px !important;
+        min-height: auto !important;
+        height: auto !important;
+        box-sizing: border-box !important;
+        display: inline-block !important;
+        font-size: 0.9rem !important;
+        color: #fff !important;
+        text-decoration: none !important;
+        border-radius: 8px !important;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        cursor: pointer !important;
+        position: relative !important;
+        pointer-events: auto !important;
+        border: none !important;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+        box-shadow: 0 2px 4px rgba(16, 185, 129, 0.25) !important;
+        font-family: 'Noto Sans JP', 'Noto Sans Devanagari', Arial, sans-serif !important;
+        line-height: normal !important;
+        vertical-align: baseline !important;
+        font-weight: 500 !important;
+    }
+    
+    html body .header a.nav-link:hover {
+        background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+        box-shadow: 0 3px 8px rgba(16, 185, 129, 0.35) !important;
+        transform: translateY(-1px) scale(1.02) !important;
+        color: #fff !important;
     }
     
     html body .header .nav-link-btn,
@@ -350,7 +412,14 @@
     .main-content .resume-container {
         max-width: 1000px;
         margin: 0 auto;
+        padding: 0 16px;
         box-sizing: border-box;
+    }
+    
+    @media (min-width: 640px) {
+        .main-content .resume-container {
+            padding: 0 24px;
+        }
     }
     
     /* Tailwind CSSやその他のスタイルがヘッダーに影響しないように完全に保護 */
@@ -362,6 +431,13 @@
     .main-content,
     .resume-container {
         /* ヘッダーとは完全に分離 */
+    }
+    
+    /* フッターが表示されるように保護 */
+    .footer {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
     }
 </style>
 
