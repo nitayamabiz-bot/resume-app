@@ -15,6 +15,7 @@
     if (typeof tailwind !== 'undefined') {
         tailwind.config = window.tailwindConfig;
     }
+</script>
 <script>
     // 学歴追加/削除
     function addSchoolField() {
@@ -333,17 +334,39 @@
         
         try {
             const response = await fetch(`https://zipcloud.ibsnet.co.jp/api/search?zipcode=${postalCode}`);
-            const data = await response.json();
             
-            if (data.status === 200 && data.results && data.results.length > 0) {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            let data;
+            try {
+                data = await response.json();
+            } catch (jsonError) {
+                console.error('郵便番号検索エラー: JSONの解析に失敗しました', jsonError);
+                return;
+            }
+            
+            if (!data) {
+                console.error('郵便番号検索エラー: レスポンスデータが空です');
+                return;
+            }
+            
+            if (data.status === 200 && data.results && Array.isArray(data.results) && data.results.length > 0) {
                 const result = data.results[0];
-                const address = result.address1 + result.address2 + (result.address3 || '');
+                
+                if (!result) {
+                    console.error('郵便番号検索エラー: 結果データが空です');
+                    return;
+                }
+                
+                const address = (result.address1 || '') + (result.address2 || '') + (result.address3 || '');
                 const addressKana = (result.kana1 || '') + (result.kana2 || '') + (result.kana3 || '');
                 
                 const addressInput = document.getElementById('address');
                 const addressKanaInput = document.getElementById('address_kana');
                 
-                if (addressInput) {
+                if (addressInput && address) {
                     // 既存の値がある場合は、市区町村部分だけを更新
                     const currentValue = addressInput.value.trim();
                     if (currentValue && !currentValue.startsWith(address)) {
@@ -377,9 +400,15 @@
                         addressKanaInput.value = hiragana;
                     }
                 }
+            } else {
+                console.warn('郵便番号検索: 該当する住所が見つかりませんでした。', data);
             }
         } catch (error) {
             console.error('郵便番号検索エラー:', error);
+            console.error('エラー詳細:', error.message);
+            if (error.stack) {
+                console.error('スタックトレース:', error.stack);
+            }
         }
     }
 
@@ -545,26 +574,26 @@
     });
 </script>
 
-<div class="w-full bg-white rounded-lg shadow-md p-6">
+<div class="w-full max-w-2xl mx-auto bg-white rounded-lg shadow-md p-4 sm:p-6" style="box-sizing: border-box; overflow-x: hidden;">
     <h2 class="text-2xl font-bold mb-4 text-center">履歴書作成フォーム<span class="block text-base text-gray-500 mt-1">बायोडाटा तयार गर्ने फारम</span></h2>
     <div id="form-errors" class="mb-4"></div>
-    <form id="resume-form" class="space-y-4" onsubmit="validateForm(event)">
+    <form id="resume-form" class="space-y-4" onsubmit="validateForm(event)" style="box-sizing: border-box; overflow-x: hidden; width: 100%;">
         @csrf
         <!-- 氏名（ローマ字） -->
-        <div>
+        <div class="pt-4 border-t border-gray-200">
             <label class="block font-medium mb-1">氏名（ローマ字） / नाम (Roman Alphabet)<span class="text-red-500">*</span></label>
             <p class="text-xs text-gray-500 mb-2">पासपोर्ट वा रेजिडेन्स कार्डमा लेखिएको रोमन अक्षरमा नाम लेख्नुहोस्। उदाहरण: TANAKA TARO</p>
-            <div class="grid grid-cols-2 gap-4">
-                <div>
+            <div class="flex gap-2">
+                <div class="flex-1">
                     <label class="block text-sm text-gray-600 mb-1">姓 / थर</label>
                     <input type="text" name="last_name_roman" maxlength="25" inputmode="latin-name" autocomplete="family-name"
-                        class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2" 
+                        class="w-3/4 border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2" 
                         value="{{ $resumeData['last_name_roman'] ?? old('last_name_roman', '') }}" required>
                 </div>
-                <div>
+                <div class="flex-1">
                     <label class="block text-sm text-gray-600 mb-1">名 / नाम</label>
                     <input type="text" name="first_name_roman" maxlength="25" inputmode="latin-name" autocomplete="given-name"
-                        class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2" 
+                        class="w-3/4 border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2" 
                         value="{{ $resumeData['first_name_roman'] ?? old('first_name_roman', '') }}" required>
                 </div>
             </div>
@@ -572,18 +601,18 @@
         <!-- 氏名（ひらがな） -->
         <div class="pt-4 border-t border-gray-200">
             <label class="block font-medium mb-1">氏名（ひらがな） / नाम (ひらがな)<span class="text-red-500">*</span></label>
-            <p class="text-xs text-gray-500 mb-2">ひらがなで入力してください。उदाहरण: たなか たろう</p>
-            <div class="grid grid-cols-2 gap-4">
-                <div>
+            <p class="text-xs text-gray-500 mb-2">उदाहरण: たなか たろう</p>
+            <div class="flex gap-2">
+                <div class="flex-1">
                     <label class="block text-sm text-gray-600 mb-1">姓 / थर</label>
                     <input type="text" name="last_name_kana" maxlength="25" inputmode="hiragana" autocomplete="off"
-                        class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2" 
+                        class="w-3/4 border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2" 
                         value="{{ $resumeData['last_name_kana'] ?? old('last_name_kana', '') }}" required>
                 </div>
-                <div>
+                <div class="flex-1">
                     <label class="block text-sm text-gray-600 mb-1">名 / नाम</label>
                     <input type="text" name="first_name_kana" maxlength="25" inputmode="hiragana" autocomplete="off"
-                        class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2" 
+                        class="w-3/4 border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2" 
                         value="{{ $resumeData['first_name_kana'] ?? old('first_name_kana', '') }}" required>
                 </div>
             </div>
@@ -593,7 +622,7 @@
             <label class="block font-medium mb-1">生年月日 / जन्म मिति<span class="text-red-500">*</span></label>
             <p class="text-xs text-gray-500 mb-2">क्यालेन्डरबाट छान्नुहोस् वा मिति लेख्नुहोस्। उदाहरण: १९९० जनवरी १ → 1990-01-01</p>
             <input type="date" name="birthday"
-                class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2" 
+                class="w-1/5 border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2" 
                 value="{{ $resumeData['birthday'] ?? old('birthday', '') }}" required>
         </div>
         <!-- 性別 -->
@@ -618,7 +647,7 @@
             <label class="block font-medium mb-1">電話番号 / फोन नम्बर<span class="text-red-500">*</span></label>
             <p class="text-xs text-gray-500 mb-2">हाइफन (-) बिना १० वा ११ अंकको संख्या मात्र लेख्नुहोस्। पूर्ण-वर्ण संख्या लेख्नुभयो भने स्वचालित रूपमा अर्ध-वर्णमा परिवर्तन हुनेछ। उदाहरण: 09012345678</p>
             <input type="tel" name="phone" maxlength="11" pattern="\d{10,11}" inputmode="numeric"
-                class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2" 
+                class="w-1/3 border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2" 
                 value="{{ $resumeData['phone'] ?? old('phone', '') }}"
                 onblur="normalizeNumeric(this)" required>
         </div>
@@ -627,29 +656,26 @@
             <label class="block font-medium mb-1">郵便番号 / हुलाक नम्बर<span class="text-red-500">*</span></label>
             <p class="text-xs text-gray-500 mb-2">हाइफन (-) बिना ७ अंकको संख्या मात्र लेख्नुहोस्। पूर्ण-वर्ण संख्या लेख्नुभयो भने स्वचालित रूपमा अर्ध-वर्णमा परिवर्तन हुनेछ। उदाहरण: 1234567</p>
             <input type="text" name="postal_code" maxlength="7" pattern="\d{7}" inputmode="numeric"
-                class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2" 
+                class="w-1/3 border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2" 
                 value="{{ $resumeData['postal_code'] ?? old('postal_code', '') }}"
                 onblur="normalizeNumeric(this)" required>
         </div>
         <!-- 住所 -->
         <div class="pt-4 border-t border-gray-200">
             <label class="block font-medium mb-1">住所 / ठेगाना<span class="text-red-500">*</span></label>
-            <p class="text-xs text-gray-500 mb-2">郵便番号を入力すると、市区町村まで自動でセットされます。番地、建物名、号室だけ追記してください。प्रान्तबाट सङ्ख्या, मेन्सनको नाम, कोठा नम्बर सम्म सही रूपमा लेख्नुहोस्। हुलाक नम्बर लेख्नुभयो भने शहर/जिल्ला सम्म स्वचालित रूपमा सेट हुनेछ। बाँकी सङ्ख्या, मेन्सनको नाम, कोठा नम्बर मात्र थप्नुहोस्। उदाहरण: 東京都渋谷区〇〇1-2-3 マンション名101号室</p>
+            <p class="text-xs text-gray-500 mb-2">प्रान्तबाट सङ्ख्या, मेन्सनको नाम, कोठा नम्बर सम्म सही रूपमा लेख्नुहोस्। हुलाक नम्बर लेख्नुभयो भने शहर/जिल्ला सम्म स्वचालित रूपमा सेट हुनेछ। बाँकी सङ्ख्या, मेन्सनको नाम, कोठा नम्बर मात्र थप्नुहोस्। उदाहरण: 東京都渋谷区〇〇1-2-3 マンション名101号室</p>
             <input type="text" name="address" id="address" maxlength="150"
-                class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2" 
+                class="w-4/5 border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2" 
                 value="{{ $resumeData['address'] ?? old('address', '') }}" required>
         </div>
         <!-- 住所ふりがな -->
         <div class="pt-4 border-t border-gray-200">
-            <label class="block font-medium mb-1">住所ふりがな / ठेगाना (ひらがな)<span class="text-red-500">*</span></label>
-            <p class="text-xs text-gray-500 mb-2">
-                郵便番号を入力すると住所のひらがな読み方が自動的にセットされます。残りの番地、建物名、号室のひらがな読み方だけ追加してください。
-                <span class="block text-xs" style="font-family: 'Noto Sans Devanagari', Arial, sans-serif;">
-                    हुलाक नम्बर हाल्दा ठेगानाको हिरागाना स्वतः भरिनेछ। बाँकी घर नम्बर, भवनको नाम, कोठा नम्बरको हिरागाना मात्र थप्नुहोस्। उदाहरण: とうきょうとしぶやく〇〇1-2-3 まんしょんめい101ごうしつ
-                </span>
+            <label class="block font-medium mb-1">住所ふりがな / ठेगाना (ふりがな)<span class="text-red-500">*</span></label>
+            <p class="text-xs text-gray-500 mb-2" style="font-family: 'Noto Sans Devanagari', Arial, sans-serif;">
+                हुलाक नम्बर हाल्दा ठेगानाको हिरागाना स्वतः भरिनेछ। बाँकी घर नम्बर, भवनको नाम, कोठा नम्बरको हिरागाना मात्र थप्नुहोस्। उदाहरण: とうきょうとしぶやく〇〇1-2-3 まんしょんめい101ごうしつ
             </p>
             <input type="text" name="address_kana" id="address_kana" maxlength="200" inputmode="hiragana"
-                class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2" 
+                class="w-4/5 border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2" 
                 value="{{ $resumeData['address_kana'] ?? old('address_kana', '') }}" required>
         </div>
 
@@ -658,26 +684,26 @@
             <label class="block font-medium mb-1">学歴 / शैक्षिक विवरण<span class="text-red-500">*</span></label>
             <p class="text-xs text-gray-500 mb-2">स्कूलको नाम लेख्नुहोस्, त्यसपछि प्रवेश वा स्नातक छान्नुहोस्, र वर्ष/महिना छान्नुहोस्। धेरै स्कूल भएको खण्डमा "+" बटन थिचेर थप्नुहोस्।</p>
             <div id="schools-container">
-                <div class="school-row mb-3 pb-3 border-b border-gray-200">
-                    <div class="flex flex-col sm:flex-row gap-2 items-start mb-2 flex-wrap">
+                <div class="school-row pb-3 border-b border-gray-200">
+                    <div class="flex flex-col sm:flex-row gap-2 items-start mb-2 flex-wrap" style="box-sizing: border-box; width: 100%;">
                         <input type="text" name="school_name[]" placeholder="स्कूलको नाम (उदाहरण: 〇〇 विश्वविद्यालय)" maxlength="40"
-                            class="border rounded px-3 py-2 flex-1 focus:outline-none focus:ring-blue-400 focus:ring-2" required>
+                            class="border rounded px-3 py-2 w-full sm:w-[55%] focus:outline-none focus:ring-blue-400 focus:ring-2" style="box-sizing: border-box; max-width: 100%;" required>
                         <select name="school_event_type[]" 
-                            class="border rounded px-3 py-2 sm:w-36 md:w-40 focus:outline-none focus:ring-blue-400 focus:ring-2" required>
+                            class="border rounded px-3 py-2 sm:w-24 focus:outline-none focus:ring-blue-400 focus:ring-2" required>
                             <option value="">छान्नुहोस्</option>
                             <option value="入学">入学 / प्रवेश</option>
                             <option value="卒業">卒業 / स्नातक</option>
                         </select>
                         <input type="month" name="school_date[]" 
-                            class="border rounded px-3 py-2 sm:w-40 md:w-44 focus:outline-none focus:ring-blue-400 focus:ring-2" required>
-                        <button type="button" onclick="removeSchoolField(this)" class="text-red-500 px-2 py-2 hidden sm:block">
+                            class="border rounded px-3 py-2 sm:w-24 focus:outline-none focus:ring-blue-400 focus:ring-2" required>
+                        <button type="button" onclick="removeSchoolField(this)" class="text-red-500 px-2 py-2 block">
                             &#8722;
                         </button>
                     </div>
                 </div>
             </div>
             <button type="button" id="add-school-btn" onclick="addSchoolField()"
-                class="mt-2 px-2 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 text-sm">
+                class="mt-0 px-2 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 text-sm">
                 ＋ 学歴を追加 / शैक्षिक विवरण थप्नुहोस्
             </button>
         </div>
@@ -686,29 +712,29 @@
             <label class="block font-medium mb-1">職歴 / रोजगार विवरण<span class="text-red-500">*</span></label>
             <p class="text-xs text-gray-500 mb-2">कम्पनीको नाम लेख्नुहोस्, त्यसपछि नियुक्ति वा राजिनामा छान्नुहोस्, र वर्ष/महिना छान्नुहोस्। कामको विवरण विस्तृत रूपमा लेख्नुहोस्। धेरै काम भएको खण्डमा "+" बटन थिचेर थप्नुहोस्।</p>
             <div id="jobs-container">
-                <div class="job-row mb-3 pb-3 border-b border-gray-200">
-                    <div class="flex flex-col sm:flex-row gap-2 items-start mb-2 flex-wrap">
+                <div class="job-row pb-3 border-b border-gray-200">
+                    <div class="flex flex-col sm:flex-row gap-2 items-start mb-2 flex-wrap" style="box-sizing: border-box; width: 100%;">
                         <input type="text" name="company_name[]" placeholder="कम्पनीको नाम (उदाहरण: 〇〇 कम्पनी)" maxlength="40"
-                            class="border rounded px-3 py-2 flex-1 focus:outline-none focus:ring-blue-400 focus:ring-2" required>
+                            class="border rounded px-3 py-2 w-full sm:w-[55%] focus:outline-none focus:ring-blue-400 focus:ring-2" style="box-sizing: border-box; max-width: 100%;" required>
                         <select name="job_event_type[]" 
-                            class="border rounded px-3 py-2 sm:w-36 md:w-40 focus:outline-none focus:ring-blue-400 focus:ring-2" required>
+                            class="border rounded px-3 py-2 sm:w-24 focus:outline-none focus:ring-blue-400 focus:ring-2" required>
                             <option value="">छान्नुहोस्</option>
                             <option value="入社">入社 / नियुक्ति</option>
                             <option value="退職">退職 / राजिनामा</option>
                         </select>
                         <input type="month" name="job_date[]" 
-                            class="border rounded px-3 py-2 sm:w-40 md:w-44 focus:outline-none focus:ring-blue-400 focus:ring-2" required>
-                        <button type="button" onclick="removeJobField(this)" class="text-red-500 px-2 py-2 hidden sm:block">
+                            class="border rounded px-3 py-2 sm:w-24 focus:outline-none focus:ring-blue-400 focus:ring-2" required>
+                        <button type="button" onclick="removeJobField(this)" class="text-red-500 px-2 py-2 block">
                             &#8722;
                         </button>
                     </div>
                     <textarea name="job_detail[]" rows="3" maxlength="300"
-                        class="border rounded px-3 py-2 w-full focus:outline-none focus:ring-blue-400 focus:ring-2 mt-1"
+                        class="border rounded px-3 py-2 w-2/3 focus:outline-none focus:ring-blue-400 focus:ring-2 mt-1"
                         placeholder="कामको विवरण विस्तृत रूपमा लेख्नुहोस् (उदाहरण: बिक्रीमा नयाँ ग्राहक खोज्ने जिम्मेवारी। मासिक बिक्री लक्ष्य १२०% पूरा गरे।)" required></textarea>
                 </div>
             </div>
             <button type="button" id="add-job-btn" onclick="addJobField()"
-                class="mt-2 px-2 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 text-sm">
+                class="mt-0 px-2 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 text-sm">
                 ＋ 職歴を追加 / रोजगार विवरण थप्नुहोस्
             </button>
         </div>
@@ -718,12 +744,12 @@
             <label class="block font-medium mb-1">免許・資格 / अन्य योग्यता<span class="text-gray-500"> (任意)</span></label>
             <p class="text-xs text-gray-500 mb-2">प्राप्त गरेको लाइसेन्स वा योग्यता भएमा लेख्नुहोस्। योग्यताको नाम र प्राप्त गरेको वर्ष/महिना लेख्नुहोस्। धेरै योग्यता भएको खण्डमा "+" बटन थिचेर थप्नुहोस्।</p>
             <div id="licenses-container">
-                <div class="license-row flex flex-col sm:flex-row gap-2 items-start mb-2">
+                <div class="license-row flex flex-col sm:flex-row gap-2 items-start mb-2" style="box-sizing: border-box; width: 100%;">
                     <input type="text" name="license_name[]" placeholder="योग्यताको नाम (उदाहरण: साधारण कार ड्राइभिङ लाइसेन्स)" maxlength="40"
-                        class="border rounded px-3 py-2 w-full sm:w-2/3 focus:outline-none focus:ring-blue-400 focus:ring-2">
+                        class="border rounded px-3 py-2 w-full sm:w-3/5 focus:outline-none focus:ring-blue-400 focus:ring-2" style="box-sizing: border-box; max-width: 100%;">
                     <input type="month" name="license_date[]" placeholder="प्राप्त गरेको वर्ष/महिना"
-                        class="border rounded px-3 py-2 w-full sm:w-1/3 focus:outline-none focus:ring-blue-400 focus:ring-2">
-                    <button type="button" onclick="removeLicenseField(this)" class="text-red-500 px-1 ml-1 hidden sm:block">
+                        class="border rounded px-3 py-2 w-full sm:w-24 focus:outline-none focus:ring-blue-400 focus:ring-2" style="box-sizing: border-box; max-width: 100%;">
+                    <button type="button" onclick="removeLicenseField(this)" class="text-red-500 px-1 ml-1 block">
                         &#8722;
                     </button>
                 </div>
@@ -739,7 +765,7 @@
             <label class="block font-medium mb-1">志望動機・特技・アピールポイント / आफ्नो तयारी, रुचि, विशेषता</label>
             <p class="text-xs text-gray-500 mb-2">रोजगारको लागि तयारी, तपाईंको विशेषता, आफूलाई प्रस्तुत गर्न सक्ने बुँदाहरू लेख्नुहोस्। संक्षेपमा विस्तृत रूपमा लेख्नुहोस्। वैकल्पिक खण्ड हो।</p>
             <textarea name="appeal_points" rows="4" maxlength="400"
-                class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2"
+                class="w-2/3 border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2"
                 placeholder="उदाहरण: जापानमा काम गर्न चाहन्छु। भाषा कौशल प्रयोग गरेर विश्वव्यापी दृष्टिकोणबाट योगदान दिन चाहन्छु。">{{ $resumeData['appeal_points'] ?? old('appeal_points', '') }}</textarea>
         </div>
         <!-- 本人希望欄 -->
@@ -747,7 +773,7 @@
             <label class="block font-medium mb-1">本人希望欄 / आफ्नो चाहना</label>
             <p class="text-xs text-gray-500 mb-2">कामको ठेगाना, समय, तलबको चाहना भएमा लेख्नुहोस्। विशेष चाहना नभएको खण्डमा खाली राख्न सकिन्छ। वैकल्पिक खण्ड हो।</p>
             <textarea name="self_request" rows="2" maxlength="200"
-                class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2"
+                class="w-2/3 border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2"
                 placeholder="उदाहरण: चाहिएको कामको ठेगाना: टोक्यो शहर / कामको समय: हप्ता ५ दिन, ९:०० बजे देखि ६:०० बजे सम्म">{{ $resumeData['self_request'] ?? old('self_request', '') }}</textarea>
         </div>
 
