@@ -4,3 +4,4 @@ __MACOSX/
 .DS_Store
 database.sqlite
 storage/logs/
+storage/framework/views/
