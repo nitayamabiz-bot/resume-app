@@ -5,5 +5,5 @@
 電話番号: {{ $advertisement->phone }}
 メールアドレス: {{ $advertisement->email }}
 サイトURL: {{ $advertisement->site_url }}
-申請日時: {{ $advertisement->ctime->format('Y-m-d H:i:s') }}
+申請日時: {{ $advertisement->ctime ? $advertisement->ctime->format('Y-m-d H:i:s') : ($advertisement->created_at ? $advertisement->created_at->format('Y-m-d H:i:s') : 'N/A') }}
 
