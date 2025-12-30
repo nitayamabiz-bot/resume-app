@@ -122,12 +122,10 @@
             let company = row.querySelector('input[name="company_name[]"]').value.trim();
             let eventType = row.querySelector('select[name="job_event_type[]"]').value;
             let date = row.querySelector('input[name="job_date[]"]').value;
-            let detail = row.querySelector('textarea[name="job_detail[]"]').value.trim();
-            if (!company && !eventType && !date && !detail && idx > 0) return; // 最初以外空欄許可
+            if (!company && !eventType && !date && idx > 0) return; // 最初以外空欄許可
             if (!company) errors.push(`職歴${idx+1}：会社名を入力してください।`);
             if (!eventType) errors.push(`職歴${idx+1}：入社または退職を選択してください।`);
             if (!date) errors.push(`職歴${idx+1}：年月を選択してください।`);
-            if (!detail) errors.push(`職歴${idx+1}：業務内容を入力してください।`);
         });
 
         // 免許・資格 必須ではないが、取得年月あれば名称も
@@ -505,7 +503,6 @@
                             row.querySelector('input[name="job_date[]"]').value = 
                                 date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0');
                         }
-                        row.querySelector('textarea[name="job_detail[]"]').value = work.job_detail || '';
                     }
                 });
                 toggleJobAddButton();
@@ -687,9 +684,9 @@
                 <div class="school-row pb-3 border-b border-gray-200">
                     <div class="flex flex-col sm:flex-row gap-2 items-start mb-2 flex-wrap" style="box-sizing: border-box; width: 100%;">
                         <input type="text" name="school_name[]" placeholder="स्कूलको नाम (उदाहरण: 〇〇 विश्वविद्यालय)" maxlength="40"
-                            class="border rounded px-3 py-2 w-full sm:w-[55%] focus:outline-none focus:ring-blue-400 focus:ring-2" style="box-sizing: border-box; max-width: 100%;" required>
+                            class="border rounded px-3 py-2 w-full sm:w-[44%] focus:outline-none focus:ring-blue-400 focus:ring-2" style="box-sizing: border-box; max-width: 100%;" required>
                         <select name="school_event_type[]" 
-                            class="border rounded px-3 py-2 sm:w-24 focus:outline-none focus:ring-blue-400 focus:ring-2" required>
+                            class="border rounded px-3 py-2 sm:w-32 focus:outline-none focus:ring-blue-400 focus:ring-2" required>
                             <option value="">छान्नुहोस्</option>
                             <option value="入学">入学 / प्रवेश</option>
                             <option value="卒業">卒業 / स्नातक</option>
@@ -715,9 +712,9 @@
                 <div class="job-row pb-3 border-b border-gray-200">
                     <div class="flex flex-col sm:flex-row gap-2 items-start mb-2 flex-wrap" style="box-sizing: border-box; width: 100%;">
                         <input type="text" name="company_name[]" placeholder="कम्पनीको नाम (उदाहरण: 〇〇 कम्पनी)" maxlength="40"
-                            class="border rounded px-3 py-2 w-full sm:w-[55%] focus:outline-none focus:ring-blue-400 focus:ring-2" style="box-sizing: border-box; max-width: 100%;" required>
+                            class="border rounded px-3 py-2 w-full sm:w-[44%] focus:outline-none focus:ring-blue-400 focus:ring-2" style="box-sizing: border-box; max-width: 100%;" required>
                         <select name="job_event_type[]" 
-                            class="border rounded px-3 py-2 sm:w-24 focus:outline-none focus:ring-blue-400 focus:ring-2" required>
+                            class="border rounded px-3 py-2 sm:w-32 focus:outline-none focus:ring-blue-400 focus:ring-2" required>
                             <option value="">छान्नुहोस्</option>
                             <option value="入社">入社 / नियुक्ति</option>
                             <option value="退職">退職 / राजिनामा</option>
@@ -728,9 +725,6 @@
                             &#8722;
                         </button>
                     </div>
-                    <textarea name="job_detail[]" rows="3" maxlength="300"
-                        class="border rounded px-3 py-2 w-2/3 focus:outline-none focus:ring-blue-400 focus:ring-2 mt-1"
-                        placeholder="कामको विवरण विस्तृत रूपमा लेख्नुहोस् (उदाहरण: बिक्रीमा नयाँ ग्राहक खोज्ने जिम्मेवारी। मासिक बिक्री लक्ष्य १२०% पूरा गरे।)" required></textarea>
                 </div>
             </div>
             <button type="button" id="add-job-btn" onclick="addJobField()"
@@ -748,7 +742,7 @@
                     <input type="text" name="license_name[]" placeholder="योग्यताको नाम (उदाहरण: साधारण कार ड्राइभिङ लाइसेन्स)" maxlength="40"
                         class="border rounded px-3 py-2 w-full sm:w-3/5 focus:outline-none focus:ring-blue-400 focus:ring-2" style="box-sizing: border-box; max-width: 100%;">
                     <input type="month" name="license_date[]" placeholder="प्राप्त गरेको वर्ष/महिना"
-                        class="border rounded px-3 py-2 w-full sm:w-24 focus:outline-none focus:ring-blue-400 focus:ring-2" style="box-sizing: border-box; max-width: 100%;">
+                        class="border rounded px-3 py-2 w-full sm:w-[134px] focus:outline-none focus:ring-blue-400 focus:ring-2" style="box-sizing: border-box; max-width: 100%;">
                     <button type="button" onclick="removeLicenseField(this)" class="text-red-500 px-1 ml-1 block">
                         &#8722;
                     </button>

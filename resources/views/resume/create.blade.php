@@ -122,12 +122,10 @@
                 let company = row.querySelector('input[name="company_name[]"]').value.trim();
                 let eventType = row.querySelector('select[name="job_event_type[]"]').value;
                 let date = row.querySelector('input[name="job_date[]"]').value;
-                let detail = row.querySelector('textarea[name="job_detail[]"]').value.trim();
-                if (!company && !eventType && !date && !detail && idx > 0) return; // 最初以外空欄許可
+                if (!company && !eventType && !date && idx > 0) return; // 最初以外空欄許可
                 if (!company) errors.push(`職歴${idx+1}：会社名を入力してください।`);
                 if (!eventType) errors.push(`職歴${idx+1}：入社または退職を選択してください।`);
                 if (!date) errors.push(`職歴${idx+1}：年月を選択してください।`);
-                if (!detail) errors.push(`職歴${idx+1}：業務内容を入力してください।`);
             });
 
             // 免許・資格 必須ではないが、取得年月あれば名称も
@@ -363,9 +361,6 @@
                                 &#8722;
                             </button>
                         </div>
-                        <textarea name="job_detail[]" rows="3" maxlength="300"
-                            class="border rounded px-3 py-2 w-full focus:outline-none focus:ring-blue-400 focus:ring-2 mt-1"
-                            placeholder="कामको विवरण विस्तृत रूपमा लेख्नुहोस् (उदाहरण: बिक्रीमा नयाँ ग्राहक खोज्ने जिम्मेवारी। मासिक बिक्री लक्ष्य १२०% पूरा गरे।)" required></textarea>
                     </div>
                 </div>
                 <button type="button" id="add-job-btn" onclick="addJobField()"
