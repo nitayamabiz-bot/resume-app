@@ -179,7 +179,7 @@
         min-height: auto !important;
         height: auto !important;
         margin: 0 !important;
-        padding: 24px 0 16px 0 !important;
+        padding: 24px 0 0px 0 !important;
         box-sizing: border-box !important;
         display: block !important;
         position: relative !important;
@@ -215,7 +215,7 @@
     
     html body .header .logo-section {
         text-align: center !important;
-        margin-bottom: 16px !important;
+        margin-bottom: 0 !important;
         margin-top: 0 !important;
         display: flex !important;
         align-items: center !important;
@@ -438,6 +438,22 @@
         display: block !important;
         visibility: visible !important;
         opacity: 1 !important;
+    }
+    
+    /* スマホ表示時：ヘッダーの下のパディングを0pxに、nav-linksを非表示、logo-sectionのmargin-bottomを0に */
+    @media (max-width: 768px) {
+        html body .header {
+            padding: 24px 0 0px 0 !important;
+        }
+        html body .header .nav-links,
+        html body .header > .nav-links {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+        }
+        html body .header .logo-section {
+            margin-bottom: 0 !important;
+        }
     }
 </style>
 
