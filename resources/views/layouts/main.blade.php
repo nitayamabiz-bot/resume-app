@@ -1270,39 +1270,51 @@
             // 広告スライドショー
             const adSlides = document.getElementById('adSlides');
             const adIndicators = document.getElementById('adIndicators');
-            const indicators = adIndicators.querySelectorAll('.ad-indicator');
-            let currentSlide = 0;
-            const totalSlides = indicators.length;
-            const slideInterval = 4000; // 4秒ごとにスライド
-
-            function showSlide(index) {
-                adSlides.style.transform = `translateX(-${index * 100}%)`;
+            
+            if (adSlides && adIndicators) {
+                const indicators = adIndicators.querySelectorAll('.ad-indicator');
+                let currentSlide = 0;
+                const totalSlides = indicators.length;
                 
-                // インジケーターを更新
-                indicators.forEach((indicator, i) => {
-                    if (i === index) {
-                        indicator.classList.add('active');
-                    } else {
-                        indicator.classList.remove('active');
+                if (totalSlides > 0) {
+                    const slideInterval = 4000; // 4秒ごとにスライド
+
+                    function showSlide(index) {
+                        if (adSlides && index >= 0 && index < totalSlides) {
+                            adSlides.style.transform = `translateX(-${index * 100}%)`;
+                        }
+                        
+                        // インジケーターを更新
+                        indicators.forEach((indicator, i) => {
+                            if (i === index) {
+                                indicator.classList.add('active');
+                            } else {
+                                indicator.classList.remove('active');
+                            }
+                        });
                     }
-                });
+
+                    function nextSlide() {
+                        if (totalSlides > 0) {
+                            currentSlide = (currentSlide + 1) % totalSlides;
+                            showSlide(currentSlide);
+                        }
+                    }
+
+                    // インジケーターをクリックしたらそのスライドに移動
+                    indicators.forEach((indicator, index) => {
+                        indicator.addEventListener('click', function() {
+                            currentSlide = index;
+                            showSlide(currentSlide);
+                        });
+                    });
+
+                    // 自動スライド（複数スライドがある場合のみ）
+                    if (totalSlides > 1) {
+                        setInterval(nextSlide, slideInterval);
+                    }
+                }
             }
-
-            function nextSlide() {
-                currentSlide = (currentSlide + 1) % totalSlides;
-                showSlide(currentSlide);
-            }
-
-            // インジケーターをクリックしたらそのスライドに移動
-            indicators.forEach((indicator, index) => {
-                indicator.addEventListener('click', function() {
-                    currentSlide = index;
-                    showSlide(currentSlide);
-                });
-            });
-
-            // 自動スライド
-            setInterval(nextSlide, slideInterval);
         });
     </script>
 </body>

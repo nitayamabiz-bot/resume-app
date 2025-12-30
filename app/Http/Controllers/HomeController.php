@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Announcement;
+use App\Models\News;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
@@ -20,9 +21,24 @@ class HomeController extends Controller
             ->limit(5)
             ->get();
 
+        // 公開中のニュースを取得（国内・国外別）
+        $domesticNews = News::where('is_published', true)
+            ->where('category', 'domestic')
+            ->orderBy('display_order')
+            ->orderBy('published_date', 'desc')
+            ->limit(10)
+            ->get();
+
+        $internationalNews = News::where('is_published', true)
+            ->where('category', 'international')
+            ->orderBy('display_order')
+            ->orderBy('published_date', 'desc')
+            ->limit(10)
+            ->get();
+
         // 管理者チェック
         $isAdmin = Auth::check() && Auth::user()->email === 'info@hamro-life-japan.com';
 
-        return view('home', compact('announcements', 'isAdmin'));
+        return view('home', compact('announcements', 'domesticNews', 'internationalNews', 'isAdmin'));
     }
 }

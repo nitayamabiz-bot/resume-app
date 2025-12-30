@@ -5,6 +5,7 @@ use App\Http\Controllers\ResumeController;
 use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\AnnouncementController as AdminAnnouncementController;
+use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use Illuminate\Support\Facades\Route;
 
 // トップページ
@@ -60,9 +61,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
-    // 管理者画面（お知らせ管理）
+    // 管理者画面（お知らせ管理・ニュース管理）
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('announcements', AdminAnnouncementController::class);
+        Route::resource('news', AdminNewsController::class);
     });
 });
 
