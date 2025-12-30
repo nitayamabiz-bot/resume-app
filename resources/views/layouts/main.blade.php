@@ -141,6 +141,14 @@
         }
         .mobile-menu .nav-item-main {
             flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .mobile-menu .nav-item-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
         }
         .mobile-menu .nav-item-sub {
             margin-left: 12px;
@@ -183,7 +191,16 @@
             background-color: #0346b0;
         }
         .nav-item-main {
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .nav-item-icon {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            display: inline-block;
         }
         .nav-item-sub {
             display: block;
@@ -679,10 +696,19 @@
         }
         
         html body .header .nav-item-main {
-            display: block !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 6px !important;
             line-height: normal !important;
             margin: 0 !important;
             padding: 0 !important;
+        }
+        html body .header .nav-item-icon {
+            width: 18px !important;
+            height: 18px !important;
+            flex-shrink: 0 !important;
+            display: inline-block !important;
         }
         
         html body .header .nav-item-sub {
@@ -946,35 +972,75 @@
                     <span class="nav-item-sub">मुख्य पृष्ठ</span>
                 </a>
                 <a href="{{ route('rental') }}" class="nav-item {{ request()->routeIs('rental') ? 'active' : '' }}">
-                    <span class="nav-item-main">賃貸</span>
+                    <span class="nav-item-main">
+                        <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                        </svg>
+                        賃貸
+                    </span>
                     <span class="nav-item-sub">भाडा</span>
                 </a>
                 <a href="{{ route('parttime') }}" class="nav-item {{ request()->routeIs('parttime') ? 'active' : '' }}">
-                    <span class="nav-item-main">アルバイト</span>
+                    <span class="nav-item-main">
+                        <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        アルバイト
+                    </span>
                     <span class="nav-item-sub">अंशकालिक</span>
                 </a>
                 <a href="{{ route('job') }}" class="nav-item {{ request()->routeIs('job') ? 'active' : '' }}">
-                    <span class="nav-item-main">就職</span>
+                    <span class="nav-item-main">
+                        <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                        就職
+                    </span>
                     <span class="nav-item-sub">रोजगार</span>
                 </a>
                 <a href="{{ route('bank') }}" class="nav-item {{ request()->routeIs('bank') ? 'active' : '' }}">
-                    <span class="nav-item-main">銀行口座</span>
+                    <span class="nav-item-main">
+                        <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                        銀行口座
+                    </span>
                     <span class="nav-item-sub">बैंक खाता</span>
                 </a>
                 <a href="{{ route('internet') }}" class="nav-item {{ request()->routeIs('internet') ? 'active' : '' }}">
-                    <span class="nav-item-main">ネット回線</span>
+                    <span class="nav-item-main">
+                        <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"></path>
+                        </svg>
+                        ネット回線
+                    </span>
                     <span class="nav-item-sub">इन्टरनेट</span>
                 </a>
                 <a href="{{ route('sim') }}" class="nav-item {{ request()->routeIs('sim') ? 'active' : '' }}">
-                    <span class="nav-item-main">SIM</span>
+                    <span class="nav-item-main">
+                        <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                        </svg>
+                        SIM
+                    </span>
                     <span class="nav-item-sub">सिम</span>
                 </a>
                 <a href="{{ route('resume.index') }}" class="nav-item {{ request()->routeIs('resume.*') ? 'active' : '' }}">
-                    <span class="nav-item-main">履歴書作成</span>
+                    <span class="nav-item-main">
+                        <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        履歴書作成
+                    </span>
                     <span class="nav-item-sub">बायोडाटा</span>
                 </a>
                 <a href="{{ route('career.index') }}" class="nav-item {{ request()->routeIs('career.*') ? 'active' : '' }}">
-                    <span class="nav-item-main">職務経歴書作成</span>
+                    <span class="nav-item-main">
+                        <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        職務経歴書作成
+                    </span>
                     <span class="nav-item-sub">कामको अनुभव</span>
                 </a>
             </nav>
@@ -984,35 +1050,75 @@
                     <span class="nav-item-sub">मुख्य पृष्ठ</span>
                 </a>
                 <a href="{{ route('rental') }}" class="nav-item {{ request()->routeIs('rental') ? 'active' : '' }}">
-                    <span class="nav-item-main">賃貸</span>
+                    <span class="nav-item-main">
+                        <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                        </svg>
+                        賃貸
+                    </span>
                     <span class="nav-item-sub">भाडा</span>
                 </a>
                 <a href="{{ route('parttime') }}" class="nav-item {{ request()->routeIs('parttime') ? 'active' : '' }}">
-                    <span class="nav-item-main">アルバイト</span>
+                    <span class="nav-item-main">
+                        <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        アルバイト
+                    </span>
                     <span class="nav-item-sub">अंशकालिक</span>
                 </a>
                 <a href="{{ route('job') }}" class="nav-item {{ request()->routeIs('job') ? 'active' : '' }}">
-                    <span class="nav-item-main">就職</span>
+                    <span class="nav-item-main">
+                        <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                        就職
+                    </span>
                     <span class="nav-item-sub">रोजगार</span>
                 </a>
                 <a href="{{ route('bank') }}" class="nav-item {{ request()->routeIs('bank') ? 'active' : '' }}">
-                    <span class="nav-item-main">銀行口座</span>
+                    <span class="nav-item-main">
+                        <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                        銀行口座
+                    </span>
                     <span class="nav-item-sub">बैंक खाता</span>
                 </a>
                 <a href="{{ route('internet') }}" class="nav-item {{ request()->routeIs('internet') ? 'active' : '' }}">
-                    <span class="nav-item-main">ネット回線</span>
+                    <span class="nav-item-main">
+                        <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"></path>
+                        </svg>
+                        ネット回線
+                    </span>
                     <span class="nav-item-sub">इन्टरनेट</span>
                 </a>
                 <a href="{{ route('sim') }}" class="nav-item {{ request()->routeIs('sim') ? 'active' : '' }}">
-                    <span class="nav-item-main">SIM</span>
+                    <span class="nav-item-main">
+                        <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                        </svg>
+                        SIM
+                    </span>
                     <span class="nav-item-sub">सिम</span>
                 </a>
                 <a href="{{ route('resume.index') }}" class="nav-item {{ request()->routeIs('resume.*') ? 'active' : '' }}">
-                    <span class="nav-item-main">履歴書作成</span>
+                    <span class="nav-item-main">
+                        <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        履歴書作成
+                    </span>
                     <span class="nav-item-sub">बायोडाटा</span>
                 </a>
                 <a href="{{ route('career.index') }}" class="nav-item {{ request()->routeIs('career.*') ? 'active' : '' }}">
-                    <span class="nav-item-main">職務経歴書作成</span>
+                    <span class="nav-item-main">
+                        <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        職務経歴書作成
+                    </span>
                     <span class="nav-item-sub">कामको अनुभव</span>
                 </a>
             </nav>
