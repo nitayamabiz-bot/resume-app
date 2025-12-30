@@ -1,4 +1,14 @@
-<x-guest-layout>
+<x-guest-layout title="新規登録 / दर्ता - 就労支援サービス">
+    <!-- 戻るボタン -->
+    <div class="mb-4">
+        <a href="{{ url()->previous() !== url()->current() ? url()->previous() : route('home') }}" class="inline-flex items-center text-sm text-gray-600 hover:text-gray-900">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+            戻る / फिर्ता
+        </a>
+    </div>
+
     <form method="POST" action="{{ route('register') }}">
         @csrf
 

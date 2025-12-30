@@ -16,7 +16,7 @@
             width: 100% !important;
             max-width: 100% !important;
             background-color: #ffffffe6;
-            padding: 24px 0 16px 0;
+            padding: 24px 0 0px 0;
             box-shadow: 0 2px 8px rgba(180,180,180,0.05);
             position: relative;
             margin: 0 !important;
@@ -40,7 +40,7 @@
         }
         .logo-section {
             text-align: center;
-            margin-bottom: 16px;
+            margin-bottom: 0;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -242,6 +242,44 @@
             min-height: calc(100vh - 200px);
             padding: 40px 20px 120px 20px;
         }
+        /* スマホ表示時の認証ボタンブロック（デスクトップでは非表示） */
+        .mobile-auth-block {
+            display: none;
+        }
+        .mobile-auth-links {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background-color: #ffffffe6;
+            box-shadow: 0 2px 8px rgba(180,180,180,0.05);
+        }
+        .mobile-auth-links .nav-link,
+        .mobile-auth-links .nav-link-btn {
+            padding: 6px 12px;
+            font-size: 0.9rem;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .mobile-auth-links .nav-link {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #fff;
+            box-shadow: 0 2px 4px rgba(16, 185, 129, 0.25);
+        }
+        .mobile-auth-links .nav-link-btn {
+            background: linear-gradient(135deg, #1160E6 0%, #0d4fc7 100%);
+            color: #fff;
+            box-shadow: 0 2px 4px rgba(17, 96, 230, 0.25);
+            border: none;
+            cursor: pointer;
+        }
+        .mobile-auth-links span.nav-link {
+            background: transparent;
+            color: #1160E6;
+            box-shadow: none;
+        }
         .footer {
             width: 100%;
             background-color: #ffffffe6;
@@ -315,7 +353,24 @@
         }
         @media (max-width: 768px) {
             .main-content {
-                padding: 40px 20px 100px 20px;
+                padding: 15px 5px 100px 5px;
+            }
+            /* スマホ表示時：認証ボタンブロックを表示、ヘッダー内のnav-linksを非表示 */
+            .mobile-auth-block {
+                display: block !important;
+            }
+            .header .nav-links,
+            html body .header .nav-links,
+            html body .header > .nav-links {
+                display: none !important;
+                visibility: hidden !important;
+                opacity: 0 !important;
+            }
+            html body .header {
+                padding: 24px 0 0px 0 !important;
+            }
+            html body .header .logo-section {
+                margin-bottom: 0 !important;
             }
             .ad-slider {
                 height: 70px;
@@ -535,7 +590,7 @@
             min-height: auto !important;
             height: auto !important;
             margin: 0 !important;
-            padding: 24px 0 16px 0 !important;
+            padding: 24px 0 0px 0 !important;
             box-sizing: border-box !important;
             display: block !important;
             position: relative !important;
@@ -573,7 +628,7 @@
         
         html body .header .logo-section {
             text-align: center !important;
-            margin-bottom: 16px !important;
+            margin-bottom: 0 !important;
             margin-top: 0 !important;
             display: flex !important;
             align-items: center !important;
@@ -975,6 +1030,21 @@
             @endauth
         </div>
     </header>
+    <!-- スマホ表示時の認証ボタンブロック -->
+    <div class="mobile-auth-block">
+        <div class="mobile-auth-links">
+            @auth
+                <span class="nav-link">{{ Auth::user()->name }}</span>
+                <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+                    @csrf
+                    <button type="submit" class="nav-link-btn">ログアウト <span class="inline-text" style="font-size: 0.7rem; opacity: 0.9;">/ लगआउट</span></button>
+                </form>
+            @else
+                <a href="{{ route('login') }}" class="nav-link" style="display: inline-block; text-decoration: none; cursor: pointer; pointer-events: auto;">ログイン <span class="inline-text" style="font-family: 'Noto Sans Devanagari', Arial, sans-serif;">/ लगइन</span></a>
+                <a href="{{ route('register') }}" class="nav-link-btn" style="display: inline-block; text-decoration: none; cursor: pointer; pointer-events: auto;">新規登録 <span class="inline-text" style="font-size: 0.7rem; opacity: 0.9;">/ दर्ता</span></a>
+            @endauth
+        </div>
+    </div>
     <main class="main-content">
         @yield('content')
     </main>
