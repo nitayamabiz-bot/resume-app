@@ -15,6 +15,7 @@
     if (typeof tailwind !== 'undefined') {
         tailwind.config = window.tailwindConfig;
     }
+</script>
 <div class="w-full bg-white rounded-lg shadow-md p-6">
     <h2 class="text-2xl font-bold mb-4 text-center">内容確認 / विवरण जाँच गर्नुहोस्</h2>
     

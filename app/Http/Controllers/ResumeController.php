@@ -23,6 +23,14 @@ class ResumeController extends Controller
         // セッションから履歴書データを取得（確認画面表示時）
         $resumeData = session('resume_data');
         
+        // デバッグ: セッションの状態をログに記録
+        if ($showConfirm) {
+            \Log::info('Resume index - showConfirm is true');
+            \Log::info('Resume index - Session ID: ' . $request->session()->getId());
+            \Log::info('Resume index - Session resume_data exists: ' . ($resumeData ? 'yes' : 'no'));
+            \Log::info('Resume index - All session keys: ' . implode(', ', array_keys($request->session()->all())));
+        }
+        
         // セッションにデータがない場合、ログインしている場合は最新の履歴書データを取得
         if (!$resumeData && Auth::check()) {
             $latestResume = Resume::where('user_id', Auth::id())
@@ -148,6 +156,11 @@ class ResumeController extends Controller
         ];
 
         session(['resume_data' => $resumeData, 'show_confirm' => true]);
+        
+        // デバッグ: セッション保存後の状態をログに記録
+        \Log::info('Resume confirm - Session resume_data saved');
+        \Log::info('Resume confirm - Session ID: ' . $request->session()->getId());
+        \Log::info('Resume confirm - Session resume_data exists: ' . (session('resume_data') ? 'yes' : 'no'));
 
         // 内容確認画面のHTMLを返す（AJAXリクエストの場合）
         if ($request->expectsJson() || $request->wantsJson()) {
@@ -409,6 +422,11 @@ class ResumeController extends Controller
             
             // セッションから履歴書データを取得
             $resumeData = session('resume_data');
+            
+            // デバッグ: セッションの状態をログに記録
+            \Log::info('PDF download - Session resume_data exists: ' . ($resumeData ? 'yes' : 'no'));
+            \Log::info('PDF download - Session ID: ' . $request->session()->getId());
+            \Log::info('PDF download - All session keys: ' . implode(', ', array_keys($request->session()->all())));
             
             if (!$resumeData) {
                 return response()->json([
