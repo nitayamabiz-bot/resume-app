@@ -64,6 +64,25 @@
         padding: 16px;
         background-color: #f9fafb;
     }
+    .announcements-section .flex {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .admin-button {
+        padding: 8px 16px;
+        background-color: #2563eb;
+        color: white;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 0.875rem;
+        white-space: nowrap;
+        margin-left: 16px;
+        transition: background-color 0.2s;
+    }
+    .admin-button:hover {
+        background-color: #1d4ed8;
+    }
     @media (max-width: 700px) {
         .main-heading {
             font-size: 1.5rem;
@@ -81,6 +100,18 @@
             border-width: 1px;
             width: calc(100% - 32px);
             max-width: none;
+        }
+        .announcements-section .flex {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        .announcements-section h2 {
+            margin-bottom: 12px;
+        }
+        .admin-button {
+            margin-left: 0;
+            margin-top: 8px;
+            text-align: center;
         }
         .announcements-list {
             max-height: 400px;
@@ -115,9 +146,16 @@
     <!-- お知らせエリア -->
     @if($announcements->count() > 0)
     <div class="announcements-section">
-        <h2 class="text-xl font-bold mb-4 text-center" style="color: #3E5387;">
-            お知らせ / सूचना
-        </h2>
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-bold text-center" style="color: #3E5387; flex: 1;">
+                お知らせ / सूचना
+            </h2>
+            @if($isAdmin)
+                <a href="{{ route('admin.announcements.index') }}" class="admin-button">
+                    管理 / व्यवस्थापन
+                </a>
+            @endif
+        </div>
         <div class="announcements-list">
             @foreach($announcements as $index => $announcement)
                 <div class="announcement-item" style="margin-bottom: {{ $index < $announcements->count() - 1 ? '16px' : '0' }};">
