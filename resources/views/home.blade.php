@@ -139,6 +139,12 @@
         .news-item:hover {
             background-color: #f9fafb;
         }
+        .news-list-container {
+            max-height: 400px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
         @media (max-width: 700px) {
             .news-section {
                 margin: 20px 16px;
@@ -158,6 +164,9 @@
             .news-item > div:first-child {
                 width: 100% !important;
                 height: 120px !important;
+            }
+            .news-list-container {
+                max-height: 300px;
             }
         }
     }
@@ -189,8 +198,9 @@
                 <h3 class="text-lg font-semibold mb-3 text-center" style="color: #1160E6; border-bottom: 2px solid #1160E6; padding-bottom: 8px;">
                     国内ニュース / घरेलु समाचार
                 </h3>
-                <div class="news-list" style="display: flex; flex-direction: column; gap: 4px;">
-                    @forelse($domesticNews as $news)
+                <div class="news-list-container">
+                    <div class="news-list" style="display: flex; flex-direction: column; gap: 4px;">
+                        @forelse($domesticNews as $news)
                         <a href="{{ $news->external_url }}" target="_blank" rel="noopener noreferrer" class="news-item" style="display: flex; gap: 12px; padding: 8px; border: 1px solid #e5e7eb; border-radius: 6px; text-decoration: none; color: inherit; transition: background-color 0.2s;">
                             <div style="flex-shrink: 0; width: 80px; height: 60px; overflow: hidden; border-radius: 4px; background-color: #f3f4f6;">
                                 <img src="{{ $news->image_url ?? 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI2MCI+PHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjYwIiBmaWxsPSIjZTdlOWViIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIiBmaWxsPSIjOTk5IiBmb250LXNpemU9IjEyIj5OZXdzPC90ZXh0Pjwvc3ZnPg==' }}" 
@@ -203,9 +213,10 @@
                                 <div class="text-xs text-gray-500">{{ $news->published_date->format('Y年m月d日') }}</div>
                             </div>
                         </a>
-                    @empty
-                        <div class="text-sm text-gray-500 text-center py-4">国内ニュースはありません / कुनै घरेलु समाचार छैन</div>
-                    @endforelse
+                        @empty
+                            <div class="text-sm text-gray-500 text-center py-4">国内ニュースはありません / कुनै घरेलु समाचार छैन</div>
+                        @endforelse
+                    </div>
                 </div>
             </div>
             <!-- 国外ニュース -->
@@ -213,8 +224,9 @@
                 <h3 class="text-lg font-semibold mb-3 text-center" style="color: #1160E6; border-bottom: 2px solid #1160E6; padding-bottom: 8px;">
                     国外ニュース / अन्तर्राष्ट्रिय समाचार
                 </h3>
-                <div class="news-list" style="display: flex; flex-direction: column; gap: 4px;">
-                    @forelse($internationalNews as $news)
+                <div class="news-list-container">
+                    <div class="news-list" style="display: flex; flex-direction: column; gap: 4px;">
+                        @forelse($internationalNews as $news)
                         <a href="{{ $news->external_url }}" target="_blank" rel="noopener noreferrer" class="news-item" style="display: flex; gap: 12px; padding: 8px; border: 1px solid #e5e7eb; border-radius: 6px; text-decoration: none; color: inherit; transition: background-color 0.2s;">
                             <div style="flex-shrink: 0; width: 80px; height: 60px; overflow: hidden; border-radius: 4px; background-color: #f3f4f6;">
                                 <img src="{{ $news->image_url ?? 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI2MCI+PHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjYwIiBmaWxsPSIjZTdlOWViIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIiBmaWxsPSIjOTk5IiBmb250LXNpemU9IjEyIj5OZXdzPC90ZXh0Pjwvc3ZnPg==' }}" 
@@ -227,9 +239,10 @@
                                 <div class="text-xs text-gray-500">{{ $news->published_date->format('Y年m月d日') }}</div>
                             </div>
                         </a>
-                    @empty
-                        <div class="text-sm text-gray-500 text-center py-4">国外ニュースはありません / कुनै अन्तर्राष्ट्रिय समाचार छैन</div>
-                    @endforelse
+                        @empty
+                            <div class="text-sm text-gray-500 text-center py-4">国外ニュースはありません / कुनै अन्तर्राष्ट्रिय समाचार छैन</div>
+                        @endforelse
+                    </div>
                 </div>
             </div>
         </div>
