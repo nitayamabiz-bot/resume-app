@@ -186,7 +186,7 @@
     <header class="header">
         <div class="nav-links">
             @auth
-                <a href="{{ route('dashboard') }}" class="nav-link">マイページ<span class="block text-xs" style="font-family: 'Noto Sans Devanagari', Arial, sans-serif;">मेरो पृष्ठ</span></a>
+                <a href="{{ route('home') }}" class="nav-link">マイページ<span class="block text-xs" style="font-family: 'Noto Sans Devanagari', Arial, sans-serif;">मेरो पृष्ठ</span></a>
                 <form method="POST" action="{{ route('logout') }}" style="display: inline;">
                     @csrf
                     <button type="submit" class="nav-link-btn">ログアウト<span class="block text-xs" style="font-size: 0.7rem; opacity: 0.9;">लगआउट</span></button>

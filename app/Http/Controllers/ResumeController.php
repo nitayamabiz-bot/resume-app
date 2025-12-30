@@ -381,7 +381,7 @@ class ResumeController extends Controller
             // セッションから削除
             session()->forget('pending_resume');
 
-            return redirect()->route('dashboard')->with('success', '履歴書を保存しました。');
+            return redirect()->route('home')->with('success', '履歴書を保存しました。');
         } catch (\Exception $e) {
             \Log::error('Resume saveResume error: ' . $e->getMessage());
             \Log::error('Resume saveResume error trace: ' . $e->getTraceAsString());
