@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Announcement;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class HomeController extends Controller
@@ -19,6 +20,9 @@ class HomeController extends Controller
             ->limit(5)
             ->get();
 
-        return view('home', compact('announcements'));
+        // 管理者チェック
+        $isAdmin = Auth::check() && Auth::user()->email === 'info@hamro-life-japan.com';
+
+        return view('home', compact('announcements', 'isAdmin'));
     }
 }
