@@ -41,6 +41,11 @@ class AdvertisementController extends Controller
             'ctime' => now(),
         ]);
 
+        \Log::info('広告募集フォーム送信', [
+            'advertisement_id' => $advertisement->id,
+            'service_name' => $advertisement->service_name,
+        ]);
+
         // メール送信
         $this->sendEmail($advertisement);
 
