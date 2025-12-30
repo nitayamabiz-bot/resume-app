@@ -103,9 +103,6 @@
                                 @endphp
                                 <p class="text-sm text-gray-600">{{ $year }}年{{ $month }}月 {{ $work['event_type'] }}</p>
                             @endif
-                            @if(!empty($work['job_detail']))
-                                <p class="text-sm mt-2 whitespace-pre-wrap">{{ $work['job_detail'] }}</p>
-                            @endif
                         </div>
                     @endforeach
                 </div>

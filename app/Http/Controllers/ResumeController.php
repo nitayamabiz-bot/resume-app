@@ -91,7 +91,6 @@ class ResumeController extends Controller
             'company_name' => 'required|array',
             'job_event_type' => 'required|array',
             'job_date' => 'required|array',
-            'job_detail' => 'required|array',
             'license_name' => 'nullable|array',
             'license_date' => 'nullable|array',
             'appeal_points' => 'nullable|string|max:400',
@@ -113,12 +112,11 @@ class ResumeController extends Controller
         // 職歴データを整理
         $workHistory = [];
         foreach ($validated['company_name'] as $index => $companyName) {
-            if (!empty($companyName) && !empty($validated['job_event_type'][$index]) && !empty($validated['job_date'][$index]) && !empty($validated['job_detail'][$index])) {
+            if (!empty($companyName) && !empty($validated['job_event_type'][$index]) && !empty($validated['job_date'][$index])) {
                 $workHistory[] = [
                     'company_name' => $companyName,
                     'event_type' => $validated['job_event_type'][$index],
                     'date' => $validated['job_date'][$index],
-                    'job_detail' => $validated['job_detail'][$index],
                 ];
             }
         }
@@ -155,7 +153,10 @@ class ResumeController extends Controller
             'self_request' => $validated['self_request'] ?? null,
         ];
 
-        session(['resume_data' => $resumeData, 'show_confirm' => true]);
+        // セッションに保存（PDF生成用に保持）
+        $request->session()->put('resume_data', $resumeData);
+        $request->session()->put('show_confirm', true);
+        $request->session()->save(); // セッションを明示的に保存
         
         // デバッグ: セッション保存後の状態をログに記録
         \Log::info('Resume confirm - Session resume_data saved');
@@ -194,7 +195,6 @@ class ResumeController extends Controller
             'company_name' => 'required|array',
             'job_event_type' => 'required|array',
             'job_date' => 'required|array',
-            'job_detail' => 'required|array',
             'license_name' => 'nullable|array',
             'license_date' => 'nullable|array',
             'appeal_points' => 'nullable|string|max:400',
@@ -216,12 +216,11 @@ class ResumeController extends Controller
         // 職歴データを整理
         $workHistory = [];
         foreach ($validated['company_name'] as $index => $companyName) {
-            if (!empty($companyName) && !empty($validated['job_event_type'][$index]) && !empty($validated['job_date'][$index]) && !empty($validated['job_detail'][$index])) {
+            if (!empty($companyName) && !empty($validated['job_event_type'][$index]) && !empty($validated['job_date'][$index])) {
                 $workHistory[] = [
                     'company_name' => $companyName,
                     'event_type' => $validated['job_event_type'][$index],
                     'date' => $validated['job_date'][$index],
-                    'job_detail' => $validated['job_detail'][$index],
                 ];
             }
         }
@@ -421,7 +420,7 @@ class ResumeController extends Controller
             }
             
             // セッションから履歴書データを取得
-            $resumeData = session('resume_data');
+            $resumeData = $request->session()->get('resume_data');
             
             // デバッグ: セッションの状態をログに記録
             \Log::info('PDF download - Session resume_data exists: ' . ($resumeData ? 'yes' : 'no'));
@@ -429,9 +428,11 @@ class ResumeController extends Controller
             \Log::info('PDF download - All session keys: ' . implode(', ', array_keys($request->session()->all())));
             
             if (!$resumeData) {
+                \Log::warning('PDF download - Resume data not found in session');
+                \Log::warning('PDF download - Session all data: ' . json_encode($request->session()->all()));
                 return response()->json([
                     'success' => false,
-                    'message' => '履歴書データが見つかりませんでした。'
+                    'message' => '履歴書データが見つかりませんでした。内容確認画面から再度お試しください。'
                 ], 400);
             }
             
@@ -612,12 +613,6 @@ class ResumeController extends Controller
                         $pdf->Text(45, $currentY, $content);
                         
                         $currentY += $lineHeight;
-                        
-                        // 職務内容がある場合
-                        if (!empty($work['job_detail'])) {
-                            $pdf->Text(45, $currentY, $work['job_detail']);
-                            $currentY += $lineHeight;
-                        }
                     } catch (\Exception $e) {
                         \Log::warning('Work history date parsing error: ' . $e->getMessage());
                     }

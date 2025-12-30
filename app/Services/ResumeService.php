@@ -290,15 +290,6 @@ class ResumeService
                             'month' => $date->month,
                             'content' => ($work['company_name'] ?? '') . '　' . ($work['event_type'] ?? ''),
                         ];
-                        
-                        // 職務内容がある場合
-                        if (!empty($work['job_detail'])) {
-                            $educationAndWorkHistory[] = [
-                                'year' => '',
-                                'month' => '',
-                                'content' => $work['job_detail'],
-                            ];
-                        }
                     } catch (\Exception $e) {
                         Log::warning('Work history date parsing error: ' . $e->getMessage());
                     }
@@ -626,8 +617,6 @@ class ResumeService
                         $currentRow++;
 
                         // 職務内容がある場合
-                        if (!empty($work['job_detail'])) {
-                            $worksheet->setCellValue('C' . $currentRow, $work['job_detail']);
                             $currentRow++;
                         }
                     } catch (\Exception $e) {

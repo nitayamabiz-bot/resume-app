@@ -220,13 +220,6 @@
                                 'month' => $date->month,
                                 'content' => ($work['company_name'] ?? '') . '　' . ($work['event_type'] ?? '')
                             ];
-                            if (!empty($work['job_detail'])) {
-                                $totalHistory[] = [
-                                    'year' => '',
-                                    'month' => '',
-                                    'content' => $work['job_detail']
-                                ];
-                            }
                         }
                     }
                 }
