@@ -282,6 +282,9 @@
     html body .header .nav-item {
         margin: 0 !important;
         padding: 8px 16px !important;
+        min-width: 100px !important;
+        width: auto !important;
+        flex: 0 0 auto !important;
         min-height: auto !important;
         height: auto !important;
         box-sizing: border-box !important;
@@ -290,10 +293,19 @@
     }
     
     html body .header .nav-item-main {
-        display: block !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 6px !important;
         line-height: normal !important;
         margin: 0 !important;
         padding: 0 !important;
+    }
+    html body .header .nav-item-icon {
+        width: 18px !important;
+        height: 18px !important;
+        flex-shrink: 0 !important;
+        display: inline-block !important;
     }
     
     html body .header .nav-item-sub {

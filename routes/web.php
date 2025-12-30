@@ -3,12 +3,12 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResumeController;
 use App\Http\Controllers\AdvertisementController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin\AnnouncementController as AdminAnnouncementController;
 use Illuminate\Support\Facades\Route;
 
 // トップページ
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // 各ページ
 Route::get('/rental', function () {
@@ -59,6 +59,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
+    // 管理者画面（お知らせ管理）
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::resource('announcements', AdminAnnouncementController::class);
+    });
 });
 
 require __DIR__.'/auth.php';

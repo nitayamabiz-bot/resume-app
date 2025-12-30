@@ -40,6 +40,30 @@
         color: #6b7280;
         font-size: 0.95rem;
     }
+    .announcements-section {
+        width: 100%;
+        max-width: 800px;
+        margin: 40px auto;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        background-color: #ffffff;
+        padding: 24px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        box-sizing: border-box;
+    }
+    .announcements-list {
+        max-height: 600px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+    }
+    .announcement-item {
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        padding: 16px;
+        background-color: #f9fafb;
+    }
     @media (max-width: 700px) {
         .main-heading {
             font-size: 1.5rem;
@@ -47,6 +71,28 @@
         .welcome-text {
             font-size: 0.95rem;
             padding: 0 16px;
+        }
+        .center-content {
+            padding: 0 16px;
+        }
+        .announcements-section {
+            margin: 20px 16px;
+            padding: 16px;
+            border-width: 1px;
+            width: calc(100% - 32px);
+            max-width: none;
+        }
+        .announcements-list {
+            max-height: 400px;
+        }
+        .announcement-item {
+            padding: 12px;
+        }
+        .announcement-item h3 {
+            font-size: 1rem;
+        }
+        .announcement-item .text-xs {
+            font-size: 0.7rem;
         }
     }
 </style>
@@ -65,6 +111,30 @@
             तपाईंको जीवनको लागि आवश्यक जानकारीहरू यहाँ उपलब्ध छन्।
         </span>
     </div>
+
+    <!-- お知らせエリア -->
+    @if($announcements->count() > 0)
+    <div class="announcements-section">
+        <h2 class="text-xl font-bold mb-4 text-center" style="color: #3E5387;">
+            お知らせ / सूचना
+        </h2>
+        <div class="announcements-list">
+            @foreach($announcements as $index => $announcement)
+                <div class="announcement-item" style="margin-bottom: {{ $index < $announcements->count() - 1 ? '16px' : '0' }};">
+                    <div class="text-xs text-gray-500 mb-2">
+                        {{ $announcement->created_at->format('Y年m月d日 H:i') }} / {{ $announcement->created_at->format('Y मा m d H:i') }}
+                    </div>
+                    <h3 class="font-semibold text-lg mb-2" style="color: #1160E6;">
+                        {{ $announcement->title }}
+                    </h3>
+                    <div class="text-gray-700 whitespace-pre-wrap" style="line-height: 1.6;">
+                        {{ $announcement->content }}
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+    @endif
 </div>
 @endsection
 
