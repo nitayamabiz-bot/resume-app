@@ -16,6 +16,121 @@
         tailwind.config = window.tailwindConfig;
     }
 </script>
+<style>
+    /* iOS Safari/Chromeで日付入力フィールドのテキストを表示 */
+    input[type="date"],
+    input[type="month"] {
+        -webkit-text-fill-color: #111827 !important;
+        color: #111827 !important;
+    }
+    
+    input[type="date"]::-webkit-datetime-edit,
+    input[type="month"]::-webkit-datetime-edit {
+        color: #111827 !important;
+        -webkit-text-fill-color: #111827 !important;
+    }
+    
+    input[type="date"]::-webkit-datetime-edit-fields-wrapper,
+    input[type="month"]::-webkit-datetime-edit-fields-wrapper {
+        color: #111827 !important;
+        -webkit-text-fill-color: #111827 !important;
+    }
+    
+    input[type="date"]::-webkit-datetime-edit-text,
+    input[type="month"]::-webkit-datetime-edit-text {
+        color: #111827 !important;
+        -webkit-text-fill-color: #111827 !important;
+    }
+    
+    input[type="date"]::-webkit-datetime-edit-month-field,
+    input[type="month"]::-webkit-datetime-edit-month-field {
+        color: #111827 !important;
+        -webkit-text-fill-color: #111827 !important;
+    }
+    
+    input[type="date"]::-webkit-datetime-edit-day-field,
+    input[type="month"]::-webkit-datetime-edit-day-field {
+        color: #111827 !important;
+        -webkit-text-fill-color: #111827 !important;
+    }
+    
+    input[type="date"]::-webkit-datetime-edit-year-field,
+    input[type="month"]::-webkit-datetime-edit-year-field {
+        color: #111827 !important;
+        -webkit-text-fill-color: #111827 !important;
+    }
+    
+    input[type="date"]::-webkit-inner-spin-button,
+    input[type="month"]::-webkit-inner-spin-button {
+        display: block !important;
+        opacity: 1 !important;
+        -webkit-appearance: inner-spin-button !important;
+    }
+    
+    input[type="date"]::-webkit-calendar-picker-indicator,
+    input[type="month"]::-webkit-calendar-picker-indicator {
+        display: block !important;
+        opacity: 1 !important;
+        cursor: pointer !important;
+        width: 20px !important;
+        height: 20px !important;
+        visibility: visible !important;
+    }
+    
+    /* 未選択時のプレースホルダー表示 */
+    input[type="date"]:invalid::-webkit-datetime-edit,
+    input[type="month"]:invalid::-webkit-datetime-edit {
+        color: #9ca3af !important;
+        -webkit-text-fill-color: #9ca3af !important;
+    }
+    
+    input[type="date"]:invalid::-webkit-datetime-edit-fields-wrapper,
+    input[type="month"]:invalid::-webkit-datetime-edit-fields-wrapper {
+        color: #9ca3af !important;
+        -webkit-text-fill-color: #9ca3af !important;
+    }
+    
+    input[type="date"]:invalid::-webkit-datetime-edit-text,
+    input[type="month"]:invalid::-webkit-datetime-edit-text {
+        color: #9ca3af !important;
+        -webkit-text-fill-color: #9ca3af !important;
+    }
+    
+    input[type="date"]:invalid::-webkit-datetime-edit-month-field,
+    input[type="month"]:invalid::-webkit-datetime-edit-month-field {
+        color: #9ca3af !important;
+        -webkit-text-fill-color: #9ca3af !important;
+    }
+    
+    input[type="date"]:invalid::-webkit-datetime-edit-day-field,
+    input[type="month"]:invalid::-webkit-datetime-edit-day-field {
+        color: #9ca3af !important;
+        -webkit-text-fill-color: #9ca3af !important;
+    }
+    
+    input[type="date"]:invalid::-webkit-datetime-edit-year-field,
+    input[type="month"]:invalid::-webkit-datetime-edit-year-field {
+        color: #9ca3af !important;
+        -webkit-text-fill-color: #9ca3af !important;
+    }
+    
+    /* 空の値の時のスタイル */
+    input[type="date"]:not([value])::-webkit-datetime-edit,
+    input[type="month"]:not([value])::-webkit-datetime-edit,
+    input[type="date"][value=""]::-webkit-datetime-edit,
+    input[type="month"][value=""]::-webkit-datetime-edit {
+        color: #9ca3af !important;
+        -webkit-text-fill-color: #9ca3af !important;
+    }
+    
+    input[type="date"]:not([value])::-webkit-calendar-picker-indicator,
+    input[type="month"]:not([value])::-webkit-calendar-picker-indicator,
+    input[type="date"][value=""]::-webkit-calendar-picker-indicator,
+    input[type="month"][value=""]::-webkit-calendar-picker-indicator {
+        opacity: 0.5 !important;
+        visibility: visible !important;
+    }
+</style>
 <script>
     // 学歴追加/削除
     function addSchoolField() {
