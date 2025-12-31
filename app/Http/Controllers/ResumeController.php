@@ -663,6 +663,7 @@ class ResumeController extends Controller
         $pdf->SetFont('kozminproregular', '', 10); // 元のフォントに戻す
         
         // 学歴
+        $educationCount = 0;
         if (!empty($data['education'])) {
             $index = 0;
             foreach ($data['education'] as $edu) {
@@ -682,10 +683,11 @@ class ResumeController extends Controller
                         // 月（横軸+8: 30→38）
                         $pdf->Text(38, $currentY, (string)$month);
                         
-                        // 内容（横軸+2: 45→47）
-                        $pdf->Text(47, $currentY, $content);
+                        // 内容（横軸+3: 45→48）
+                        $pdf->Text(48, $currentY, $content);
                         
                         $index++;
+                        $educationCount++;
                     } catch (\Exception $e) {
                         \Log::warning('Education date parsing error: ' . $e->getMessage());
                     }
@@ -693,30 +695,54 @@ class ResumeController extends Controller
             }
         }
         
+        // 職歴ラベル: 学歴の2行下（1行空白を入れて）に固定で表示（太字、フォントサイズを大きく）
+        if ($educationCount > 0 || !empty($data['work_history'])) {
+            $workHistoryLabelY = $startY + ($educationCount * $lineHeight) + $lineHeight;
+            $pdf->SetFont('kozminproregular', 'B', 12);
+            $pdf->Text(110, $workHistoryLabelY, '職歴');
+            $pdf->SetFont('kozminproregular', '', 10); // 元のフォントに戻す
+        }
+        
         // 職歴
         if (!empty($data['work_history'])) {
+            // 職歴の開始位置を職歴ラベルの次の行に設定
+            $workHistoryStartY = $startY + ($educationCount * $lineHeight) + ($lineHeight * 2);
+            $workIndex = 0;
+            $lastWorkHistory = null;
+            
             foreach ($data['work_history'] as $work) {
                 if (!empty($work['date']) && !empty($work['company_name']) && !empty($work['event_type'])) {
                     try {
+                        // 各行の位置を正確に計算（累積誤差を防ぐ）
+                        $currentY = $workHistoryStartY + ($workIndex * $lineHeight);
+                        
                         $date = Carbon::parse($work['date']);
                         $year = $date->year;
                         $month = $date->month;
                         $content = ($work['company_name'] ?? '') . '　' . ($work['event_type'] ?? '');
                         
-                        // 年
-                        $pdf->Text(10, $currentY, (string)$year);
+                        // 年（横軸+11: 10→21）
+                        $pdf->Text(21, $currentY, (string)$year);
                         
-                        // 月
-                        $pdf->Text(30, $currentY, (string)$month);
+                        // 月（横軸+8: 30→38）
+                        $pdf->Text(38, $currentY, (string)$month);
                         
-                        // 内容
-                        $pdf->Text(45, $currentY, $content);
+                        // 内容（横軸+3: 45→48）
+                        $pdf->Text(48, $currentY, $content);
                         
-                        $currentY += $lineHeight;
+                        $lastWorkHistory = $work;
+                        $workIndex++;
                     } catch (\Exception $e) {
                         \Log::warning('Work history date parsing error: ' . $e->getMessage());
                     }
                 }
+            }
+            
+            // 職歴の最後が「入社」で終わっている場合、「現在に至る」を追加表示
+            if ($lastWorkHistory && ($lastWorkHistory['event_type'] ?? '') === '入社') {
+                $currentY = $workHistoryStartY + ($workIndex * $lineHeight);
+                // 会社名と同じ位置（横軸48）に「現在に至る」を表示（年月は不要、会社名も不要）
+                $pdf->Text(48, $currentY, '現在に至る');
             }
         }
     }
