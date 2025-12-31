@@ -230,12 +230,20 @@
     }
     
     html body .header .logo-link {
-        display: inline-block !important;
+        display: flex !important;
+        align-items: flex-start !important;
+        gap: 12px !important;
         text-decoration: none !important;
         color: inherit !important;
         margin: 0 !important;
         padding: 0 !important;
         line-height: normal !important;
+    }
+    
+    html body .header .logo-text-wrapper {
+        display: flex !important;
+        flex-direction: column !important;
+        line-height: 1.2 !important;
     }
     
     html body .header .logo-main {
@@ -247,6 +255,9 @@
         height: auto !important;
         line-height: 1.2 !important;
         letter-spacing: 0.07em !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
     }
     
     html body .header .logo-sub {
@@ -418,6 +429,9 @@
         padding: 0 !important;
         min-height: auto !important;
         height: auto !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
     }
     
     /* 入力画面のコンテンツのみ1000pxに制限 - メニューには影響しない */

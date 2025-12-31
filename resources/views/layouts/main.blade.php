@@ -47,25 +47,50 @@
             gap: 12px;
             position: relative;
         }
+        .logo-image {
+            height: 40px;
+            width: auto;
+            flex-shrink: 0;
+            margin-top: 0.1em;
+        }
+        .logo-text-wrapper {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
         .logo-main {
             font-size: 2rem;
             font-weight: 600;
             letter-spacing: 0.07em;
+            line-height: 1.2;
         }
         .logo-link {
             text-decoration: none;
             color: inherit;
-            display: inline-block;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
             transition: opacity 0.2s;
         }
         .logo-link:hover {
             opacity: 0.7;
+        }
+        .logo-text-wrapper {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+        .logo-main {
+            line-height: 1.2;
         }
         .logo-sub {
             display: block;
             font-size: 0.92rem;
             color: #888;
             margin-top: 2px;
+        }
+        .logo-image {
+            margin-top: 0.1em;
         }
         .hamburger-btn {
             display: none;
@@ -408,22 +433,21 @@
                 padding: 0 16px !important;
             }
             
-            /* ハンバーガーメニュー：タイトル（就労支援）の縦軸に合わせる */
+            /* スマホ表示時：アイコン、タイトル、ハンバーガーメニューの順に配置 */
             .header .logo-section {
                 display: flex !important;
                 align-items: center !important;
-                justify-content: center !important;
+                justify-content: space-between !important;
                 position: relative !important;
                 margin: 0 !important;
                 padding: 12px 0 12px 0 !important;
+                gap: 8px !important;
             }
             
             .header .hamburger-btn {
                 display: flex !important;
-                position: absolute !important;
-                left: 0 !important;
-                top: 40% !important;
-                transform: translateY(-50%) !important;
+                position: static !important;
+                order: 3 !important;
                 margin: 0 !important;
                 padding: 8px !important;
                 align-items: center !important;
@@ -431,20 +455,41 @@
             }
             
             .header .logo-link {
-                display: block !important;
-                text-align: center !important;
+                display: flex !important;
+                align-items: flex-start !important;
+                justify-content: flex-start !important;
+                gap: 8px !important;
+                flex: 1 !important;
+                min-width: 0 !important;
             }
-            
+            .header .logo-image {
+                height: 28px !important;
+                width: auto !important;
+                flex-shrink: 0 !important;
+                margin-top: 0.1em !important;
+            }
+            .header .logo-text-wrapper {
+                display: flex !important;
+                flex-direction: column !important;
+                min-width: 0 !important;
+                flex: 1 !important;
+            }
             .header .logo-main {
-                font-size: 1.25rem !important;
-                line-height: 1.4 !important;
+                font-size: 1.1rem !important;
+                line-height: 1.2 !important;
                 display: block !important;
+                white-space: nowrap !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
             }
             
             .header .logo-sub {
-                font-size: 0.75rem !important;
+                font-size: 0.7rem !important;
                 display: block !important;
                 margin-top: 2px !important;
+                white-space: nowrap !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
             }
             
             /* ログインボタンとユーザー名：header-contentの下に完全に切り分けたブロックとして配置 */
@@ -567,6 +612,13 @@
             }
             html body .header .logo-main {
                 font-size: 1.5rem !important;
+                line-height: 1.2 !important;
+            }
+            html body .header .logo-link {
+                align-items: flex-start !important;
+            }
+            html body .header .logo-image {
+                margin-top: 0.1em !important;
             }
             html body .header .hamburger-btn {
                 display: flex !important;
@@ -660,12 +712,24 @@
         }
         
         html body .header .logo-link {
-            display: inline-block !important;
+            display: flex !important;
+            align-items: flex-start !important;
+            gap: 12px !important;
             text-decoration: none !important;
             color: inherit !important;
             margin: 0 !important;
             padding: 0 !important;
-            line-height: normal !important;
+        }
+        html body .header .logo-image {
+            height: 40px !important;
+            width: auto !important;
+            flex-shrink: 0 !important;
+            margin-top: 0.1em !important;
+        }
+        html body .header .logo-text-wrapper {
+            display: flex !important;
+            flex-direction: column !important;
+            line-height: 1.2 !important;
         }
         
         html body .header .nav-menu {
@@ -906,6 +970,7 @@
             height: auto !important;
             line-height: 1.2 !important;
             letter-spacing: 0.07em !important;
+            display: block !important;
         }
         
         html body .header .logo-sub {
@@ -949,6 +1014,13 @@
         html body .header *:not(.main-content):not(.main-content *) {
             /* ヘッダー内の要素を保護 */
         }
+        
+        /* 画面幅が480px以下のスマホ表示時のみ適用 - 最優先で適用 */
+        @media screen and (max-width: 480px) {
+            html body .header .logo-main {
+                font-size: 1.5rem !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -961,7 +1033,9 @@
                     <span></span>
                 </button>
                 <a href="{{ route('home') }}" class="logo-link">
-                    <span class="logo-main">就労支援サービス
+                    <img src="{{ asset('images/logo.png') }}" alt="就労支援サービス" class="logo-image">
+                    <span class="logo-text-wrapper">
+                        <span class="logo-main">就労支援サービス</span>
                         <span class="logo-sub">रोजगार सहायता सेवा</span>
                     </span>
                 </a>
