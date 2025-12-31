@@ -4,12 +4,38 @@
 
 @section('content')
 <style>
+    .main-content {
+        position: relative;
+    }
+    
+    .main-content::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('{{ asset('images/backimage.jpg') }}');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        filter: blur(5px);
+        opacity: 0.3;
+        z-index: -1;
+        pointer-events: none;
+    }
+    
     .center-content {
         display: flex;
         flex-direction: column;
         align-items: center;
         max-width: 1000px;
         margin: 0 auto;
+        position: relative;
+        z-index: 1;
+        background-color: transparent;
+        pointer-events: auto;
     }
     .main-heading {
         font-size: 1.75rem;
@@ -69,6 +95,34 @@
         display: block !important;
         padding-right: 8px;
     }
+    
+    /* ニュースセクションのスタイル */
+    .news-category {
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 16px;
+        background-color: #ffffff;
+    }
+    
+    .news-category-title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+        color: #1e40af;
+        padding: 12px 20px;
+        border-radius: 6px;
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin-bottom: 16px;
+        box-shadow: 0 2px 4px rgba(17, 96, 230, 0.1);
+    }
+    
+    .news-category-title .flag-icon {
+        font-size: 1.5rem;
+        line-height: 1;
+    }
 
     .announcement-item, .news-item {
         margin-bottom: 8px;
@@ -106,6 +160,16 @@
         div[style*="grid-template-columns: 1fr 1fr"] {
             grid-template-columns: 1fr !important;
         }
+        .news-category {
+            margin-bottom: 20px;
+        }
+        .news-category-title {
+            font-size: 1rem;
+            padding: 10px 16px;
+        }
+        .news-category-title .flag-icon {
+            font-size: 1.25rem;
+        }
     }
 </style>
 <div class="center-content">
@@ -131,9 +195,10 @@
         </h2>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
             <!-- 国内ニュース -->
-            <div>
-                <h3 class="text-lg font-semibold mb-3 text-center" style="color: #1160E6; border-bottom: 2px solid #1160E6; padding-bottom: 8px;">
-                    国内ニュース / घरेलु समाचार
+            <div class="news-category">
+                <h3 class="news-category-title">
+                    <span class="flag-icon">🇯🇵</span>
+                    <span>国内ニュース / घरेलु समाचार</span>
                 </h3>
                 <div class="news-list-container">
                     <div class="news-list" style="display: flex; flex-direction: column; gap: 4px;">
@@ -157,9 +222,10 @@
                 </div>
             </div>
             <!-- 国外ニュース -->
-            <div>
-                <h3 class="text-lg font-semibold mb-3 text-center" style="color: #1160E6; border-bottom: 2px solid #1160E6; padding-bottom: 8px;">
-                    国外ニュース / अन्तर्राष्ट्रिय समाचार
+            <div class="news-category">
+                <h3 class="news-category-title">
+                    <span class="flag-icon">🇳🇵</span>
+                    <span>国外ニュース / अन्तर्राष्ट्रिय समाचार</span>
                 </h3>
                 <div class="news-list-container">
                     <div class="news-list" style="display: flex; flex-direction: column; gap: 4px;">
