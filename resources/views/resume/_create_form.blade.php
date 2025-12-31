@@ -620,7 +620,7 @@
             <p class="text-xs text-gray-500 mb-2">क्यालेन्डरबाट छान्नुहोस् वा मिति लेख्नुहोस्। उदाहरण: १९९० जनवरी १ → 1990-01-01</p>
             <input type="date" name="birthday"
                 class="w-1/5 border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2" 
-                style="min-width: 160px !important; padding: 8px 12px !important; font-size: 14px !important; box-sizing: border-box !important; appearance: auto !important; -webkit-appearance: none !important; background-color: white !important; cursor: pointer !important;"
+                style="min-width: 160px !important; min-height: 40px !important; padding: 8px 12px !important; font-size: 16px !important; box-sizing: border-box !important; background-color: #ffffff !important; border: 1px solid #d1d5db !important; cursor: pointer !important; display: block !important; visibility: visible !important; opacity: 1 !important;"
                 value="{{ $resumeData['birthday'] ?? old('birthday', '') }}" required>
         </div>
         <!-- 性別 -->
@@ -694,7 +694,7 @@
                         </select>
                         <input type="month" name="school_date[]" 
                             class="border rounded px-3 py-2 sm:w-24 focus:outline-none focus:ring-blue-400 focus:ring-2" 
-                            style="min-width: 150px !important; width: 150px !important; flex-shrink: 0 !important; padding: 8px 12px !important; font-size: 14px !important; box-sizing: border-box !important; appearance: auto !important; -webkit-appearance: none !important; background-color: white !important; cursor: pointer !important;" required>
+                            style="min-width: 150px !important; min-height: 40px !important; width: 150px !important; flex-shrink: 0 !important; padding: 8px 12px !important; font-size: 16px !important; box-sizing: border-box !important; background-color: #ffffff !important; border: 1px solid #d1d5db !important; cursor: pointer !important; display: block !important; visibility: visible !important; opacity: 1 !important;" required>
                         <button type="button" onclick="removeSchoolField(this)" class="text-red-500 px-2 py-2 block">
                             &#8722;
                         </button>
@@ -723,7 +723,7 @@
                         </select>
                         <input type="month" name="job_date[]" 
                             class="border rounded px-3 py-2 sm:w-24 focus:outline-none focus:ring-blue-400 focus:ring-2" 
-                            style="min-width: 150px !important; width: 150px !important; flex-shrink: 0 !important; padding: 8px 12px !important; font-size: 14px !important; box-sizing: border-box !important; appearance: auto !important; -webkit-appearance: none !important; background-color: white !important; cursor: pointer !important;" required>
+                            style="min-width: 150px !important; min-height: 40px !important; width: 150px !important; flex-shrink: 0 !important; padding: 8px 12px !important; font-size: 16px !important; box-sizing: border-box !important; background-color: #ffffff !important; border: 1px solid #d1d5db !important; cursor: pointer !important; display: block !important; visibility: visible !important; opacity: 1 !important;" required>
                         <button type="button" onclick="removeJobField(this)" class="text-red-500 px-2 py-2 block">
                             &#8722;
                         </button>
@@ -746,7 +746,7 @@
                         class="border rounded px-3 py-2 w-full sm:w-3/5 focus:outline-none focus:ring-blue-400 focus:ring-2" style="box-sizing: border-box; max-width: 100%;">
                     <input type="month" name="license_date[]" placeholder="प्राप्त गरेको वर्ष/महिना"
                         class="border rounded px-3 py-2 w-full sm:w-[134px] focus:outline-none focus:ring-blue-400 focus:ring-2" 
-                        style="box-sizing: border-box !important; max-width: 100% !important; min-width: 150px !important; flex-shrink: 0 !important; padding: 8px 12px !important; font-size: 14px !important; appearance: auto !important; -webkit-appearance: none !important; background-color: white !important; cursor: pointer !important;">
+                        style="box-sizing: border-box !important; max-width: 100% !important; min-width: 150px !important; min-height: 40px !important; flex-shrink: 0 !important; padding: 8px 12px !important; font-size: 16px !important; background-color: #ffffff !important; border: 1px solid #d1d5db !important; cursor: pointer !important; display: block !important; visibility: visible !important; opacity: 1 !important;">
                     <button type="button" onclick="removeLicenseField(this)" class="text-red-500 px-1 ml-1 block">
                         &#8722;
                     </button>
