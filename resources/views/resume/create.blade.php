@@ -243,10 +243,15 @@
             document.querySelectorAll('input[type="tel"], input[name="postal_code"]').forEach(input => {
                 input.value = toHalfWidth(input.value).replace(/[^\d]/g, '');
             });
-            // 前後の空白を削除
+            // 前後の空白を削除（textareaの志望動機と本人希望欄は改行を保持するため除外）
             document.querySelectorAll('input, textarea').forEach(input => {
-                if (input.type !== 'month' && input.type !== 'date') {
+                if (input.type !== 'month' && input.type !== 'date' && 
+                    input.name !== 'appeal_points' && input.name !== 'self_request') {
                     input.value = input.value.trim().replace(/\s+/g, ' ');
+                } else if (input.type !== 'month' && input.type !== 'date' && 
+                          (input.name === 'appeal_points' || input.name === 'self_request')) {
+                    // 志望動機と本人希望欄は前後の空白のみ削除（改行は保持）
+                    input.value = input.value.replace(/^[\s]+|[\s]+$/g, '');
                 }
             });
         }
