@@ -9,6 +9,13 @@
         </a>
     </div>
 
+    <!-- 説明文 -->
+    <div class="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+        <p class="text-sm text-gray-700" style="font-family: 'Noto Sans Devanagari', Arial, sans-serif;">
+            सदस्यता दर्ता सजिलो र निःशुल्क छ। लगइन गरेपछि, तपाईंको बायोडाटा र कामको अनुभवको जानकारीहरू सेभ गर्न सकिन्छ र जुनसुकै समयमा सम्पादन गर्न सकिन्छ।
+        </p>
+    </div>
+
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
