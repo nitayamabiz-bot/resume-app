@@ -419,16 +419,25 @@ class ResumeController extends Controller
                 ], 404);
             }
             
-            // セッションから履歴書データを取得
-            $resumeData = $request->session()->get('resume_data');
+            // POSTリクエストから直接データを取得（優先）
+            $resumeData = null;
+            if ($request->has('resume_data')) {
+                $resumeData = json_decode($request->input('resume_data'), true);
+            }
             
-            // デバッグ: セッションの状態をログに記録
-            \Log::info('PDF download - Session resume_data exists: ' . ($resumeData ? 'yes' : 'no'));
-            \Log::info('PDF download - Session ID: ' . $request->session()->getId());
-            \Log::info('PDF download - All session keys: ' . implode(', ', array_keys($request->session()->all())));
+            // POSTリクエストにデータがない場合、セッションから取得
+            if (!$resumeData) {
+                $resumeData = $request->session()->get('resume_data');
+            }
+            
+            // デバッグ: データ取得の状態をログに記録
+            \Log::info('PDF download - Request method: ' . $request->method());
+            \Log::info('PDF download - Resume data from POST: ' . ($request->has('resume_data') ? 'yes' : 'no'));
+            \Log::info('PDF download - Resume data from session: ' . ($request->session()->get('resume_data') ? 'yes' : 'no'));
+            \Log::info('PDF download - Final resume_data exists: ' . ($resumeData ? 'yes' : 'no'));
             
             if (!$resumeData) {
-                \Log::warning('PDF download - Resume data not found in session');
+                \Log::warning('PDF download - Resume data not found in POST or session');
                 \Log::warning('PDF download - Session all data: ' . json_encode($request->session()->all()));
                 return response()->json([
                     'success' => false,

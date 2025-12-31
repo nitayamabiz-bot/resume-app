@@ -165,8 +165,36 @@
         </div>
         
         <script>
+        // 履歴書データをJavaScript変数に埋め込む
+        const resumeDataForPdf = @json($data);
+        
         function downloadPdf() {
-            window.location.href = '{{ route("resume.download") }}';
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || 
+                             document.querySelector('input[name="_token"]')?.value || 
+                             '{{ csrf_token() }}';
+            
+            // フォームを作成してPOSTで送信
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '{{ route("resume.download") }}';
+            
+            // CSRFトークンを追加
+            const csrfInput = document.createElement('input');
+            csrfInput.type = 'hidden';
+            csrfInput.name = '_token';
+            csrfInput.value = csrfToken;
+            form.appendChild(csrfInput);
+            
+            // 履歴書データをJSONで送信
+            const dataInput = document.createElement('input');
+            dataInput.type = 'hidden';
+            dataInput.name = 'resume_data';
+            dataInput.value = JSON.stringify(resumeDataForPdf);
+            form.appendChild(dataInput);
+            
+            document.body.appendChild(form);
+            form.submit();
+            document.body.removeChild(form);
         }
         
         function saveResume() {
