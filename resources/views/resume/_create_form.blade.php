@@ -19,51 +19,33 @@
 <style>
     /* スマホ表示時のみ適用（768px以下） */
     @media screen and (max-width: 768px) {
-        /* iOS Safari/Chromeで日付入力フィールドのテキストとカレンダーアイコンを強制的に表示 */
+        /* iOS Safari/Chromeで日付入力フィールドのテキストを表示 */
         input[type="date"],
         input[type="month"] {
             -webkit-text-fill-color: #111827 !important;
             color: #111827 !important;
-            line-height: normal !important;
-            height: 40px !important;
+            line-height: 24px !important;
+            padding-top: 8px !important;
+            padding-bottom: 8px !important;
         }
         
-        /* カレンダーアイコンを確実に表示（全フィールドで統一） */
+        /* カレンダーアイコンを確実に表示（全フィールドで統一、右寄せ・縦中央） */
         input[type="date"]::-webkit-calendar-picker-indicator,
         input[type="month"]::-webkit-calendar-picker-indicator {
-            display: inline-block !important;
+            display: block !important;
             opacity: 1 !important;
             cursor: pointer !important;
-            width: 24px !important;
-            height: 24px !important;
             visibility: visible !important;
-            position: absolute !important;
-            right: 8px !important;
-            top: 50% !important;
-            transform: translateY(-50%) !important;
-            background: transparent !important;
-            z-index: 1 !important;
+            width: 20px !important;
+            height: 20px !important;
         }
         
-        /* 日付入力フィールドのラッパー */
-        .date-input-wrapper {
-            position: relative;
-            display: inline-block;
-        }
-        
-        /* テキスト部分を左寄せ、縦方向中央揃え */
+        /* 日付入力フィールドのテキストを左寄せ */
         input[type="date"]::-webkit-datetime-edit,
         input[type="month"]::-webkit-datetime-edit {
             color: #111827 !important;
             -webkit-text-fill-color: #111827 !important;
-            display: inline-block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
             text-align: left !important;
-            vertical-align: middle !important;
-            line-height: 40px !important;
-            height: 40px !important;
-            margin: 0 !important;
             padding: 0 !important;
         }
         
@@ -71,61 +53,11 @@
         input[type="month"]::-webkit-datetime-edit-fields-wrapper {
             color: #111827 !important;
             -webkit-text-fill-color: #111827 !important;
-            display: inline-block !important;
-            visibility: visible !important;
             text-align: left !important;
-            vertical-align: middle !important;
-            line-height: 40px !important;
-            height: 40px !important;
-            margin: 0 !important;
             padding: 0 !important;
         }
         
-        input[type="date"]::-webkit-datetime-edit-text,
-        input[type="month"]::-webkit-datetime-edit-text {
-            color: #111827 !important;
-            -webkit-text-fill-color: #111827 !important;
-            display: inline-block !important;
-            visibility: visible !important;
-            vertical-align: middle !important;
-            line-height: 40px !important;
-            height: 40px !important;
-        }
-        
-        input[type="date"]::-webkit-datetime-edit-month-field,
-        input[type="month"]::-webkit-datetime-edit-month-field {
-            color: #111827 !important;
-            -webkit-text-fill-color: #111827 !important;
-            display: inline-block !important;
-            visibility: visible !important;
-            vertical-align: middle !important;
-            line-height: 40px !important;
-            height: 40px !important;
-        }
-        
-        input[type="date"]::-webkit-datetime-edit-day-field,
-        input[type="month"]::-webkit-datetime-edit-day-field {
-            color: #111827 !important;
-            -webkit-text-fill-color: #111827 !important;
-            display: inline-block !important;
-            visibility: visible !important;
-            vertical-align: middle !important;
-            line-height: 40px !important;
-            height: 40px !important;
-        }
-        
-        input[type="date"]::-webkit-datetime-edit-year-field,
-        input[type="month"]::-webkit-datetime-edit-year-field {
-            color: #111827 !important;
-            -webkit-text-fill-color: #111827 !important;
-            display: inline-block !important;
-            visibility: visible !important;
-            vertical-align: middle !important;
-            line-height: 40px !important;
-            height: 40px !important;
-        }
-        
-        /* 未選択時（空の値）のスタイル */
+        /* 未選択時のプレースホルダー */
         input[type="date"]:not(:valid)::-webkit-datetime-edit,
         input[type="month"]:not(:valid)::-webkit-datetime-edit,
         input[type="date"][value=""]::-webkit-datetime-edit,
@@ -134,54 +66,12 @@
         input[type="month"]:invalid::-webkit-datetime-edit {
             color: #6b7280 !important;
             -webkit-text-fill-color: #6b7280 !important;
-            display: inline-block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-            vertical-align: middle !important;
-            line-height: 40px !important;
-            height: 40px !important;
         }
-        
-        input[type="date"]:not(:valid)::-webkit-calendar-picker-indicator,
-        input[type="month"]:not(:valid)::-webkit-calendar-picker-indicator,
-        input[type="date"][value=""]::-webkit-calendar-picker-indicator,
-        input[type="month"][value=""]::-webkit-calendar-picker-indicator,
-        input[type="date"]:invalid::-webkit-calendar-picker-indicator,
-        input[type="month"]:invalid::-webkit-calendar-picker-indicator {
-            display: inline-block !important;
-            opacity: 1 !important;
-            visibility: visible !important;
-        }
-        
-        /* プレースホルダーをスマホ表示時のみ表示（JavaScriptで制御） */
         
         /* 生年月日フィールドの横幅をスマホ表示時のみ長くする */
         input[name="birthday"] {
             min-width: 200px !important;
             width: 200px !important;
-            padding-right: 40px !important;
-            padding-left: 12px !important;
-            padding-top: 0 !important;
-            padding-bottom: 0 !important;
-            height: 40px !important;
-        }
-        
-        /* スマホ表示時のmonthフィールドのパディング調整（全フィールド統一） */
-        input[type="month"] {
-            padding-right: 40px !important;
-            padding-left: 12px !important;
-            padding-top: 0 !important;
-            padding-bottom: 0 !important;
-            height: 40px !important;
-        }
-        
-        /* dateフィールドのパディング調整 */
-        input[type="date"] {
-            padding-right: 40px !important;
-            padding-left: 12px !important;
-            padding-top: 0 !important;
-            padding-bottom: 0 !important;
-            height: 40px !important;
         }
     }
     
@@ -829,7 +719,7 @@
             <div class="date-input-wrapper" style="position: relative; display: inline-block;">
                 <input type="date" name="birthday"
                     class="w-1/5 border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2 date-input-field" 
-                    style="min-width: 160px !important; min-height: 40px !important; padding: 8px 12px !important; font-size: 16px !important; box-sizing: border-box !important; background-color: #ffffff !important; border: 1px solid #d1d5db !important; color: #111827 !important; cursor: pointer !important; display: block !important; visibility: visible !important; opacity: 1 !important; line-height: 1 !important;"
+                    style="min-width: 160px !important; min-height: 40px !important; padding: 8px 12px !important; font-size: 16px !important; box-sizing: border-box !important; background-color: #ffffff !important; border: 1px solid #d1d5db !important; color: #111827 !important; cursor: pointer !important; display: block !important; visibility: visible !important; opacity: 1 !important;"
                     value="{{ $resumeData['birthday'] ?? old('birthday', '') }}" required>
                 <span class="date-placeholder" style="display: none; position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; font-size: 16px; line-height: 1;">YYYY-MM-DD</span>
             </div>
@@ -906,7 +796,7 @@
                         <div class="date-input-wrapper" style="position: relative; display: inline-block;">
                             <input type="month" name="school_date[]" 
                                 class="border rounded px-3 py-2 sm:w-24 focus:outline-none focus:ring-blue-400 focus:ring-2 date-input-field" 
-                                style="min-width: 150px !important; min-height: 40px !important; width: 150px !important; flex-shrink: 0 !important; padding: 8px 12px !important; font-size: 16px !important; box-sizing: border-box !important; background-color: #ffffff !important; border: 1px solid #d1d5db !important; color: #111827 !important; cursor: pointer !important; display: block !important; visibility: visible !important; opacity: 1 !important; line-height: 1 !important;" required>
+                                style="min-width: 150px !important; min-height: 40px !important; width: 150px !important; flex-shrink: 0 !important; padding: 8px 12px !important; font-size: 16px !important; box-sizing: border-box !important; background-color: #ffffff !important; border: 1px solid #d1d5db !important; color: #111827 !important; cursor: pointer !important; display: block !important; visibility: visible !important; opacity: 1 !important;" required>
                             <span class="date-placeholder" style="display: none; position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; font-size: 16px; line-height: 1;">YYYY-MM</span>
                         </div>
                         <button type="button" onclick="removeSchoolField(this)" class="text-red-500 px-2 py-2 block">
@@ -938,7 +828,7 @@
                         <div class="date-input-wrapper" style="position: relative; display: inline-block;">
                             <input type="month" name="job_date[]" 
                                 class="border rounded px-3 py-2 sm:w-24 focus:outline-none focus:ring-blue-400 focus:ring-2 date-input-field" 
-                                style="min-width: 150px !important; min-height: 40px !important; width: 150px !important; flex-shrink: 0 !important; padding: 8px 12px !important; font-size: 16px !important; box-sizing: border-box !important; background-color: #ffffff !important; border: 1px solid #d1d5db !important; color: #111827 !important; cursor: pointer !important; display: block !important; visibility: visible !important; opacity: 1 !important; line-height: 1 !important;" required>
+                                style="min-width: 150px !important; min-height: 40px !important; width: 150px !important; flex-shrink: 0 !important; padding: 8px 12px !important; font-size: 16px !important; box-sizing: border-box !important; background-color: #ffffff !important; border: 1px solid #d1d5db !important; color: #111827 !important; cursor: pointer !important; display: block !important; visibility: visible !important; opacity: 1 !important;" required>
                             <span class="date-placeholder" style="display: none; position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; font-size: 16px; line-height: 1;">YYYY-MM</span>
                         </div>
                         <button type="button" onclick="removeJobField(this)" class="text-red-500 px-2 py-2 block">
@@ -964,7 +854,7 @@
                     <div class="date-input-wrapper" style="position: relative; display: inline-block; width: 100%; max-width: 150px;">
                         <input type="month" name="license_date[]" placeholder="प्राप्त गरेको वर्ष/महिना"
                             class="border rounded px-3 py-2 w-full sm:w-[134px] focus:outline-none focus:ring-blue-400 focus:ring-2 date-input-field" 
-                            style="box-sizing: border-box !important; max-width: 100% !important; min-width: 150px !important; min-height: 40px !important; flex-shrink: 0 !important; padding: 8px 12px !important; font-size: 16px !important; background-color: #ffffff !important; border: 1px solid #d1d5db !important; color: #111827 !important; cursor: pointer !important; display: block !important; visibility: visible !important; opacity: 1 !important; line-height: 1 !important;">
+                            style="box-sizing: border-box !important; max-width: 100% !important; min-width: 150px !important; min-height: 40px !important; flex-shrink: 0 !important; padding: 8px 12px !important; font-size: 16px !important; background-color: #ffffff !important; border: 1px solid #d1d5db !important; color: #111827 !important; cursor: pointer !important; display: block !important; visibility: visible !important; opacity: 1 !important;">
                         <span class="date-placeholder" style="display: none; position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; font-size: 16px; line-height: 1;">YYYY-MM</span>
                     </div>
                     <button type="button" onclick="removeLicenseField(this)" class="text-red-500 px-1 ml-1 block">
