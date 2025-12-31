@@ -16,6 +16,7 @@ class Resume extends Model
         'birthday',
         'gender',
         'phone',
+        'email',
         'postal_code',
         'address',
         'address_kana',
