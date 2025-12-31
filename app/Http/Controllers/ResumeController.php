@@ -565,9 +565,14 @@ class ResumeController extends Controller
             $pdf->Text(42, 84, $address);
         }
         
-        // 電話番号: (160, 100)
+        // 電話番号: (164, 72)
         if (!empty($data['phone'])) {
-            $pdf->Text(160, 100, $data['phone']);
+            $pdf->Text(164, 72, $data['phone']);
+        }
+        
+        // メールアドレス: (164, 80)
+        if (!empty($data['email'])) {
+            $pdf->Text(164, 80, $data['email']);
         }
         
         // 学歴・職歴: (10, 140) を起点にループ描画
