@@ -620,6 +620,7 @@
             <p class="text-xs text-gray-500 mb-2">क्यालेन्डरबाट छान्नुहोस् वा मिति लेख्नुहोस्। उदाहरण: १९९० जनवरी १ → 1990-01-01</p>
             <input type="date" name="birthday"
                 class="w-1/5 border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2" 
+                style="min-width: 160px;"
                 value="{{ $resumeData['birthday'] ?? old('birthday', '') }}" required>
         </div>
         <!-- 性別 -->
@@ -692,7 +693,8 @@
                             <option value="卒業">卒業 / स्नातक</option>
                         </select>
                         <input type="month" name="school_date[]" 
-                            class="border rounded px-3 py-2 sm:w-24 focus:outline-none focus:ring-blue-400 focus:ring-2" required>
+                            class="border rounded px-3 py-2 sm:w-24 focus:outline-none focus:ring-blue-400 focus:ring-2" 
+                            style="min-width: 140px; width: 140px; flex-shrink: 0;" required>
                         <button type="button" onclick="removeSchoolField(this)" class="text-red-500 px-2 py-2 block">
                             &#8722;
                         </button>
@@ -720,7 +722,8 @@
                             <option value="退職">退職 / राजिनामा</option>
                         </select>
                         <input type="month" name="job_date[]" 
-                            class="border rounded px-3 py-2 sm:w-24 focus:outline-none focus:ring-blue-400 focus:ring-2" required>
+                            class="border rounded px-3 py-2 sm:w-24 focus:outline-none focus:ring-blue-400 focus:ring-2" 
+                            style="min-width: 140px; width: 140px; flex-shrink: 0;" required>
                         <button type="button" onclick="removeJobField(this)" class="text-red-500 px-2 py-2 block">
                             &#8722;
                         </button>
@@ -742,7 +745,8 @@
                     <input type="text" name="license_name[]" placeholder="योग्यताको नाम (उदाहरण: साधारण कार ड्राइभिङ लाइसेन्स)" maxlength="40"
                         class="border rounded px-3 py-2 w-full sm:w-3/5 focus:outline-none focus:ring-blue-400 focus:ring-2" style="box-sizing: border-box; max-width: 100%;">
                     <input type="month" name="license_date[]" placeholder="प्राप्त गरेको वर्ष/महिना"
-                        class="border rounded px-3 py-2 w-full sm:w-[134px] focus:outline-none focus:ring-blue-400 focus:ring-2" style="box-sizing: border-box; max-width: 100%;">
+                        class="border rounded px-3 py-2 w-full sm:w-[134px] focus:outline-none focus:ring-blue-400 focus:ring-2" 
+                        style="box-sizing: border-box; max-width: 100%; min-width: 140px; flex-shrink: 0;">
                     <button type="button" onclick="removeLicenseField(this)" class="text-red-500 px-1 ml-1 block">
                         &#8722;
                     </button>
