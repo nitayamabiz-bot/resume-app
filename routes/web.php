@@ -44,7 +44,7 @@ Route::post('/resume/confirm', [ResumeController::class, 'confirm'])->name('resu
 Route::post('/resume', [ResumeController::class, 'store'])->name('resume.store');
 Route::post('/resume/save', [ResumeController::class, 'save'])->name('resume.save');
 Route::get('/resume/choose-auth', [ResumeController::class, 'chooseAuth'])->name('resume.choose-auth');
-Route::get('/resume-download', [ResumeController::class, 'download'])->name('resume.download');
+Route::post('/resume-download', [ResumeController::class, 'download'])->name('resume.download');
 
 // 職務経歴書関連のルート（仮）
 Route::get('/career', function () {
