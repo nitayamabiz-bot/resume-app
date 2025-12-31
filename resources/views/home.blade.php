@@ -120,8 +120,17 @@
     }
     
     .news-category-title .flag-icon {
-        font-size: 1.5rem;
-        line-height: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 20px;
+        flex-shrink: 0;
+    }
+    
+    .news-category-title .flag-icon svg {
+        width: 100%;
+        height: 100%;
     }
 
     .announcement-item, .news-item {
@@ -168,7 +177,8 @@
             padding: 10px 16px;
         }
         .news-category-title .flag-icon {
-            font-size: 1.25rem;
+            width: 24px;
+            height: 18px;
         }
     }
 </style>
@@ -197,7 +207,12 @@
             <!-- 国内ニュース -->
             <div class="news-category">
                 <h3 class="news-category-title">
-                    <span class="flag-icon">🇯🇵</span>
+                    <span class="flag-icon">
+                        <svg viewBox="0 0 3 2" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="3" height="2" fill="#ffffff"/>
+                            <circle cx="1.5" cy="1" r="0.6" fill="#bc002d"/>
+                        </svg>
+                    </span>
                     <span>国内ニュース / घरेलु समाचार</span>
                 </h3>
                 <div class="news-list-container">
@@ -224,7 +239,14 @@
             <!-- 国外ニュース -->
             <div class="news-category">
                 <h3 class="news-category-title">
-                    <span class="flag-icon">🇳🇵</span>
+                    <span class="flag-icon">
+                        <svg viewBox="0 0 3 2" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="3" height="2" fill="#dc143c"/>
+                            <polygon points="0,0 0,2 1.2,1" fill="#0000ff"/>
+                            <circle cx="0.3" cy="0.3" r="0.15" fill="#ffffff"/>
+                            <circle cx="0.3" cy="1.7" r="0.15" fill="#ffffff"/>
+                        </svg>
+                    </span>
                     <span>国外ニュース / अन्तर्राष्ट्रिय समाचार</span>
                 </h3>
                 <div class="news-list-container">
