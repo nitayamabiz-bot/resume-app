@@ -160,6 +160,13 @@
         } else if (!/^\d{10,11}$/.test(phone)) {
             errors.push('電話番号は10〜11桁の数字のみで入力してください（ハイフンなし）。');
         }
+        // メールアドレス: 必須, 有効なメール形式
+        let email = form['email'].value.trim();
+        if (!email) {
+            errors.push('メールアドレスは必須です।');
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            errors.push('有効なメールアドレスを入力してください।');
+        }
         // 住所
         if (!form['address'].value.trim()) {
             errors.push('住所は必須です।');
@@ -749,6 +756,14 @@
                 class="w-1/3 border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2" 
                 value="{{ $resumeData['phone'] ?? old('phone', '') }}"
                 onblur="normalizeNumeric(this)" required>
+        </div>
+        <!-- メールアドレス -->
+        <div class="pt-4 border-t border-gray-200">
+            <label class="block font-medium mb-1">メールアドレス / इमेल ठेगाना<span class="text-red-500">*</span></label>
+            <p class="text-xs text-gray-500 mb-2">有効なメールアドレスを入力してください / वैध इमेल ठेगाना प्रविष्ट गर्नुहोस्। उदाहरण: example@email.com</p>
+            <input type="email" name="email" maxlength="255" inputmode="email" autocomplete="email"
+                class="w-2/3 border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2" 
+                value="{{ $resumeData['email'] ?? old('email', '') }}" required>
         </div>
         <!-- 郵便番号 -->
         <div class="pt-4 border-t border-gray-200">

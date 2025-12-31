@@ -46,6 +46,7 @@ class ResumeController extends Controller
                     'birthday' => $latestResume->birthday ? $latestResume->birthday->format('Y-m-d') : null,
                     'gender' => $latestResume->gender,
                     'phone' => $latestResume->phone,
+                    'email' => $latestResume->email,
                     'postal_code' => $latestResume->postal_code,
                     'address' => $latestResume->address,
                     'address_kana' => $latestResume->address_kana,
@@ -82,6 +83,7 @@ class ResumeController extends Controller
             'birthday' => 'required|date',
             'gender' => 'required|string|in:男,女',
             'phone' => 'required|string|regex:/^\d{10,11}$/',
+            'email' => 'required|email|max:255',
             'postal_code' => 'required|string|regex:/^\d{7}$/',
             'address' => 'required|string|max:150',
             'address_kana' => 'required|string|max:200',
@@ -143,6 +145,7 @@ class ResumeController extends Controller
             'birthday' => $validated['birthday'],
             'gender' => $validated['gender'],
             'phone' => $validated['phone'],
+            'email' => $validated['email'],
             'postal_code' => $validated['postal_code'],
             'address' => $validated['address'],
             'address_kana' => $validated['address_kana'],
@@ -186,6 +189,7 @@ class ResumeController extends Controller
             'birthday' => 'required|date',
             'gender' => 'required|string|in:男,女',
             'phone' => 'required|string|regex:/^\d{10,11}$/',
+            'email' => 'required|email|max:255',
             'postal_code' => 'required|string|regex:/^\d{7}$/',
             'address' => 'required|string|max:150',
             'address_kana' => 'required|string|max:200',
@@ -247,6 +251,7 @@ class ResumeController extends Controller
             'birthday' => $validated['birthday'],
             'gender' => $validated['gender'],
             'phone' => $validated['phone'],
+            'email' => $validated['email'],
             'postal_code' => $validated['postal_code'],
             'address' => $validated['address'],
             'address_kana' => $validated['address_kana'],
@@ -291,6 +296,7 @@ class ResumeController extends Controller
                     'birthday' => $resumeData['birthday'] ?? null,
                     'gender' => $resumeData['gender'] ?? '',
                     'phone' => $resumeData['phone'] ?? '',
+                    'email' => $resumeData['email'] ?? '',
                     'postal_code' => $resumeData['postal_code'] ?? '',
                     'address' => $resumeData['address'] ?? '',
                     'address_kana' => $resumeData['address_kana'] ?? '',
@@ -366,6 +372,7 @@ class ResumeController extends Controller
                 'birthday' => $resumeData['birthday'] ?? null,
                 'gender' => $resumeData['gender'] ?? '',
                 'phone' => $resumeData['phone'] ?? '',
+                'email' => $resumeData['email'] ?? '',
                 'postal_code' => $resumeData['postal_code'] ?? '',
                 'address' => $resumeData['address'] ?? '',
                 'address_kana' => $resumeData['address_kana'] ?? '',
@@ -682,11 +689,13 @@ class ResumeController extends Controller
             $pdf->Text(10, 160, $appealPoints);
         }
         
-        // 本人希望欄: (10, 230)
+        // 本人希望欄: (23, 228) - 空白の場合は「貴社規定に従います。」を出力
         $pdf->SetFont('kozminproregular', '', 9);
         $selfRequest = $data['self_request'] ?? '';
         if (!empty($selfRequest)) {
-            $pdf->Text(10, 230, $selfRequest);
+            $pdf->Text(23, 228, $selfRequest);
+        } else {
+            $pdf->Text(23, 228, '貴社規定に従います。');
         }
     }
     

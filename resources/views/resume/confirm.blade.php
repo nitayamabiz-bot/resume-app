@@ -51,6 +51,10 @@
                         <p class="font-medium">{{ $data['phone'] ?? '' }}</p>
                     </div>
                     <div>
+                        <span class="text-gray-600">メールアドレス / इमेल ठेगाना:</span>
+                        <p class="font-medium">{{ $data['email'] ?? '' }}</p>
+                    </div>
+                    <div>
                         <span class="text-gray-600">郵便番号 / हुलाक नम्बर:</span>
                         <p class="font-medium">{{ $data['postal_code'] ?? '' }}</p>
                     </div>
