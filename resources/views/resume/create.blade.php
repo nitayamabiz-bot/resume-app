@@ -409,7 +409,7 @@
             <div class="pt-4 border-t border-gray-200">
                 <label class="block font-medium mb-1">志望動機・特技・アピールポイント / आफ्नो तयारी, रुचि, विशेषता</label>
                 <p class="text-xs text-gray-500 mb-2">रोजगारको लागि तयारी, तपाईंको विशेषता, आफूलाई प्रस्तुत गर्न सक्ने बुँदाहरू लेख्नुहोस्। संक्षेपमा विस्तृत रूपमा लेख्नुहोस्। वैकल्पिक खण्ड हो।</p>
-                <textarea name="appeal_points" rows="4" maxlength="400"
+                <textarea name="appeal_points" rows="4" maxlength="624"
                     class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2"
                     placeholder="उदाहरण: जापानमा काम गर्न चाहन्छु। भाषा कौशल प्रयोग गरेर विश्वव्यापी दृष्टिकोणबाट योगदान दिन चाहन्छु।"></textarea>
             </div>
@@ -417,7 +417,7 @@
             <div class="pt-4 border-t border-gray-200">
                 <label class="block font-medium mb-1">本人希望欄 / आफ्नो चाहना</label>
                 <p class="text-xs text-gray-500 mb-2">कामको ठेगाना, समय, तलबको चाहना भएमा लेख्नुहोस्। विशेष चाहना नभएको खण्डमा खाली राख्न सकिन्छ। वैकल्पिक खण्ड हो।</p>
-                <textarea name="self_request" rows="2" maxlength="200"
+                <textarea name="self_request" rows="2" maxlength="260"
                     class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2"
                     placeholder="उदाहरण: चाहिएको कामको ठेगाना: टोक्यो शहर / कामको समय: हप्ता ५ दिन, ९:०० बजे देखि ६:०० बजे सम्म"></textarea>
             </div>

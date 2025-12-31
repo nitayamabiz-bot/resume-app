@@ -187,8 +187,8 @@
         就労支援サービスへようこそ
         <span class="heading-nepali">रोजगार सहायता सेवामा स्वागत छ</span>
     </h1>
-            <div class="welcome-text">
-                <span class="welcome-text-nepali">
+    <div class="welcome-text">
+        <span class="welcome-text-nepali">
                     रोजगार सहायता सेवाले जापानमा बसोबास गर्ने नेपालीहरूका लागि उपयोगी जानकारी प्रदान गर्दछ।
 
                     हामी रोजगारीको खोजी, नि:शुल्क बायोडाटा (Resume) बनाउने सेवा, लोकप्रिय तथा सस्तो इन्टरनेट र सिम कार्ड, साथै विदेशीहरूलाई स्वागत गर्ने घरजग्गा (Real Estate) कम्पनीहरू जस्ता विस्तृत विवरणहरू उपलब्ध गराउँछौँ।
@@ -246,7 +246,7 @@
                             <circle cx="0.3" cy="0.3" r="0.15" fill="#ffffff"/>
                             <circle cx="0.3" cy="1.7" r="0.15" fill="#ffffff"/>
                         </svg>
-                    </span>
+        </span>
                     <span>国外ニュース / अन्तर्राष्ट्रिय समाचार</span>
                 </h3>
                 <div class="news-list-container">
