@@ -480,6 +480,23 @@
         html body .header .logo-section {
             margin-bottom: 0 !important;
         }
+        html body .header .logo-main {
+            font-size: 1.5rem !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            max-width: calc(100vw - 120px) !important;
+        }
+        html body .header .logo-sub {
+            font-size: 0.6rem !important;
+        }
+    }
+    
+    /* 画面幅が480px以下のスマホ表示時のみ適用 */
+    @media screen and (max-width: 480px) {
+        html body .header .logo-main {
+            font-size: 1.5rem !important;
+        }
     }
 </style>
 
