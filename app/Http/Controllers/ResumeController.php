@@ -95,8 +95,8 @@ class ResumeController extends Controller
             'job_date' => 'required|array',
             'license_name' => 'nullable|array',
             'license_date' => 'nullable|array',
-            'appeal_points' => 'nullable|string|max:400',
-            'self_request' => 'nullable|string|max:200',
+            'appeal_points' => 'nullable|string|max:624',
+            'self_request' => 'nullable|string|max:260',
         ]);
 
         // 学歴データを整理
@@ -201,8 +201,8 @@ class ResumeController extends Controller
             'job_date' => 'required|array',
             'license_name' => 'nullable|array',
             'license_date' => 'nullable|array',
-            'appeal_points' => 'nullable|string|max:400',
-            'self_request' => 'nullable|string|max:200',
+            'appeal_points' => 'nullable|string|max:624',
+            'self_request' => 'nullable|string|max:260',
         ]);
 
         // 学歴データを整理
@@ -787,20 +787,44 @@ class ResumeController extends Controller
             }
         }
         
-        // 志望動機: (10, 160)
+        // 志望動機: (23, 160) - 横軸を本人希望欄に合わせる、52文字ごとに改行
         $pdf->SetFont('kozminproregular', '', 9);
         $appealPoints = $data['appeal_points'] ?? '';
-        if (!empty($appealPoints)) {
-            $pdf->Text(10, 160, $appealPoints);
+        $appealY = 160;
+        $appealLineHeight = 4; // 志望動機の縦軸間隔を詰める
+        
+        if (empty($appealPoints)) {
+            $pdf->Text(23, $appealY, '特になし');
+        } else {
+            // 52文字ごとに改行
+            $appealLength = mb_strlen($appealPoints, 'UTF-8');
+            $lineIndex = 0;
+            for ($i = 0; $i < $appealLength; $i += 52) {
+                $line = mb_substr($appealPoints, $i, 52, 'UTF-8');
+                $currentY = $appealY + ($lineIndex * $appealLineHeight);
+                $pdf->Text(23, $currentY, $line);
+                $lineIndex++;
+            }
         }
         
-        // 本人希望欄: (23, 228) - 空白の場合は「貴社規定に従います。」を出力
+        // 本人希望欄: (23, 228) - 空白の場合は「貴社規定に従います。」を出力、52文字ごとに改行
         $pdf->SetFont('kozminproregular', '', 9);
         $selfRequest = $data['self_request'] ?? '';
-        if (!empty($selfRequest)) {
-            $pdf->Text(23, 228, $selfRequest);
+        $selfRequestY = 228;
+        $selfRequestLineHeight = 8.5; // 学歴の繰り返し出力と同等の縦軸間隔
+        
+        if (empty($selfRequest)) {
+            $pdf->Text(23, $selfRequestY, '貴社規定に従います。');
         } else {
-            $pdf->Text(23, 228, '貴社規定に従います。');
+            // 52文字ごとに改行
+            $selfRequestLength = mb_strlen($selfRequest, 'UTF-8');
+            $lineIndex = 0;
+            for ($i = 0; $i < $selfRequestLength; $i += 52) {
+                $line = mb_substr($selfRequest, $i, 52, 'UTF-8');
+                $currentY = $selfRequestY + ($lineIndex * $selfRequestLineHeight);
+                $pdf->Text(23, $currentY, $line);
+                $lineIndex++;
+            }
         }
     }
     

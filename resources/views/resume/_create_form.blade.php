@@ -673,6 +673,46 @@
         
         // リサイズ時にプレースホルダー表示を更新
         window.addEventListener('resize', updateDatePlaceholders);
+        
+        // 志望動機・本人希望欄の文字数制限（コピペ対応）
+        function limitTextLength(textarea, maxLength) {
+            const value = textarea.value;
+            // 文字数を正確にカウント（マルチバイト文字対応）
+            const length = Array.from(value).length;
+            if (length > maxLength) {
+                // 超過分を削除
+                const truncated = Array.from(value).slice(0, maxLength).join('');
+                textarea.value = truncated;
+            }
+        }
+        
+        // 志望動機の文字数制限（384文字）
+        const appealPointsTextarea = document.querySelector('textarea[name="appeal_points"]');
+        if (appealPointsTextarea) {
+            appealPointsTextarea.addEventListener('input', function() {
+                limitTextLength(this, 624);
+            });
+            appealPointsTextarea.addEventListener('paste', function(e) {
+                // ペースト後に処理
+                setTimeout(() => {
+                    limitTextLength(this, 624);
+                }, 0);
+            });
+        }
+        
+        // 本人希望欄の文字数制限（240文字）
+        const selfRequestTextarea = document.querySelector('textarea[name="self_request"]');
+        if (selfRequestTextarea) {
+            selfRequestTextarea.addEventListener('input', function() {
+                limitTextLength(this, 260);
+            });
+            selfRequestTextarea.addEventListener('paste', function(e) {
+                // ペースト後に処理
+                setTimeout(() => {
+                    limitTextLength(this, 260);
+                }, 0);
+            });
+        }
     });
 </script>
 
@@ -888,7 +928,7 @@
         <div class="pt-4 border-t border-gray-200">
             <label class="block font-medium mb-1">志望動機・特技・アピールポイント / आफ्नो तयारी, रुचि, विशेषता</label>
             <p class="text-xs text-gray-500 mb-2">रोजगारको लागि तयारी, तपाईंको विशेषता, आफूलाई प्रस्तुत गर्न सक्ने बुँदाहरू लेख्नुहोस्। संक्षेपमा विस्तृत रूपमा लेख्नुहोस्। वैकल्पिक खण्ड हो।</p>
-            <textarea name="appeal_points" rows="4" maxlength="400"
+            <textarea name="appeal_points" rows="4" maxlength="624"
                 class="w-2/3 border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2"
                 placeholder="उदाहरण: जापानमा काम गर्न चाहन्छु। भाषा कौशल प्रयोग गरेर विश्वव्यापी दृष्टिकोणबाट योगदान दिन चाहन्छु。">{{ $resumeData['appeal_points'] ?? old('appeal_points', '') }}</textarea>
         </div>
@@ -896,7 +936,7 @@
         <div class="pt-4 border-t border-gray-200">
             <label class="block font-medium mb-1">本人希望欄 / आफ्नो चाहना</label>
             <p class="text-xs text-gray-500 mb-2">कामको ठेगाना, समय, तलबको चाहना भएमा लेख्नुहोस्। विशेष चाहना नभएको खण्डमा खाली राख्न सकिन्छ। वैकल्पिक खण्ड हो।</p>
-            <textarea name="self_request" rows="2" maxlength="200"
+            <textarea name="self_request" rows="2" maxlength="260"
                 class="w-2/3 border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2"
                 placeholder="उदाहरण: चाहिएको कामको ठेगाना: टोक्यो शहर / कामको समय: हप्ता ५ दिन, ९:०० बजे देखि ६:०० बजे सम्म">{{ $resumeData['self_request'] ?? old('self_request', '') }}</textarea>
         </div>
