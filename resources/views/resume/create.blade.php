@@ -202,6 +202,85 @@
                     }
                 });
             });
+            
+            // 行数制限（52文字ごとと改行ごとを行数としてカウント）
+            function limitLineCount(textarea, maxLines) {
+                const value = textarea.value;
+                const lines = value.split(/\r\n|\r|\n/);
+                let totalLines = 0;
+                
+                // 各行について、52文字ごとに分割して行数をカウント
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i];
+                    const lineLength = Array.from(line).length;
+                    if (lineLength <= 52) {
+                        totalLines += 1;
+                    } else {
+                        // 52文字を超える場合は、52文字ごとに分割
+                        totalLines += Math.ceil(lineLength / 52);
+                    }
+                }
+                
+                // 制限を超えている場合、削除が必要
+                if (totalLines > maxLines) {
+                    // 後ろから削除して制限内に収める
+                    let result = '';
+                    let currentLines = 0;
+                    
+                    for (let i = 0; i < lines.length; i++) {
+                        const line = lines[i];
+                        const lineLength = Array.from(line).length;
+                        const linesNeeded = lineLength <= 52 ? 1 : Math.ceil(lineLength / 52);
+                        
+                        if (currentLines + linesNeeded <= maxLines) {
+                            result += (i > 0 ? '\n' : '') + line;
+                            currentLines += linesNeeded;
+                        } else {
+                            // この行を追加すると制限を超える場合
+                            if (currentLines < maxLines && lineLength > 0) {
+                                // この行の一部だけを追加できるかチェック
+                                const remainingLines = maxLines - currentLines;
+                                if (remainingLines > 0) {
+                                    const maxChars = remainingLines * 52;
+                                    const truncatedLine = Array.from(line).slice(0, maxChars).join('');
+                                    result += (i > 0 ? '\n' : '') + truncatedLine;
+                                }
+                            }
+                            break;
+                        }
+                    }
+                    
+                    textarea.value = result;
+                }
+            }
+            
+            // 志望動機の行数制限（11行まで）
+            const appealPointsTextarea = document.querySelector('textarea[name="appeal_points"]');
+            if (appealPointsTextarea) {
+                appealPointsTextarea.addEventListener('input', function() {
+                    limitLineCount(this, 11);
+                });
+                appealPointsTextarea.addEventListener('paste', function(e) {
+                    // ペースト後に処理
+                    setTimeout(() => {
+                        limitLineCount(this, 11);
+                    }, 0);
+                });
+            }
+            
+            // 本人希望欄の行数制限（5行まで）
+            const selfRequestTextarea = document.querySelector('textarea[name="self_request"]');
+            if (selfRequestTextarea) {
+                selfRequestTextarea.addEventListener('input', function() {
+                    limitLineCount(this, 5);
+                });
+                selfRequestTextarea.addEventListener('paste', function(e) {
+                    // ペースト後に処理
+                    setTimeout(() => {
+                        limitLineCount(this, 5);
+                    }, 0);
+                });
+            }
         });
 
         // 期間の自動フォーマット（YYYY.MM ～ YYYY.MM形式に統一）
