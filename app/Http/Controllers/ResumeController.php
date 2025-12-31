@@ -503,7 +503,7 @@ class ResumeController extends Controller
      */
     private function drawPage1Data(Fpdi $pdf, array $data): void
     {
-        // 日本語フォントを設定（TCPDF標準のkozminproregular）
+        // 日本語フォントを設定（TCPDF内蔵の小塚明朝：kozminproregular）
         $pdf->SetFont('kozminproregular', '', 10);
         $pdf->SetTextColor(0, 0, 0);
         
@@ -566,47 +566,126 @@ class ResumeController extends Controller
             $pdf->Text(42, 78, $formattedPostalCode);
         }
         
-        // 住所: (42, 84) - 縦軸を1上に
+        // 住所: (42, 83) - フォントを少し大きく、25文字超で改行、20文字以上でスペースがあればその時点で改行
         $address = $data['address'] ?? '';
         if (!empty($address)) {
-            $pdf->Text(42, 84, $address);
+            // フォントサイズを少し大きく（10から11に）
+            $pdf->SetFont('kozminproregular', '', 11);
+            
+            $lineHeight = 6; // 行間
+            $currentY = 83;
+            $maxLength = 25; // 最大文字数
+            $spaceCheckLength = 20; // スペースチェック開始位置
+            
+            $addressLength = mb_strlen($address);
+            
+            if ($addressLength > $maxLength) {
+                // 25文字を超える場合
+                // 20文字以上でスペース（半角・全角）があるかチェック
+                $firstPart = mb_substr($address, 0, $spaceCheckLength);
+                $remainingPart = mb_substr($address, $spaceCheckLength);
+                
+                // 20文字以降で最初のスペース位置を探す
+                $spacePos = false;
+                $spaceTypes = [' ', '　']; // 半角スペースと全角スペース
+                
+                for ($i = $spaceCheckLength; $i < $addressLength; $i++) {
+                    $char = mb_substr($address, $i, 1);
+                    if (in_array($char, $spaceTypes)) {
+                        $spacePos = $i;
+                        break;
+                    }
+                }
+                
+                if ($spacePos !== false) {
+                    // スペースが見つかった場合、その位置で改行
+                    $firstLine = mb_substr($address, 0, $spacePos);
+                    $secondLine = mb_substr($address, $spacePos + 1);
+                    $pdf->Text(42, $currentY, $firstLine);
+                    if (!empty($secondLine)) {
+                        $pdf->Text(42, $currentY + $lineHeight, $secondLine);
+                    }
+                } else {
+                    // スペースがない場合、25文字で改行
+                    $firstLine = mb_substr($address, 0, $maxLength);
+                    $secondLine = mb_substr($address, $maxLength);
+                    $pdf->Text(42, $currentY, $firstLine);
+                    if (!empty($secondLine)) {
+                        $pdf->Text(42, $currentY + $lineHeight, $secondLine);
+                    }
+                }
+            } else {
+                // 25文字以下の場合はそのまま出力
+                $pdf->Text(42, $currentY, $address);
+            }
+            
+            // フォントサイズを元に戻す
+            $pdf->SetFont('kozminproregular', '', 10);
         }
         
-        // 電話番号: (164, 72)
+        // 電話番号: (160, 72) - ハイフンありで出力
         if (!empty($data['phone'])) {
-            $pdf->Text(164, 72, $data['phone']);
+            $phone = $data['phone'];
+            // ハイフンを追加（10桁: 090-1234-5678, 11桁: 090-1234-56789）
+            if (strlen($phone) === 10) {
+                $formattedPhone = substr($phone, 0, 3) . '-' . substr($phone, 3, 4) . '-' . substr($phone, 7);
+            } elseif (strlen($phone) === 11) {
+                $formattedPhone = substr($phone, 0, 3) . '-' . substr($phone, 3, 4) . '-' . substr($phone, 7);
+            } else {
+                $formattedPhone = $phone;
+            }
+            $pdf->Text(160, 72, $formattedPhone);
         }
         
-        // メールアドレス: (164, 80)
+        // メールアドレス: (151, 83) - 22文字で改行
         if (!empty($data['email'])) {
-            $pdf->Text(164, 80, $data['email']);
+            $email = $data['email'];
+            $lineHeight = 6; // 行間
+            $currentY = 83;
+            $maxLength = 22; // 1行の最大文字数
+            
+            // 22文字ごとに分割して出力
+            $chunks = str_split($email, $maxLength);
+            foreach ($chunks as $chunk) {
+                $pdf->Text(151, $currentY, $chunk);
+                $currentY += $lineHeight;
+            }
         }
         
-        // 学歴・職歴: (10, 140) を起点にループ描画
-        $startY = 140;
-        $lineHeight = 8;
+        // 学歴・職歴: (10, 142) を起点にループ描画（縦軸+2）
+        $startY = 142;
+        $lineHeight = 8.5; // リピート時の縦軸間隔を調整（累積誤差を防ぐため）
         $currentY = $startY;
+        
+        // 学歴ラベル: (110, 133) に固定で表示（太字、フォントサイズを大きく）
+        $pdf->SetFont('kozminproregular', 'B', 12);
+        $pdf->Text(110, 133, '学歴');
+        $pdf->SetFont('kozminproregular', '', 10); // 元のフォントに戻す
         
         // 学歴
         if (!empty($data['education'])) {
+            $index = 0;
             foreach ($data['education'] as $edu) {
                 if (!empty($edu['date']) && !empty($edu['school_name']) && !empty($edu['event_type'])) {
                     try {
+                        // 各行の位置を正確に計算（累積誤差を防ぐ）
+                        $currentY = $startY + ($index * $lineHeight);
+                        
                         $date = Carbon::parse($edu['date']);
                         $year = $date->year;
                         $month = $date->month;
                         $content = ($edu['school_name'] ?? '') . '　' . ($edu['event_type'] ?? '');
                         
-                        // 年
-                        $pdf->Text(10, $currentY, (string)$year);
+                        // 年（横軸+11: 10→21）
+                        $pdf->Text(21, $currentY, (string)$year);
                         
-                        // 月
-                        $pdf->Text(30, $currentY, (string)$month);
+                        // 月（横軸+8: 30→38）
+                        $pdf->Text(38, $currentY, (string)$month);
                         
-                        // 内容
-                        $pdf->Text(45, $currentY, $content);
+                        // 内容（横軸+2: 45→47）
+                        $pdf->Text(47, $currentY, $content);
                         
-                        $currentY += $lineHeight;
+                        $index++;
                     } catch (\Exception $e) {
                         \Log::warning('Education date parsing error: ' . $e->getMessage());
                     }
@@ -647,7 +726,7 @@ class ResumeController extends Controller
      */
     private function drawPage2Data(Fpdi $pdf, array $data): void
     {
-        // 日本語フォントを設定（TCPDF標準のkozminproregular）
+        // 日本語フォントを設定（TCPDF内蔵の小塚明朝：kozminproregular）
         $pdf->SetFont('kozminproregular', '', 10);
         $pdf->SetTextColor(0, 0, 0);
         
