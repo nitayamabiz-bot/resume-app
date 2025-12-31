@@ -121,7 +121,7 @@
                 let date = row.querySelector('input[name="school_date[]"]').value;
                 if (!school && !eventType && !date && idx > 0) return; // 最初以外空欄許可
                 if (!school) errors.push(`学歴${idx+1}：学校名を入力してください।`);
-                if (!eventType) errors.push(`学歴${idx+1}：入学または卒業を選択してください।`);
+                if (!eventType) errors.push(`学歴${idx+1}：入学、卒業、または卒業見込みを選択してください।`);
                 if (!date) errors.push(`学歴${idx+1}：年月を選択してください।`);
             });
             // 職歴チェック
@@ -340,6 +340,7 @@
                                 <option value="">छान्नुहोस्</option>
                                 <option value="入学">入学 / प्रवेश</option>
                                 <option value="卒業">卒業 / स्नातक</option>
+                                <option value="卒業見込み">卒業見込み / स्नातकको लागि तयारी</option>
                             </select>
                             <input type="month" name="school_date[]" 
                                 class="border rounded px-3 py-2 sm:w-40 md:w-44 focus:outline-none focus:ring-blue-400 focus:ring-2" required>
