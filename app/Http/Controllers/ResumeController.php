@@ -796,14 +796,25 @@ class ResumeController extends Controller
         if (empty($appealPoints)) {
             $pdf->Text(23, $appealY, '特になし');
         } else {
-            // 52文字ごとに改行
-            $appealLength = mb_strlen($appealPoints, 'UTF-8');
+            // 改行コードで分割し、各行を出力（52文字を超える場合は52文字ごとに分割）
+            $inputLines = preg_split("/\r\n|\r|\n/", $appealPoints);
             $lineIndex = 0;
-            for ($i = 0; $i < $appealLength; $i += 52) {
-                $line = mb_substr($appealPoints, $i, 52, 'UTF-8');
-                $currentY = $appealY + ($lineIndex * $appealLineHeight);
-                $pdf->Text(23, $currentY, $line);
-                $lineIndex++;
+            foreach ($inputLines as $inputLine) {
+                $lineLength = mb_strlen($inputLine, 'UTF-8');
+                if ($lineLength <= 52) {
+                    // 52文字以内ならそのまま出力
+                    $currentY = $appealY + ($lineIndex * $appealLineHeight);
+                    $pdf->Text(23, $currentY, $inputLine);
+                    $lineIndex++;
+                } else {
+                    // 52文字を超える場合は52文字ごとに分割
+                    for ($i = 0; $i < $lineLength; $i += 52) {
+                        $subLine = mb_substr($inputLine, $i, 52, 'UTF-8');
+                        $currentY = $appealY + ($lineIndex * $appealLineHeight);
+                        $pdf->Text(23, $currentY, $subLine);
+                        $lineIndex++;
+                    }
+                }
             }
         }
         
@@ -816,14 +827,25 @@ class ResumeController extends Controller
         if (empty($selfRequest)) {
             $pdf->Text(23, $selfRequestY, '貴社規定に従います。');
         } else {
-            // 52文字ごとに改行
-            $selfRequestLength = mb_strlen($selfRequest, 'UTF-8');
+            // 改行コードで分割し、各行を出力（52文字を超える場合は52文字ごとに分割）
+            $inputLines = preg_split("/\r\n|\r|\n/", $selfRequest);
             $lineIndex = 0;
-            for ($i = 0; $i < $selfRequestLength; $i += 52) {
-                $line = mb_substr($selfRequest, $i, 52, 'UTF-8');
-                $currentY = $selfRequestY + ($lineIndex * $selfRequestLineHeight);
-                $pdf->Text(23, $currentY, $line);
-                $lineIndex++;
+            foreach ($inputLines as $inputLine) {
+                $lineLength = mb_strlen($inputLine, 'UTF-8');
+                if ($lineLength <= 52) {
+                    // 52文字以内ならそのまま出力
+                    $currentY = $selfRequestY + ($lineIndex * $selfRequestLineHeight);
+                    $pdf->Text(23, $currentY, $inputLine);
+                    $lineIndex++;
+                } else {
+                    // 52文字を超える場合は52文字ごとに分割
+                    for ($i = 0; $i < $lineLength; $i += 52) {
+                        $subLine = mb_substr($inputLine, $i, 52, 'UTF-8');
+                        $currentY = $selfRequestY + ($lineIndex * $selfRequestLineHeight);
+                        $pdf->Text(23, $currentY, $subLine);
+                        $lineIndex++;
+                    }
+                }
             }
         }
     }
