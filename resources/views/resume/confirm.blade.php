@@ -119,15 +119,16 @@
                 <h3 class="font-semibold text-lg mb-3">免許・資格 / अन्य योग्यता</h3>
                 <div class="space-y-2">
                     @foreach($data['licenses'] as $license)
-                        @if(!empty($license['name']) && !empty($license['date']))
+                        @if(!empty($license['name']) && !empty($license['date']) && !empty($license['event_type']))
                             <div class="bg-gray-50 p-3 rounded">
                                 <p class="font-medium">{{ $license['name'] }}</p>
                                 @php
                                     $date = \Carbon\Carbon::parse($license['date']);
                                     $year = $date->year;
                                     $month = $date->month;
+                                    $eventType = $license['event_type'] ?? '取得';
                                 @endphp
-                                <p class="text-sm text-gray-600">{{ $year }}年{{ $month }}月 取得</p>
+                                <p class="text-sm text-gray-600">{{ $year }}年{{ $month }}月 {{ $eventType }}</p>
                             </div>
                         @endif
                     @endforeach
