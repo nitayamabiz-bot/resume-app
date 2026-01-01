@@ -135,11 +135,17 @@
                 if (!date) errors.push(`職歴${idx+1}：年月を選択してください।`);
             });
 
-            // 免許・資格 必須ではないが、取得年月あれば名称も
+            // 免許・資格 必須ではないが、年月または名称があれば他の項目も必須
             document.querySelectorAll('.license-row').forEach((row, idx) => {
                 let name = row.querySelector('input[name="license_name[]"]').value.trim();
+                let eventType = row.querySelector('select[name="license_event_type[]"]').value;
                 let date = row.querySelector('input[name="license_date[]"]').value.trim();
-                if (date && !name) errors.push(`免許・資格${idx+1}：名称を入力してください。`);
+                if (name || eventType || date) {
+                    // いずれかが入力されている場合は、すべて必須
+                    if (!name) errors.push(`免許・資格${idx+1}：名称を入力してください।`);
+                    if (!eventType) errors.push(`免許・資格${idx+1}：取得、合格、または結果待ちを選択してください।`);
+                    if (!date) errors.push(`免許・資格${idx+1}：年月を選択してください।`);
+                }
             });
 
             if (errors.length > 0) {
@@ -158,7 +164,13 @@
             let count = container.children.length;
             if (count >= 6) return;
             let clone = container.children[0].cloneNode(true);
-            Array.from(clone.querySelectorAll('input')).forEach(input => input.value = '');
+            Array.from(clone.querySelectorAll('input, select')).forEach(input => {
+                if (input.type === 'month' || input.tagName === 'SELECT') {
+                    input.value = '';
+                } else {
+                    input.value = '';
+                }
+            });
             container.appendChild(clone);
             toggleLicenseAddButton();
         }
@@ -475,9 +487,16 @@
                 <div id="licenses-container">
                     <div class="license-row flex flex-col sm:flex-row gap-2 items-start mb-2">
                         <input type="text" name="license_name[]" placeholder="योग्यताको नाम (उदाहरण: साधारण कार ड्राइभिङ लाइसेन्स)" maxlength="40"
-                            class="border rounded px-3 py-2 w-full sm:w-2/3 focus:outline-none focus:ring-blue-400 focus:ring-2">
+                            class="border rounded px-3 py-2 w-full sm:w-3/5 focus:outline-none focus:ring-blue-400 focus:ring-2">
+                        <select name="license_event_type[]" 
+                            class="border rounded px-3 py-2 sm:w-32 focus:outline-none focus:ring-blue-400 focus:ring-2">
+                            <option value="">छान्नुहोस्</option>
+                            <option value="取得">取得 / प्राप्त गर्नु</option>
+                            <option value="合格">合格 / उत्तीर्ण</option>
+                            <option value="結果待ち">結果待ち / परिणामको लागि पर्खनु</option>
+                        </select>
                         <input type="month" name="license_date[]" placeholder="प्राप्त गरेको वर्ष/महिना"
-                            class="border rounded px-3 py-2 w-full sm:w-1/3 focus:outline-none focus:ring-blue-400 focus:ring-2">
+                            class="border rounded px-3 py-2 w-full sm:w-[134px] focus:outline-none focus:ring-blue-400 focus:ring-2">
                         <button type="button" onclick="removeLicenseField(this)" class="text-red-500 px-1 ml-1 hidden sm:block">
                             &#8722;
                         </button>

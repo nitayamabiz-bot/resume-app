@@ -203,22 +203,42 @@
             if (!date) errors.push(`職歴${idx+1}：年月を選択してください।`);
         });
 
-        // 免許・資格 必須ではないが、取得年月あれば名称も
+        // 免許・資格: 名称が入力されている場合のみ、プルダウンと年月にrequired属性を追加（職歴と同じようにブラウザのネイティブバリデーションを使用）
         document.querySelectorAll('.license-row').forEach((row, idx) => {
-            let name = row.querySelector('input[name="license_name[]"]').value.trim();
-            let date = row.querySelector('input[name="license_date[]"]').value.trim();
-            if (date && !name) errors.push(`免許・資格${idx+1}：名称を入力してください。`);
+            let nameInput = row.querySelector('input[name="license_name[]"]');
+            let eventTypeSelect = row.querySelector('select[name="license_event_type[]"]');
+            let dateInput = row.querySelector('input[name="license_date[]"]');
+            let name = nameInput.value.trim();
+            
+            if (name) {
+                // 名称が入力されている場合は、プルダウンと年月を必須（required属性を追加）
+                eventTypeSelect.setAttribute('required', 'required');
+                dateInput.setAttribute('required', 'required');
+            } else {
+                // 名称が未入力の場合は、required属性を削除（エラーにならないように）
+                nameInput.removeAttribute('required');
+                eventTypeSelect.removeAttribute('required');
+                dateInput.removeAttribute('required');
+            }
         });
 
         if (errors.length > 0) {
             let errDiv = document.getElementById('form-errors');
             errDiv.innerHTML = errors.map(e => `<div class="text-red-600 mb-2">${e}</div>`).join('');
             window.scrollTo(0,0);
-        } else {
-            // エラーがない場合、データを正規化してセッションに保存
-            normalizeFormData(form);
-            submitToConfirm();
+            return; // エラーがある場合は送信を停止
         }
+        
+        // エラーがない場合、ブラウザのネイティブバリデーションをチェック
+        if (!form.checkValidity()) {
+            // ブラウザのネイティブバリデーションエラーがある場合
+            form.reportValidity();
+            return;
+        }
+        
+        // すべてのバリデーションが通過した場合、データを正規化してセッションに保存
+        normalizeFormData(form);
+        submitToConfirm();
     }
     
     // 内容確認画面に遷移
@@ -286,7 +306,13 @@
         let count = container.children.length;
         if (count >= 6) return;
         let clone = container.children[0].cloneNode(true);
-        Array.from(clone.querySelectorAll('input')).forEach(input => input.value = '');
+        Array.from(clone.querySelectorAll('input, select')).forEach(input => {
+            if (input.type === 'month' || input.tagName === 'SELECT') {
+                input.value = '';
+            } else {
+                input.value = '';
+            }
+        });
         container.appendChild(clone);
         toggleLicenseAddButton();
         initDateInputs(); // 新しいフィールドのプレースホルダーを初期化
@@ -604,6 +630,7 @@
                     const row = rows[index];
                     if (row) {
                         row.querySelector('input[name="license_name[]"]').value = license.name || '';
+                        row.querySelector('select[name="license_event_type[]"]').value = license.event_type || '';
                         if (license.date) {
                             const date = new Date(license.date + '-01');
                             row.querySelector('input[name="license_date[]"]').value = 
@@ -951,6 +978,13 @@
                 <div class="license-row flex flex-col sm:flex-row gap-2 items-start mb-2" style="box-sizing: border-box; width: 100%;">
                     <input type="text" name="license_name[]" placeholder="योग्यताको नाम (उदाहरण: साधारण कार ड्राइभिङ लाइसेन्स)" maxlength="40"
                         class="border rounded px-3 py-2 w-full sm:w-3/5 focus:outline-none focus:ring-blue-400 focus:ring-2" style="box-sizing: border-box; max-width: 100%;">
+                    <select name="license_event_type[]" 
+                        class="border rounded px-3 py-2 sm:w-32 focus:outline-none focus:ring-blue-400 focus:ring-2">
+                        <option value="">छान्नुहोस्</option>
+                        <option value="取得">取得 / प्राप्त गर्नु</option>
+                        <option value="合格">合格 / उत्तीर्ण</option>
+                        <option value="結果待ち">結果待ち / परिणामको लागि पर्खनु</option>
+                    </select>
                     <div class="date-input-wrapper" style="position: relative; display: inline-block; width: 100%; max-width: 150px;">
                         <input type="month" name="license_date[]" placeholder="प्राप्त गरेको वर्ष/महिना"
                             class="border rounded px-3 py-2 w-full sm:w-[134px] focus:outline-none focus:ring-blue-400 focus:ring-2 date-input-field" 

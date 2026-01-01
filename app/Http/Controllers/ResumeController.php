@@ -94,6 +94,7 @@ class ResumeController extends Controller
             'job_event_type' => 'required|array',
             'job_date' => 'required|array',
             'license_name' => 'nullable|array',
+            'license_event_type' => 'nullable|array',
             'license_date' => 'nullable|array',
             'appeal_points' => 'nullable|string|max:624',
             'self_request' => 'nullable|string|max:260',
@@ -125,12 +126,15 @@ class ResumeController extends Controller
 
         // 免許・資格データを整理
         $licenses = [];
-        if (isset($validated['license_name']) && isset($validated['license_date'])) {
+        if (isset($validated['license_name']) && isset($validated['license_event_type']) && isset($validated['license_date'])) {
             foreach ($validated['license_name'] as $index => $licenseName) {
-                if (!empty($licenseName) && !empty($validated['license_date'][$index] ?? '')) {
+                $eventType = $validated['license_event_type'][$index] ?? '';
+                $date = $validated['license_date'][$index] ?? '';
+                if (!empty($licenseName) && !empty($eventType) && !empty($date)) {
                     $licenses[] = [
                         'name' => $licenseName,
-                        'date' => $validated['license_date'][$index],
+                        'event_type' => $eventType,
+                        'date' => $date,
                     ];
                 }
             }
@@ -200,6 +204,7 @@ class ResumeController extends Controller
             'job_event_type' => 'required|array',
             'job_date' => 'required|array',
             'license_name' => 'nullable|array',
+            'license_event_type' => 'nullable|array',
             'license_date' => 'nullable|array',
             'appeal_points' => 'nullable|string|max:624',
             'self_request' => 'nullable|string|max:260',
@@ -231,12 +236,15 @@ class ResumeController extends Controller
 
         // 免許・資格データを整理
         $licenses = [];
-        if (isset($validated['license_name']) && isset($validated['license_date'])) {
+        if (isset($validated['license_name']) && isset($validated['license_event_type']) && isset($validated['license_date'])) {
             foreach ($validated['license_name'] as $index => $licenseName) {
-                if (!empty($licenseName) && !empty($validated['license_date'][$index] ?? '')) {
+                $eventType = $validated['license_event_type'][$index] ?? '';
+                $date = $validated['license_date'][$index] ?? '';
+                if (!empty($licenseName) && !empty($eventType) && !empty($date)) {
                     $licenses[] = [
                         'name' => $licenseName,
-                        'date' => $validated['license_date'][$index],
+                        'event_type' => $eventType,
+                        'date' => $date,
                     ];
                 }
             }
@@ -756,28 +764,28 @@ class ResumeController extends Controller
         $pdf->SetFont('kozminproregular', '', 10);
         $pdf->SetTextColor(0, 0, 0);
         
-        // 免許・資格: (10, 40) を起点に描画
-        $startY = 40;
+        // 免許・資格: 職歴とは別で管理（横軸+2、縦軸-3）
+        $startY = 97; // 100 - 3
         $lineHeight = 8;
         $currentY = $startY;
         
         if (!empty($data['licenses'])) {
             foreach ($data['licenses'] as $license) {
-                if (!empty($license['date']) && !empty($license['name'])) {
+                if (!empty($license['date']) && !empty($license['name']) && !empty($license['event_type'])) {
                     try {
                         $date = Carbon::parse($license['date']);
                         $year = $date->year;
                         $month = $date->month;
-                        $content = ($license['name'] ?? '') . '　取得';
+                        $content = ($license['name'] ?? '') . '　' . ($license['event_type'] ?? '取得');
                         
-                        // 年
-                        $pdf->Text(10, $currentY, (string)$year);
+                        // 年（横軸23）
+                        $pdf->Text(23, $currentY, (string)$year);
                         
-                        // 月
-                        $pdf->Text(30, $currentY, (string)$month);
+                        // 月（横軸40）
+                        $pdf->Text(40, $currentY, (string)$month);
                         
-                        // 内容
-                        $pdf->Text(45, $currentY, $content);
+                        // 内容（横軸50）
+                        $pdf->Text(50, $currentY, $content);
                         
                         $currentY += $lineHeight;
                     } catch (\Exception $e) {
