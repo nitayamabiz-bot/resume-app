@@ -2,26 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Announcement;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
-class AnnouncementController extends Controller
+class AnnouncementController extends BaseAdminController
 {
-    /**
-     * 管理者チェック
-     */
-    private function checkAdmin(): ?RedirectResponse
-    {
-        if (!Auth::check() || Auth::user()->email !== 'info@hamro-life-japan.com') {
-            return redirect()->route('home')->with('error', '管理者権限が必要です。');
-        }
-        return null;
-    }
-
     /**
      * お知らせ一覧を表示
      */
@@ -36,7 +23,10 @@ class AnnouncementController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('admin.announcements.index', compact('announcements'));
+        $data = $this->getAdminData();
+        $data['announcements'] = $announcements;
+
+        return view('admin.announcements.index', $data);
     }
 
     /**
@@ -49,7 +39,9 @@ class AnnouncementController extends Controller
             return $redirect;
         }
 
-        return view('admin.announcements.create');
+        $data = $this->getAdminData();
+
+        return view('admin.announcements.create', $data);
     }
 
     /**
@@ -97,7 +89,10 @@ class AnnouncementController extends Controller
             return $redirect;
         }
 
-        return view('admin.announcements.edit', compact('announcement'));
+        $data = $this->getAdminData();
+        $data['announcement'] = $announcement;
+
+        return view('admin.announcements.edit', $data);
     }
 
     /**

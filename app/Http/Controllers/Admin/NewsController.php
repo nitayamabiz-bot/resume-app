@@ -2,26 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\News;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
-class NewsController extends Controller
+class NewsController extends BaseAdminController
 {
-    /**
-     * 管理者チェック
-     */
-    private function checkAdmin(): ?RedirectResponse
-    {
-        if (!Auth::check() || Auth::user()->email !== 'info@hamro-life-japan.com') {
-            return redirect()->route('home')->with('error', '管理者権限が必要です。');
-        }
-        return null;
-    }
-
     /**
      * ニュース一覧を表示
      */
@@ -36,7 +23,10 @@ class NewsController extends Controller
             ->orderBy('published_date', 'desc')
             ->get();
 
-        return view('admin.news.index', compact('news'));
+        $data = $this->getAdminData();
+        $data['news'] = $news;
+
+        return view('admin.news.index', $data);
     }
 
     /**
@@ -49,7 +39,9 @@ class NewsController extends Controller
             return $redirect;
         }
 
-        return view('admin.news.create');
+        $data = $this->getAdminData();
+
+        return view('admin.news.create', $data);
     }
 
     /**
@@ -96,7 +88,10 @@ class NewsController extends Controller
             return $redirect;
         }
 
-        return view('admin.news.edit', compact('news'));
+        $data = $this->getAdminData();
+        $data['news'] = $news;
+
+        return view('admin.news.edit', $data);
     }
 
     /**

@@ -1,10 +1,7 @@
-@extends('layouts.main')
-
-@section('title', 'お知らせ作成 - 就労支援サービス')
+@extends('admin.layout')
 
 @section('content')
-<div class="main-content" style="max-width: 800px; margin: 0 auto; padding: 40px 20px;">
-    <div class="bg-white rounded-lg shadow-md p-6">
+<div class="bg-white rounded-lg shadow-md p-6">
         <h1 class="text-2xl font-bold mb-6">お知らせ作成 / सूचना सिर्जना</h1>
 
         <form action="{{ route('admin.announcements.store') }}" method="POST">
@@ -77,6 +74,5 @@
             </div>
         </form>
     </div>
-</div>
 @endsection
 

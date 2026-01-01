@@ -271,29 +271,15 @@
                 </div>
             </div>
         </div>
-        @if($isAdmin)
-            <div class="text-center mt-4">
-                <a href="{{ route('admin.news.index') }}" class="admin-button" style="display: inline-block;">
-                    管理 / व्यवस्थापन
-                </a>
-            </div>
-        @endif
     </div>
     @endif
 
     <!-- お知らせエリア -->
     @if($announcements->count() > 0)
     <div class="announcements-section" style="width: 100%; max-width: 1000px; margin: 40px auto; border: 2px solid #e5e7eb; border-radius: 8px; background-color: #ffffff; padding: 16px 24px 24px 24px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); box-sizing: border-box;">
-        <div class="flex justify-between items-center mb-2">
-            <h2 class="text-xl font-bold text-center" style="color: #3E5387; flex: 1; margin: 0 0 12px 0;">
-                お知らせ / सूचना
-            </h2>
-            @if($isAdmin)
-                <a href="{{ route('admin.announcements.index') }}" class="admin-button">
-                    管理 / व्यवस्थापन
-                </a>
-            @endif
-        </div>
+        <h2 class="text-xl font-bold text-center mb-2" style="color: #3E5387; margin: 0 0 12px 0;">
+            お知らせ / सूचना
+        </h2>
         <div class="announcements-list">
             @foreach($announcements as $index => $announcement)
                 <div class="announcement-item" style="margin-bottom: {{ $index < $announcements->count() - 1 ? '8px' : '0' }};">

@@ -1200,11 +1200,20 @@
         </div>
         <div class="nav-links">
             @auth
-                <span class="nav-link">{{ Auth::user()->name }}</span>
-                <form method="POST" action="{{ route('logout') }}" style="display: inline;">
-                    @csrf
-                    <button type="submit" class="nav-link-btn">ログアウト <span class="inline-text" style="font-size: 0.7rem; opacity: 0.9;">/ लगआउट</span></button>
-                </form>
+                @if(Auth::user()->email === 'info@hamro-life-japan.com')
+                    <a href="{{ route('admin.dashboard') }}" class="nav-link-btn" style="display: inline-block; text-decoration: none; cursor: pointer; pointer-events: auto;">管理者画面 <span class="inline-text" style="font-size: 0.7rem; opacity: 0.9;">/ व्यवस्थापन प्यानल</span></a>
+                    <span class="nav-link">{{ Auth::user()->name }}</span>
+                    <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+                        @csrf
+                        <button type="submit" class="nav-link-btn">ログアウト <span class="inline-text" style="font-size: 0.7rem; opacity: 0.9;">/ लगआउट</span></button>
+                    </form>
+                @else
+                    <span class="nav-link">{{ Auth::user()->name }}</span>
+                    <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+                        @csrf
+                        <button type="submit" class="nav-link-btn">ログアウト <span class="inline-text" style="font-size: 0.7rem; opacity: 0.9;">/ लगआउट</span></button>
+                    </form>
+                @endif
             @else
                 <a href="{{ route('login') }}" class="nav-link" style="display: inline-block; text-decoration: none; cursor: pointer; pointer-events: auto;">ログイン <span class="inline-text" style="font-family: 'Noto Sans Devanagari', Arial, sans-serif;">/ लगइन</span></a>
                 <a href="{{ route('register') }}" class="nav-link-btn" style="display: inline-block; text-decoration: none; cursor: pointer; pointer-events: auto;">新規登録 <span class="inline-text" style="font-size: 0.7rem; opacity: 0.9;">/ दर्ता</span></a>
@@ -1215,11 +1224,20 @@
     <div class="mobile-auth-block">
         <div class="mobile-auth-links">
             @auth
-                <span class="nav-link">{{ Auth::user()->name }}</span>
-                <form method="POST" action="{{ route('logout') }}" style="display: inline;">
-                    @csrf
-                    <button type="submit" class="nav-link-btn">ログアウト <span class="inline-text" style="font-size: 0.7rem; opacity: 0.9;">/ लगआउट</span></button>
-                </form>
+                @if(Auth::user()->email === 'info@hamro-life-japan.com')
+                    <a href="{{ route('admin.dashboard') }}" class="nav-link-btn" style="display: inline-block; text-decoration: none; cursor: pointer; pointer-events: auto;">管理者画面 <span class="inline-text" style="font-size: 0.7rem; opacity: 0.9;">/ व्यवस्थापन प्यानल</span></a>
+                    <span class="nav-link">{{ Auth::user()->name }}</span>
+                    <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+                        @csrf
+                        <button type="submit" class="nav-link-btn">ログアウト <span class="inline-text" style="font-size: 0.7rem; opacity: 0.9;">/ लगआउट</span></button>
+                    </form>
+                @else
+                    <span class="nav-link">{{ Auth::user()->name }}</span>
+                    <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+                        @csrf
+                        <button type="submit" class="nav-link-btn">ログアウト <span class="inline-text" style="font-size: 0.7rem; opacity: 0.9;">/ लगआउट</span></button>
+                    </form>
+                @endif
             @else
                 <a href="{{ route('login') }}" class="nav-link" style="display: inline-block; text-decoration: none; cursor: pointer; pointer-events: auto;">ログイン <span class="inline-text" style="font-family: 'Noto Sans Devanagari', Arial, sans-serif;">/ लगइन</span></a>
                 <a href="{{ route('register') }}" class="nav-link-btn" style="display: inline-block; text-decoration: none; cursor: pointer; pointer-events: auto;">新規登録 <span class="inline-text" style="font-size: 0.7rem; opacity: 0.9;">/ दर्ता</span></a>
