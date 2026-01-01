@@ -1351,7 +1351,7 @@
                 const totalSlides = indicators.length;
                 
                 if (totalSlides > 0) {
-                    const slideInterval = 4000; // 4秒ごとにスライド
+                    const slideInterval = 8000; // 8秒ごとにスライド
 
                     function showSlide(index) {
                         if (adSlides && index >= 0 && index < totalSlides) {
