@@ -778,14 +778,14 @@ class ResumeController extends Controller
                         $month = $date->month;
                         $content = ($license['name'] ?? '') . '　' . ($license['event_type'] ?? '取得');
                         
-                        // 年（横軸23）
-                        $pdf->Text(23, $currentY, (string)$year);
+                        // 年（横軸23 + 1 = 24）
+                        $pdf->Text(24, $currentY, (string)$year);
                         
-                        // 月（横軸40）
-                        $pdf->Text(40, $currentY, (string)$month);
+                        // 月（横軸40 + 1 = 41）
+                        $pdf->Text(41, $currentY, (string)$month);
                         
-                        // 内容（横軸50）
-                        $pdf->Text(50, $currentY, $content);
+                        // 内容（横軸50 + 1 = 51）
+                        $pdf->Text(51, $currentY, $content);
                         
                         $currentY += $lineHeight;
                     } catch (\Exception $e) {
