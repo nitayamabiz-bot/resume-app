@@ -42,13 +42,12 @@
 </style>
 <div class="page-content">
     <h1 class="page-heading">
-        賃貸物件検索
-        <span class="page-heading-nepali">भाडाको खोज</span>
+        賃貸物件検索サイトおすすめランキング
+        <span class="page-heading-nepali">भाडाको खोज साइट सिफारिस रैंकिङ</span>
     </h1>
     <div class="page-text">
-        賃貸物件の検索ページです。準備中です。
         <span class="page-text-nepali">
-            भाडाको खोज पृष्ठ। यो पृष्ठ तयारीमा छ।
+            हालको घर मन परेन, अझ राम्रो कोठामा बस्न चाहनुहुन्छ, रोजगारी तय भएर घर खोज्न आवश्यक छ - यस्ता समस्याहरू भएका व्यक्तिहरूको लागि, हामीले उपयुक्त भाडाको खोज साइटहरूलाई रैंकिङ रूपमा प्रस्तुत गर्दछौं!!
         </span>
     </div>
 </div>
@@ -82,6 +81,6 @@ $rankings = [
 ];
 @endphp
 
-<x-ranking-section :rankings="$rankings" />
+<x-ranking-section :rankings="$rankings" :hideTitle="true" />
 @endsection
 
