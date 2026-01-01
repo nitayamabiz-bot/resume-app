@@ -1,15 +1,10 @@
-@extends('layouts.main')
-
-@section('title', 'お知らせ管理 - 就労支援サービス')
+@extends('admin.layout')
 
 @section('content')
 <div class="main-content" style="max-width: 1000px; margin: 0 auto; padding: 40px 20px;">
     <div class="bg-white rounded-lg shadow-md p-6">
-        <div class="flex justify-between items-center mb-6">
+        <div class="mb-6">
             <h1 class="text-2xl font-bold">お知らせ管理 / सूचना व्यवस्थापन</h1>
-            <a href="{{ route('admin.announcements.create') }}" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                新規作成 / नयाँ सिर्जना
-            </a>
         </div>
 
         @if(session('success'))
@@ -31,7 +26,7 @@
         @endif
 
         <div class="overflow-x-auto">
-            <table class="w-full border-collapse">
+            <table class="w-full border-collapse admin-table">
                 <thead>
                     <tr class="bg-gray-100">
                         <th class="border p-3 text-left">表示順 / प्रदर्शन क्रम</th>
@@ -55,14 +50,14 @@
                             </td>
                             <td class="border p-3">{{ $announcement->created_at->format('Y-m-d H:i') }}</td>
                             <td class="border p-3">
-                                <div class="flex gap-2">
-                                    <a href="{{ route('admin.announcements.edit', $announcement) }}" class="px-3 py-1 bg-blue-500 text-white rounded text-sm hover:bg-blue-600">
+                                <div class="flex gap-2 flex-wrap">
+                                    <a href="{{ route('admin.announcements.edit', $announcement) }}" class="inline-block px-3 py-1 bg-blue-500 text-white rounded text-sm hover:bg-blue-600 whitespace-nowrap">
                                         編集 / सम्पादन
                                     </a>
-                                    <form action="{{ route('admin.announcements.destroy', $announcement) }}" method="POST" onsubmit="return confirm('削除してもよろしいですか？ / के तपाईं मेटाउन चाहनुहुन्छ?');">
+                                    <form action="{{ route('admin.announcements.destroy', $announcement) }}" method="POST" onsubmit="return confirm('削除してもよろしいですか？ / के तपाईं मेटाउन चाहनुहुन्छ?');" class="inline-block">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="px-3 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-600">
+                                        <button type="submit" class="px-3 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-600 whitespace-nowrap">
                                             削除 / मेटाउनुहोस्
                                         </button>
                                     </form>
