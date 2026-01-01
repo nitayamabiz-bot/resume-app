@@ -871,7 +871,7 @@
         <!-- メールアドレス -->
         <div class="pt-4 border-t border-gray-200">
             <label class="block font-medium mb-1">メールアドレス / इमेल ठेगाना<span class="text-red-500">*</span></label>
-            <p class="text-xs text-gray-500 mb-2">有効なメールアドレスを入力してください / वैध इमेल ठेगाना प्रविष्ट गर्नुहोस्। उदाहरण: example@email.com</p>
+            <p class="text-xs text-gray-500 mb-2">वैध इमेल ठेगाना प्रविष्ट गर्नुहोस्। उदाहरण: example@email.com</p>
             <input type="email" name="email" maxlength="255" inputmode="email" autocomplete="email"
                 class="w-2/3 border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2" 
                 value="{{ $resumeData['email'] ?? old('email', '') }}" required>
@@ -977,7 +977,7 @@
             <div id="licenses-container">
                 <div class="license-row flex flex-col sm:flex-row gap-2 items-start mb-2" style="box-sizing: border-box; width: 100%;">
                     <input type="text" name="license_name[]" placeholder="योग्यताको नाम (उदाहरण: साधारण कार ड्राइभिङ लाइसेन्स)" maxlength="40"
-                        class="border rounded px-3 py-2 w-full sm:w-3/5 focus:outline-none focus:ring-blue-400 focus:ring-2" style="box-sizing: border-box; max-width: 100%;">
+                        class="border rounded px-3 py-2 w-full sm:w-[44%] focus:outline-none focus:ring-blue-400 focus:ring-2" style="box-sizing: border-box; max-width: 100%;">
                     <select name="license_event_type[]" 
                         class="border rounded px-3 py-2 sm:w-32 focus:outline-none focus:ring-blue-400 focus:ring-2">
                         <option value="">छान्नुहोस्</option>
@@ -985,10 +985,10 @@
                         <option value="合格">合格 / उत्तीर्ण</option>
                         <option value="結果待ち">結果待ち / परिणामको लागि पर्खनु</option>
                     </select>
-                    <div class="date-input-wrapper" style="position: relative; display: inline-block; width: 100%; max-width: 150px;">
-                        <input type="month" name="license_date[]" placeholder="प्राप्त गरेको वर्ष/महिना"
-                            class="border rounded px-3 py-2 w-full sm:w-[134px] focus:outline-none focus:ring-blue-400 focus:ring-2 date-input-field" 
-                            style="box-sizing: border-box !important; max-width: 100% !important; min-width: 150px !important; min-height: 40px !important; flex-shrink: 0 !important; padding: 8px 12px !important; font-size: 16px !important; background-color: #ffffff !important; border: 1px solid #d1d5db !important; color: #111827 !important; cursor: pointer !important; display: block !important; visibility: visible !important; opacity: 1 !important;">
+                    <div class="date-input-wrapper" style="position: relative; display: inline-block;">
+                        <input type="month" name="license_date[]"
+                            class="border rounded px-3 py-2 sm:w-24 focus:outline-none focus:ring-blue-400 focus:ring-2 date-input-field" 
+                            style="min-width: 150px !important; min-height: 40px !important; width: 150px !important; flex-shrink: 0 !important; padding: 8px 12px !important; font-size: 16px !important; box-sizing: border-box !important; background-color: #ffffff !important; border: 1px solid #d1d5db !important; color: #111827 !important; cursor: pointer !important; display: block !important; visibility: visible !important; opacity: 1 !important;">
                         <span class="date-placeholder" style="display: none; position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; font-size: 16px; line-height: 1;">YYYY-MM</span>
                     </div>
                     <button type="button" onclick="removeLicenseField(this)" class="text-red-500 px-1 ml-1 block">

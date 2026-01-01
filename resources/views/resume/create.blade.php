@@ -402,7 +402,7 @@
             <!-- メールアドレス -->
             <div class="pt-4 border-t border-gray-200">
                 <label class="block font-medium mb-1">メールアドレス / इमेल ठेगाना<span class="text-red-500">*</span></label>
-                <p class="text-xs text-gray-500 mb-2">有効なメールアドレスを入力してください / वैध इमेल ठेगाना प्रविष्ट गर्नुहोस्। उदाहरण: example@email.com</p>
+                <p class="text-xs text-gray-500 mb-2">वैध इमेल ठेगाना प्रविष्ट गर्नुहोस्। उदाहरण: example@email.com</p>
                 <input type="email" name="email" maxlength="255" inputmode="email" autocomplete="email"
                     class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2" required>
             </div>
