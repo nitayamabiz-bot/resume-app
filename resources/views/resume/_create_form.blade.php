@@ -789,6 +789,17 @@
 
 <div class="w-full max-w-2xl mx-auto bg-white rounded-lg shadow-md p-4 sm:p-6" style="box-sizing: border-box; overflow-x: hidden;">
     <h2 class="text-2xl font-bold mb-4 text-center">履歴書作成フォーム<span class="block text-base text-gray-500 mt-1">बायोडाटा तयार गर्ने फारम</span></h2>
+    
+    <!-- 説明文 -->
+    <div class="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+        <div class="text-sm text-gray-700 leading-relaxed">
+            <p class="font-medium">入力いただいた情報で簡単にPDFの履歴書が作成できます。</p>
+            <p class="font-medium mt-2">会員登録をしていただくと、入力情報を保存できます。</p>
+            <p class="text-gray-600 mt-2">तपाईंले प्रविष्ट गरेको जानकारीबाट सजिलैसँग PDF को बायोडाटा बनाउन सक्नुहुन्छ।</p>
+            <p class="text-gray-600 mt-1">तपाईंले खाता खोलेमा, तपाईंको प्रविष्ट गरेको जानकारी सुरक्षित हुनेछ।</p>
+        </div>
+    </div>
+    
     <div id="form-errors" class="mb-4"></div>
     <form id="resume-form" class="space-y-4" onsubmit="validateForm(event)" style="box-sizing: border-box; overflow-x: hidden; width: 100%;">
         @csrf
@@ -908,11 +919,64 @@
         <div class="pt-4 border-t border-gray-200">
             <label class="block font-medium mb-1">学歴 / शैक्षिक विवरण<span class="text-red-500">*</span></label>
             <p class="text-xs text-gray-500 mb-2">स्कूलको नाम लेख्नुहोस्, त्यसपछि प्रवेश वा स्नातक छान्नुहोस्, र वर्ष/महिना छान्नुहोस्। धेरै स्कूल भएको खण्डमा "+" बटन थिचेर थप्नुहोस्।</p>
+            <div class="mb-3 p-3 bg-gray-50 rounded border border-gray-200">
+                <p class="text-xs font-medium text-gray-700 mb-2">【入力例 / प्रविष्टि उदाहरण】</p>
+                <div class="text-xs text-gray-600 font-mono leading-tight overflow-x-auto">
+                    <div class="space-y-0.5">
+                        <div class="flex items-start gap-2 sm:gap-4" style="line-height: 1.3;">
+                            <span class="inline-block flex-shrink-0" style="min-width: 200px; max-width: 300px;">bagiswori higher secondary school</span>
+                            <span class="inline-block flex-shrink-0" style="min-width: 60px; max-width: 80px;">2015/4</span>
+                            <span class="flex-shrink-0">入学/प्रवेश</span>
+                        </div>
+                        <div class="flex items-start gap-2 sm:gap-4" style="line-height: 1.3;">
+                            <span class="inline-block flex-shrink-0" style="min-width: 200px; max-width: 300px;">bagiswori higher secondary school</span>
+                            <span class="inline-block flex-shrink-0" style="min-width: 60px; max-width: 80px;">2017/3</span>
+                            <span class="flex-shrink-0">卒業/स्नातक</span>
+                        </div>
+                        <div class="flex items-start gap-2 sm:gap-4" style="line-height: 1.3;">
+                            <span class="inline-block flex-shrink-0" style="min-width: 200px; max-width: 300px;">nepal engineering college</span>
+                            <span class="inline-block flex-shrink-0" style="min-width: 60px; max-width: 80px;">2017/4</span>
+                            <span class="flex-shrink-0">入学/प्रवेश</span>
+                        </div>
+                        <div class="flex items-start gap-2 sm:gap-4" style="line-height: 1.3;">
+                            <span class="inline-block flex-shrink-0" style="min-width: 200px; max-width: 300px;">nepal engineering college</span>
+                            <span class="inline-block flex-shrink-0" style="min-width: 60px; max-width: 80px;">2020/3</span>
+                            <span class="flex-shrink-0">卒業/स्नातक</span>
+                        </div>
+                        <div class="flex items-start gap-2 sm:gap-4" style="line-height: 1.3;">
+                            <span class="inline-block flex-shrink-0" style="min-width: 200px; max-width: 300px;">九州英数学舘日本語学校</span>
+                            <span class="inline-block flex-shrink-0" style="min-width: 60px; max-width: 80px;">2020/4</span>
+                            <span class="flex-shrink-0">入学/प्रवेश</span>
+                        </div>
+                        <div class="flex items-start gap-2 sm:gap-4" style="line-height: 1.3;">
+                            <span class="inline-block flex-shrink-0" style="min-width: 200px; max-width: 300px;">九州英数学舘日本語学校</span>
+                            <span class="inline-block flex-shrink-0" style="min-width: 60px; max-width: 80px;">2022/3</span>
+                            <span class="flex-shrink-0">卒業/स्नातक</span>
+                        </div>
+                        <div class="flex items-start gap-2 sm:gap-4" style="line-height: 1.3;">
+                            <span class="inline-block flex-shrink-0" style="min-width: 200px; max-width: 300px;">福岡大学(fukuoka university)</span>
+                            <span class="inline-block flex-shrink-0" style="min-width: 60px; max-width: 80px;">2022/4</span>
+                            <span class="flex-shrink-0">入学/प्रवेश</span>
+                        </div>
+                        <div class="flex items-start gap-2 sm:gap-4" style="line-height: 1.3;">
+                            <span class="inline-block flex-shrink-0" style="min-width: 200px; max-width: 300px;">福岡大学(fukuoka university)</span>
+                            <span class="inline-block flex-shrink-0" style="min-width: 60px; max-width: 80px;">2026/3</span>
+                            <span class="flex-shrink-0">卒業見込み/स्नातकको लागि तयारी</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div id="schools-container">
                 <div class="school-row pb-3 border-b border-gray-200">
                     <div class="flex flex-col sm:flex-row gap-2 items-start mb-2 flex-wrap" style="box-sizing: border-box; width: 100%;">
                         <input type="text" name="school_name[]" placeholder="स्कूलको नाम (उदाहरण: 〇〇 विश्वविद्यालय)" maxlength="40"
                             class="border rounded px-3 py-2 w-full sm:w-[44%] focus:outline-none focus:ring-blue-400 focus:ring-2" style="box-sizing: border-box; max-width: 100%;" required>
+                        <div class="date-input-wrapper" style="position: relative; display: inline-block;">
+                            <input type="month" name="school_date[]" 
+                                class="border rounded px-3 py-2 sm:w-24 focus:outline-none focus:ring-blue-400 focus:ring-2 date-input-field" 
+                                style="min-width: 150px !important; min-height: 40px !important; width: 150px !important; flex-shrink: 0 !important; padding: 8px 12px !important; font-size: 16px !important; box-sizing: border-box !important; background-color: #ffffff !important; border: 1px solid #d1d5db !important; color: #111827 !important; cursor: pointer !important; display: block !important; visibility: visible !important; opacity: 1 !important;" required>
+                            <span class="date-placeholder" style="display: none; position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; font-size: 16px; line-height: 1;">YYYY-MM</span>
+                        </div>
                         <select name="school_event_type[]" 
                             class="border rounded px-3 py-2 sm:w-32 focus:outline-none focus:ring-blue-400 focus:ring-2" required>
                             <option value="">छान्नुहोस्</option>
@@ -920,12 +984,6 @@
                             <option value="卒業">卒業 / स्नातक</option>
                             <option value="卒業見込み">卒業見込み / स्नातकको लागि तयारी</option>
                         </select>
-                        <div class="date-input-wrapper" style="position: relative; display: inline-block;">
-                            <input type="month" name="school_date[]" 
-                                class="border rounded px-3 py-2 sm:w-24 focus:outline-none focus:ring-blue-400 focus:ring-2 date-input-field" 
-                                style="min-width: 150px !important; min-height: 40px !important; width: 150px !important; flex-shrink: 0 !important; padding: 8px 12px !important; font-size: 16px !important; box-sizing: border-box !important; background-color: #ffffff !important; border: 1px solid #d1d5db !important; color: #111827 !important; cursor: pointer !important; display: block !important; visibility: visible !important; opacity: 1 !important;" required>
-                            <span class="date-placeholder" style="display: none; position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; font-size: 16px; line-height: 1;">YYYY-MM</span>
-                        </div>
                         <button type="button" onclick="removeSchoolField(this)" class="text-red-500 px-2 py-2 block">
                             &#8722;
                         </button>
@@ -946,18 +1004,18 @@
                     <div class="flex flex-col sm:flex-row gap-2 items-start mb-2 flex-wrap" style="box-sizing: border-box; width: 100%;">
                         <input type="text" name="company_name[]" placeholder="कम्पनीको नाम (उदाहरण: 〇〇 कम्पनी)" maxlength="40"
                             class="border rounded px-3 py-2 w-full sm:w-[44%] focus:outline-none focus:ring-blue-400 focus:ring-2" style="box-sizing: border-box; max-width: 100%;" required>
-                        <select name="job_event_type[]" 
-                            class="border rounded px-3 py-2 sm:w-32 focus:outline-none focus:ring-blue-400 focus:ring-2" required>
-                            <option value="">छान्नुहोस्</option>
-                            <option value="入社">入社 / नियुक्ति</option>
-                            <option value="退職">退職 / राजिनामा</option>
-                        </select>
                         <div class="date-input-wrapper" style="position: relative; display: inline-block;">
                             <input type="month" name="job_date[]" 
                                 class="border rounded px-3 py-2 sm:w-24 focus:outline-none focus:ring-blue-400 focus:ring-2 date-input-field" 
                                 style="min-width: 150px !important; min-height: 40px !important; width: 150px !important; flex-shrink: 0 !important; padding: 8px 12px !important; font-size: 16px !important; box-sizing: border-box !important; background-color: #ffffff !important; border: 1px solid #d1d5db !important; color: #111827 !important; cursor: pointer !important; display: block !important; visibility: visible !important; opacity: 1 !important;" required>
                             <span class="date-placeholder" style="display: none; position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; font-size: 16px; line-height: 1;">YYYY-MM</span>
                         </div>
+                        <select name="job_event_type[]" 
+                            class="border rounded px-3 py-2 sm:w-32 focus:outline-none focus:ring-blue-400 focus:ring-2" required>
+                            <option value="">छान्नुहोस्</option>
+                            <option value="入社">入社 / नियुक्ति</option>
+                            <option value="退職">退職 / राजिनामा</option>
+                        </select>
                         <button type="button" onclick="removeJobField(this)" class="text-red-500 px-2 py-2 block">
                             &#8722;
                         </button>
@@ -978,6 +1036,12 @@
                 <div class="license-row flex flex-col sm:flex-row gap-2 items-start mb-2" style="box-sizing: border-box; width: 100%;">
                     <input type="text" name="license_name[]" placeholder="योग्यताको नाम (उदाहरण: साधारण कार ड्राइभिङ लाइसेन्स)" maxlength="40"
                         class="border rounded px-3 py-2 w-full sm:w-[44%] focus:outline-none focus:ring-blue-400 focus:ring-2" style="box-sizing: border-box; max-width: 100%;">
+                    <div class="date-input-wrapper" style="position: relative; display: inline-block;">
+                        <input type="month" name="license_date[]"
+                            class="border rounded px-3 py-2 sm:w-24 focus:outline-none focus:ring-blue-400 focus:ring-2 date-input-field" 
+                            style="min-width: 150px !important; min-height: 40px !important; width: 150px !important; flex-shrink: 0 !important; padding: 8px 12px !important; font-size: 16px !important; box-sizing: border-box !important; background-color: #ffffff !important; border: 1px solid #d1d5db !important; color: #111827 !important; cursor: pointer !important; display: block !important; visibility: visible !important; opacity: 1 !important;">
+                        <span class="date-placeholder" style="display: none; position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; font-size: 16px; line-height: 1;">YYYY-MM</span>
+                    </div>
                     <select name="license_event_type[]" 
                         class="border rounded px-3 py-2 sm:w-32 focus:outline-none focus:ring-blue-400 focus:ring-2">
                         <option value="">छान्नुहोस्</option>
@@ -985,12 +1049,6 @@
                         <option value="合格">合格 / उत्तीर्ण</option>
                         <option value="結果待ち">結果待ち / परिणामको लागि पर्खनु</option>
                     </select>
-                    <div class="date-input-wrapper" style="position: relative; display: inline-block;">
-                        <input type="month" name="license_date[]"
-                            class="border rounded px-3 py-2 sm:w-24 focus:outline-none focus:ring-blue-400 focus:ring-2 date-input-field" 
-                            style="min-width: 150px !important; min-height: 40px !important; width: 150px !important; flex-shrink: 0 !important; padding: 8px 12px !important; font-size: 16px !important; box-sizing: border-box !important; background-color: #ffffff !important; border: 1px solid #d1d5db !important; color: #111827 !important; cursor: pointer !important; display: block !important; visibility: visible !important; opacity: 1 !important;">
-                        <span class="date-placeholder" style="display: none; position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; font-size: 16px; line-height: 1;">YYYY-MM</span>
-                    </div>
                     <button type="button" onclick="removeLicenseField(this)" class="text-red-500 px-1 ml-1 block">
                         &#8722;
                     </button>
