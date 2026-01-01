@@ -547,9 +547,11 @@ class ResumeController extends Controller
         $pdf->SetTextColor(0, 0, 0);
 
         // 提出日: 年(88, 31), 月(104, 31), 日(114, 31)
-        $pdf->Text(88, 31, date('Y'));
-        $pdf->Text(104, 31, date('n'));
-        $pdf->Text(114, 31, date('j'));
+        // Laravelのタイムゾーン設定を尊重して現在日時を取得
+        $now = Carbon::now();
+        $pdf->Text(88, 31, $now->format('Y'));
+        $pdf->Text(104, 31, $now->format('n'));
+        $pdf->Text(114, 31, $now->format('j'));
 
         // 氏名（ふりがな）: (40, 40)
         $nameKana = trim(($data['last_name_kana'] ?? '').' '.($data['first_name_kana'] ?? ''));
