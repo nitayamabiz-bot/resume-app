@@ -42,9 +42,14 @@
 </style>
 <div class="page-content">
     <h1 class="page-heading">
-        インターネット回線
-        <span class="page-heading-nepali">इन्टरनेट कनेक्सन</span>
+        インターネット回線おすすめランキング
+        <span class="page-heading-nepali">इन्टरनेट कनेक्सन सिफारिस रैंकिङ</span>
     </h1>
+    <div class="page-text">
+        <span class="page-text-nepali">
+            नेट कनेक्सन ढिलो छ वा मूल्य बढी छ भनेर समस्या भएका व्यक्तिहरूको लागि, सस्तो र छिटो, क्यासब्याक पनि धेरै भएको इन्टरनेट कनेक्सनलाई रैंकिङ रूपमा प्रस्तुत गर्दछौं!!
+        </span>
+    </div>
 </div>
 
 @php
@@ -70,6 +75,6 @@ $rankings = [
 ];
 @endphp
 
-<x-ranking-section :rankings="$rankings" />
+<x-ranking-section :rankings="$rankings" :hideTitle="true" />
 @endsection
 

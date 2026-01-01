@@ -1,4 +1,4 @@
-@props(['rankings'])
+@props(['rankings', 'hideTitle' => false])
 
 <style>
     .ranking-section {
@@ -218,10 +218,12 @@
 </style>
 
 <div class="ranking-section">
+    @if(!$hideTitle)
     <h2 class="ranking-title">
         おすすめサイトランキング
         <span class="ranking-title-nepali">सिफारिस गरिएको साइटहरू</span>
     </h2>
+    @endif
 
     @foreach($rankings as $index => $ranking)
         <div class="ranking-item">
