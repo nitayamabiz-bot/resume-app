@@ -1233,9 +1233,9 @@
             <div class="ad-slider">
                 <div class="ad-slides" id="adSlides">
                     <div class="ad-slide">
-                        <a href="{{ route('advertisement.create') }}">
-                            <img src="{{ asset('images/ads/ad1.jpg') }}" alt="広告募集" onerror="this.src='https://via.placeholder.com/1200x120/1160E6/FFFFFF?text=広告募集+Advertisement+Application'">
-                        </a>
+                        {!! '<a href="https://rpx.a8.net/svt/ejp?a8mat=45KOC7+DTQEIA+2HOM+62U35&rakuten=y&a8ejpredirect=http%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2F0ea62065.34400275.0ea62066.204f04c0%2Fa25122762590_45KOC7_DTQEIA_2HOM_62U35%3Fpc%3Dhttp%253A%252F%252Fwww.rakuten.co.jp%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252F" rel="nofollow">
+<img src="http://hbb.afl.rakuten.co.jp/hsb/0eb4bbdb.d3e5aa19.0eb4bbaa.95151395/" border="0"></a>
+<img border="0" width="1" height="1" src="https://www17.a8.net/0.gif?a8mat=45KOC7+DTQEIA+2HOM+62U35" alt="">' !!}
                     </div>
                     @if(file_exists(public_path('images/ads/ad2.jpg')))
                     <div class="ad-slide">
