@@ -19,6 +19,20 @@
 <style>
     /* スマホ表示時のみ適用（768px以下） */
     @media screen and (max-width: 768px) {
+        /* フォームコンテナとフォームのオーバーフロー設定 */
+        .resume-form-container,
+        #resume-form {
+            overflow-x: hidden !important;
+            overflow-y: visible !important;
+        }
+        
+        /* テキストエリアの表示確保 */
+        textarea[name="appeal_points"],
+        textarea[name="self_request"] {
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+        }
         /* iOS Safari/Chromeで日付入力フィールドのテキストを表示 */
         input[type="date"],
         input[type="month"] {
@@ -787,7 +801,7 @@
     });
 </script>
 
-<div class="w-full max-w-2xl mx-auto bg-white rounded-lg shadow-md p-4 sm:p-6" style="box-sizing: border-box; overflow-x: hidden;">
+<div class="w-full max-w-2xl mx-auto bg-white rounded-lg shadow-md p-4 sm:p-6 resume-form-container" style="box-sizing: border-box; overflow-x: hidden; overflow-y: visible;">
     <h2 class="text-2xl font-bold mb-4 text-center">履歴書作成フォーム<span class="block text-base text-gray-500 mt-1">बायोडाटा तयार गर्ने फारम</span></h2>
     
     <!-- 説明文 -->
@@ -1064,16 +1078,22 @@
         <div class="pt-4 border-t border-gray-200">
             <label class="block font-medium mb-1">志望動機・特技・アピールポイント / आफ्नो तयारी, रुचि, विशेषता</label>
             <p class="text-xs text-gray-500 mb-2">रोजगारको लागि तयारी, तपाईंको विशेषता, आफूलाई प्रस्तुत गर्न सक्ने बुँदाहरू लेख्नुहोस्। संक्षेपमा विस्तृत रूपमा लेख्नुहोस्। वैकल्पिक खण्ड हो।</p>
-            <textarea name="appeal_points" rows="4" maxlength="624"
-                class="w-2/3 border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2"
-                placeholder="उदाहरण: जापानमा काम गर्न चाहन्छु। भाषा कौशल प्रयोग गरेर विश्वव्यापी दृष्टिकोणबाट योगदान दिन चाहन्छु。">{{ $resumeData['appeal_points'] ?? old('appeal_points', '') }}</textarea>
+            <div class="flex flex-col sm:flex-row gap-2 items-start">
+                <button type="button" id="ai-generate-btn" onclick="openAIModal()"
+                    class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition whitespace-nowrap w-full sm:w-auto order-2 sm:order-1">
+                    AI生成 / AI निर्माण
+                </button>
+                <textarea name="appeal_points" id="appeal_points" rows="4" maxlength="624"
+                    class="w-full sm:w-2/3 border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2 order-1 sm:order-2"
+                    placeholder="उदाहरण: जापानमा काम गर्न चाहन्छु। भाषा कौशल प्रयोग गरेर विश्वव्यापी दृष्टिकोणबाट योगदान दिन चाहन्छु।">{{ $resumeData['appeal_points'] ?? old('appeal_points', '') }}</textarea>
+            </div>
         </div>
         <!-- 本人希望欄 -->
         <div class="pt-4 border-t border-gray-200">
             <label class="block font-medium mb-1">本人希望欄 / आफ्नो चाहना</label>
             <p class="text-xs text-gray-500 mb-2">कामको ठेगाना, समय, तलबको चाहना भएमा लेख्नुहोस्। विशेष चाहना नभएको खण्डमा खाली राख्न सकिन्छ। वैकल्पिक खण्ड हो।</p>
             <textarea name="self_request" rows="2" maxlength="260"
-                class="w-2/3 border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2"
+                class="w-full sm:w-2/3 border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2"
                 placeholder="उदाहरण: चाहिएको कामको ठेगाना: टोक्यो शहर / कामको समय: हप्ता ५ दिन, ९:०० बजे देखि ६:०० बजे सम्म">{{ $resumeData['self_request'] ?? old('self_request', '') }}</textarea>
         </div>
 
@@ -1085,4 +1105,185 @@
         </div>
     </form>
 </div>
+
+<!-- AI生成モーダル -->
+<div id="ai-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-start sm:items-center justify-center pt-4 sm:pt-8 p-3 sm:p-4" style="box-sizing: border-box; overflow-y: auto;">
+    <div class="bg-white rounded-lg shadow-xl max-w-lg w-full max-h-[85vh] sm:max-h-[80vh] overflow-hidden flex flex-col mt-8 sm:mt-0" style="box-sizing: border-box; margin: 0;">
+        <div class="flex-shrink-0 p-3 sm:p-4 border-b border-gray-200" style="box-sizing: border-box;">
+            <div class="flex justify-between items-center mb-2">
+                <h3 class="text-base sm:text-lg font-bold">AI生成 / AI निर्माण</h3>
+                <button type="button" onclick="closeAIModal()" class="text-gray-500 hover:text-gray-700 text-2xl flex-shrink-0 w-8 h-8 flex items-center justify-center" style="line-height: 1;">&times;</button>
+            </div>
+            <p class="text-xs text-gray-500 leading-tight">
+                当サービスは記載内容に対し一切の責任を負いません。 / यस सेवाले सामग्रीको लागि कुनै जिम्मेवारी लिँदैन।
+            </p>
+        </div>
+        
+        <div class="flex-1 overflow-y-auto p-3 sm:p-4" style="box-sizing: border-box;">
+            <form id="ai-generate-form" onsubmit="generateMotivation(event)" class="space-y-3">
+                <div>
+                    <label class="block font-medium mb-1.5 text-xs sm:text-sm" style="box-sizing: border-box;">
+                        提出する会社名 / प्रस्तुत गर्ने कम्पनीको नाम
+                        <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" id="modal-company-name" name="company_name" required
+                        class="w-full border rounded px-2.5 py-1.5 focus:outline-none focus:ring-blue-400 focus:ring-2 text-sm"
+                        style="box-sizing: border-box;"
+                        placeholder="例: 株式会社〇〇">
+                </div>
+                
+                <div>
+                    <label class="block font-medium mb-1.5 text-xs sm:text-sm" style="box-sizing: border-box;">
+                        思いつく限りの志望動機・特技・アピールポイント / आफ्नो तयारी, रुचि, विशेषता (任意)
+                    </label>
+                    <textarea id="modal-additional-info" name="additional_info" rows="4"
+                        class="w-full border rounded px-2.5 py-1.5 focus:outline-none focus:ring-blue-400 focus:ring-2 resize-none text-sm"
+                        style="box-sizing: border-box;"
+                        placeholder="例: 日本語能力試験N1取得、プログラミング経験3年など"></textarea>
+                </div>
+            </form>
+        </div>
+        
+        <div class="flex-shrink-0 p-3 sm:p-4 border-t border-gray-200 bg-gray-50" style="box-sizing: border-box;">
+            <div class="flex flex-col sm:flex-row justify-end gap-2">
+                <button type="button" onclick="closeAIModal()"
+                    class="px-3 py-1.5 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition w-full sm:w-auto text-sm"
+                    style="box-sizing: border-box;">
+                    キャンセル
+                </button>
+                <button type="submit" id="ai-generate-submit-btn" form="ai-generate-form"
+                    class="px-3 py-1.5 bg-purple-600 text-white rounded hover:bg-purple-700 transition w-full sm:w-auto text-sm"
+                    style="box-sizing: border-box;">
+                    AI生成
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // AIモーダルの開閉
+    function openAIModal() {
+        document.getElementById('ai-modal').classList.remove('hidden');
+    }
+    
+    function closeAIModal() {
+        document.getElementById('ai-modal').classList.add('hidden');
+        document.getElementById('ai-generate-form').reset();
+    }
+    
+    // モーダル外をクリックで閉じる
+    document.getElementById('ai-modal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeAIModal();
+        }
+    });
+    
+    // 志望動機をAI生成
+    async function generateMotivation(event) {
+        event.preventDefault();
+        
+        const submitBtn = document.getElementById('ai-generate-submit-btn');
+        const originalText = submitBtn.textContent;
+        submitBtn.disabled = true;
+        submitBtn.textContent = '生成中... / निर्माण गर्दै...';
+        
+        // フォームから職歴情報を取得
+        const workHistory = [];
+        document.querySelectorAll('.job-row').forEach((row, index) => {
+            const companyName = row.querySelector('input[name="company_name[]"]').value.trim();
+            const eventType = row.querySelector('select[name="job_event_type[]"]').value;
+            const date = row.querySelector('input[name="job_date[]"]').value;
+            
+            if (companyName && eventType && date) {
+                workHistory.push({
+                    company_name: companyName,
+                    event_type: eventType,
+                    date: date,
+                });
+            }
+        });
+        
+        const formData = {
+            company_name: document.getElementById('modal-company-name').value.trim(),
+            additional_info: document.getElementById('modal-additional-info').value.trim(),
+            work_history: workHistory,
+        };
+        
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || 
+                         document.querySelector('input[name="_token"]')?.value || 
+                         '{{ csrf_token() }}';
+        
+        try {
+            // 現在のページのベースURLから相対パスを生成
+            const baseUrl = window.location.origin;
+            const url = baseUrl + '/resume/generate-motivation';
+            
+            console.log('=== AI Generate Request ===');
+            console.log('URL:', url);
+            console.log('Method: POST');
+            console.log('Current location:', window.location.href);
+            console.log('Base URL:', baseUrl);
+            console.log('CSRF Token:', csrfToken ? 'Found (' + csrfToken.substring(0, 10) + '...)' : 'Not found');
+            console.log('Form data:', formData);
+            
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+            
+            console.log('Response status:', response.status);
+            console.log('Response URL:', response.url);
+            console.log('Response headers:', [...response.headers.entries()]);
+            
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('Error response:', errorText);
+                let errorMessage = '志望動機の生成に失敗しました。';
+                try {
+                    const errorData = JSON.parse(errorText);
+                    errorMessage = errorData.message || errorMessage;
+                } catch (e) {
+                    if (response.status === 404) {
+                        errorMessage = 'エラー: ページが見つかりません（404）。ページをリロードして再度お試しください。';
+                    } else {
+                        errorMessage = `エラー: ${response.status} ${response.statusText}`;
+                    }
+                }
+                alert(errorMessage);
+                return;
+            }
+            
+            const data = await response.json();
+            console.log('Response data:', data);
+            
+            if (data.success) {
+                // 生成された志望動機をテキストエリアに挿入
+                const appealPointsTextarea = document.getElementById('appeal_points');
+                appealPointsTextarea.value = data.motivation;
+                
+                // 行数制限を適用
+                if (typeof limitLineCount === 'function') {
+                    limitLineCount(appealPointsTextarea, 11);
+                }
+                
+                // モーダルを閉じる
+                closeAIModal();
+            } else {
+                alert('エラー: ' + (data.message || '志望動機の生成に失敗しました。'));
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('エラーが発生しました。ページをリロードして再度お試しください。\n詳細: ' + error.message);
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+        }
+    }
+</script>
 

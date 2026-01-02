@@ -43,10 +43,11 @@ Route::get('/resume', [ResumeController::class, 'index'])->name('resume.index');
 
 Route::get('/create', [ResumeController::class, 'create'])->name('resume.create');
 Route::post('/resume/confirm', [ResumeController::class, 'confirm'])->name('resume.confirm');
-Route::post('/resume', [ResumeController::class, 'store'])->name('resume.store');
 Route::post('/resume/save', [ResumeController::class, 'save'])->name('resume.save');
 Route::get('/resume/choose-auth', [ResumeController::class, 'chooseAuth'])->name('resume.choose-auth');
 Route::post('/resume-download', [ResumeController::class, 'download'])->name('resume.download');
+Route::post('/resume/generate-motivation', [ResumeController::class, 'generateMotivation'])->name('resume.generate-motivation');
+Route::post('/resume', [ResumeController::class, 'store'])->name('resume.store');
 
 // 職務経歴書関連のルート（仮）
 Route::get('/career', function () {

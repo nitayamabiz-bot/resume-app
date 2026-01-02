@@ -7,6 +7,7 @@ use App\Models\ResumeSubmission;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
 use setasign\Fpdi\Tcpdf\Fpdi;
@@ -906,6 +907,160 @@ class ResumeController extends Controller
         } catch (\Exception $e) {
             \Log::warning('Failed to ensure address_kana column exists: '.$e->getMessage());
             // エラーが発生しても処理を続行（カラムが既に存在する可能性がある）
+        }
+    }
+
+    /**
+     * Gemini APIを使用して志望動機を生成
+     */
+    public function generateMotivation(Request $request)
+    {
+        \Log::info('generateMotivation called', [
+            'method' => $request->method(),
+            'url' => $request->fullUrl(),
+            'path' => $request->path(),
+        ]);
+
+        $request->validate([
+            'company_name' => 'required|string|max:255',
+            'additional_info' => 'nullable|string|max:2000',
+            'work_history' => 'nullable|array',
+        ]);
+
+        $companyName = $request->input('company_name');
+        $additionalInfo = $request->input('additional_info', '');
+        $workHistory = $request->input('work_history', []);
+
+        // 職歴情報をテキストに変換
+        $workHistoryText = '';
+        if (! empty($workHistory)) {
+            foreach ($workHistory as $work) {
+                if (! empty($work['company_name']) && ! empty($work['event_type']) && ! empty($work['date'])) {
+                    $date = Carbon::parse($work['date'])->format('Y年m月');
+                    $workHistoryText .= "・{$work['company_name']} ({$date} {$work['event_type']})\n";
+                }
+            }
+        }
+
+        // Gemini APIのプロンプトを作成
+        $prompt = "以下の情報を基に、履歴書の志望動機を生成してください。\n\n";
+        $prompt .= "【重要な指示】\n";
+        $prompt .= "1. 提出する会社名は一切表示せず、「貴社」で統一してください。\n";
+        $prompt .= "2. 多少の誇張は許容しますが、嘘や根拠のないことは記載しないでください。\n";
+        $prompt .= "3. 文字数は200文字〜300文字（制限624文字の約3割〜5割）に収めてください。改行も文字数としてカウントします。必ずこの範囲内で生成してください。\n";
+        $prompt .= "4. 政治的、宗教的、ハラスメント的、暴言など、一般常識の範囲を外れる言葉は一切使用しないでください。\n";
+        $prompt .= "5. ターゲットはネパール人留学生なので、シンプルで自然な日本語を使用してください。過度に丁寧すぎる表現や、AIが生成したとわかるような型にはまった表現は避けてください。\n";
+        $prompt .= "6. 職歴情報を活用して、具体的で説得力のある志望動機を作成してください。ただし、過度に複雑な表現や、高次元すぎる記述は避けてください。\n";
+        $prompt .= "7. 「〜させていただきます」「〜と考えております」などの丁寧すぎる表現を避け、「〜します」「〜と考えます」など、自然でシンプルな表現を使用してください。\n";
+        $prompt .= "8. 「理念に共感しました」「貴社のビジネスモデルに興味を持ちました」など、誰でも書ける曖昧で抽象的な表現は絶対に避けてください。\n";
+        $prompt .= "9. 具体的な経験やスキル、職歴を活用した、その人だけが書けるような具体的で個性的な内容にしてください。\n";
+        $prompt .= "10. 人間が書いたような自然な文章になるようにしてください。型にはまった表現や、テンプレートのような文章は避けてください。\n\n";
+
+        if (! empty($workHistoryText)) {
+            $prompt .= "【職歴情報】\n{$workHistoryText}\n";
+        }
+
+        if (! empty($additionalInfo)) {
+            $prompt .= "【追加情報（志望動機・特技・アピールポイントの材料）】\n{$additionalInfo}\n\n";
+        }
+
+        $prompt .= "上記の情報を基に、履歴書の志望動機欄に記入する適切な志望動機を生成してください。\n";
+        $prompt .= '文字数は200文字〜300文字（改行も文字数としてカウント、制限624文字の約3割〜5割）に収めてください。必ずこの範囲内で生成してください。\n';
+        $prompt .= '「理念に共感しました」など誰でも書ける曖昧な表現は絶対に避け、職歴や経験を活用した具体的で個性的な内容にしてください。\n';
+        $prompt .= '自然で人間らしい文章にしてください。AIが生成したとわかるような型にはまった表現は避けてください。';
+
+        try {
+            $apiKey = 'AIzaSyCdpgT1Pxmc2Yhor1Wj5YiejcFBcmY8zDY';
+            // Gemini API 2.5 Flash を使用（v1betaでgemini-2.5-flashを使用）
+            $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={$apiKey}";
+
+            \Log::info('Gemini API request', [
+                'url' => $url,
+                'prompt_length' => mb_strlen($prompt, 'UTF-8'),
+            ]);
+
+            $response = Http::post($url, [
+                'contents' => [
+                    [
+                        'parts' => [
+                            [
+                                'text' => $prompt,
+                            ],
+                        ],
+                    ],
+                ],
+            ]);
+
+            if (! $response->successful()) {
+                $errorBody = $response->body();
+                \Log::error('Gemini API HTTP error', [
+                    'status' => $response->status(),
+                    'body' => $errorBody,
+                    'url' => $url,
+                ]);
+
+                $errorMessage = '志望動機の生成に失敗しました。APIエラー: '.$response->status();
+                if ($responseData = $response->json()) {
+                    if (isset($responseData['error']['message'])) {
+                        $errorMessage .= ' - '.$responseData['error']['message'];
+                    }
+                }
+
+                return response()->json([
+                    'success' => false,
+                    'message' => $errorMessage,
+                ], 500);
+            }
+
+            $responseData = $response->json();
+
+            if (isset($responseData['candidates'][0]['content']['parts'][0]['text'])) {
+                $generatedText = $responseData['candidates'][0]['content']['parts'][0]['text'];
+                // 前後の空白を削除
+                $generatedText = trim($generatedText);
+                // 文字数制限をチェック（改行も含めて200文字〜300文字、最大624文字以内）
+                $textLength = mb_strlen($generatedText, 'UTF-8');
+                if ($textLength > 624) {
+                    // 624文字を超えている場合は切り詰める
+                    $generatedText = mb_substr($generatedText, 0, 624, 'UTF-8');
+                    // 文末が切れないように、最後の句点まで戻す
+                    $lastPeriod = mb_strrpos($generatedText, '。', 0, 'UTF-8');
+                    if ($lastPeriod !== false && $lastPeriod > 500) {
+                        $generatedText = mb_substr($generatedText, 0, $lastPeriod + 1, 'UTF-8');
+                    }
+                } elseif ($textLength > 300) {
+                    // 300文字を超えている場合は、300文字まで切り詰める
+                    $generatedText = mb_substr($generatedText, 0, 300, 'UTF-8');
+                    // 文末が切れないように、最後の句点まで戻す
+                    $lastPeriod = mb_strrpos($generatedText, '。', 0, 'UTF-8');
+                    if ($lastPeriod !== false && $lastPeriod > 200) {
+                        $generatedText = mb_substr($generatedText, 0, $lastPeriod + 1, 'UTF-8');
+                    }
+                }
+
+                return response()->json([
+                    'success' => true,
+                    'motivation' => $generatedText,
+                ]);
+            } else {
+                \Log::error('Gemini API response error: '.json_encode($responseData));
+                $errorMessage = '志望動機の生成に失敗しました。';
+                if (isset($responseData['error'])) {
+                    $errorMessage .= ' ('.($responseData['error']['message'] ?? '不明なエラー').')';
+                }
+
+                return response()->json([
+                    'success' => false,
+                    'message' => $errorMessage,
+                ], 500);
+            }
+        } catch (\Exception $e) {
+            \Log::error('Gemini API error: '.$e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => '志望動機の生成中にエラーが発生しました。',
+            ], 500);
         }
     }
 }
