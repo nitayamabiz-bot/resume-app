@@ -982,11 +982,14 @@ class ResumeController extends Controller
             $apiKey = config('services.gemini.api_key');
 
             if (empty($apiKey)) {
-                \Log::error('Gemini API key is not configured');
+                \Log::error('Gemini API key is not configured', [
+                    'env_value' => env('GEMINI_API_KEY'),
+                    'config_value' => config('services.gemini.api_key'),
+                ]);
 
                 return response()->json([
                     'success' => false,
-                    'message' => 'AI生成サービスが利用できません。設定を確認してください。',
+                    'message' => 'AI生成サービスが利用できません。GEMINI_API_KEYが.envファイルに正しく設定されているか確認してください。',
                 ], 500);
             }
 
