@@ -1079,20 +1079,20 @@
             <label class="block font-medium mb-1">志望動機・特技・アピールポイント / आफ्नो तयारी, रुचि, विशेषता</label>
             <p class="text-xs text-gray-500 mb-2">रोजगारको लागि तयारी, तपाईंको विशेषता, आफूलाई प्रस्तुत गर्न सक्ने बुँदाहरू लेख्नुहोस्। संक्षेपमा विस्तृत रूपमा लेख्नुहोस्। वैकल्पिक खण्ड हो।</p>
             <div class="flex flex-col sm:flex-row gap-2 items-start">
+                <textarea name="appeal_points" id="appeal_points" rows="4" maxlength="624"
+                    class="w-full sm:flex-1 border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2"
+                    placeholder="उदाहरण: जापानमा काम गर्न चाहन्छु। भाषा कौशल प्रयोग गरेर विश्वव्यापी दृष्टिकोणबाट योगदान दिन चाहन्छु।">{{ $resumeData['appeal_points'] ?? old('appeal_points', '') }}</textarea>
                 @auth
                     <button type="button" id="ai-generate-btn" onclick="openAIModal()"
-                        class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition whitespace-nowrap w-full sm:w-auto order-2 sm:order-1">
+                        class="w-full sm:w-auto px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition whitespace-nowrap flex-shrink-0">
                         AI生成 / AI निर्माण
                     </button>
                 @else
                     <button type="button" id="ai-generate-btn" onclick="showLoginRequiredMessage()"
-                        class="px-4 py-2 bg-gray-400 text-white rounded cursor-not-allowed transition whitespace-nowrap w-full sm:w-auto order-2 sm:order-1" disabled>
+                        class="w-full sm:w-auto px-4 py-2 bg-gray-400 text-white rounded cursor-not-allowed transition whitespace-nowrap flex-shrink-0" disabled>
                         AI生成 / AI निर्माण
                     </button>
                 @endauth
-                <textarea name="appeal_points" id="appeal_points" rows="4" maxlength="624"
-                    class="w-full sm:w-2/3 border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2 order-1 sm:order-2"
-                    placeholder="उदाहरण: जापानमा काम गर्न चाहन्छु। भाषा कौशल प्रयोग गरेर विश्वव्यापी दृष्टिकोणबाट योगदान दिन चाहन्छु।">{{ $resumeData['appeal_points'] ?? old('appeal_points', '') }}</textarea>
             </div>
         </div>
         <!-- 本人希望欄 -->
@@ -1122,10 +1122,6 @@
                 <button type="button" onclick="closeAIModal()" class="text-gray-500 hover:text-gray-700 text-2xl flex-shrink-0 w-8 h-8 flex items-center justify-center" style="line-height: 1;">&times;</button>
             </div>
             <div class="mb-2 p-2 bg-blue-50 rounded text-xs text-gray-700 leading-tight">
-                <p class="mb-1"><strong>【使い方】</strong></p>
-                <p class="mb-1">1. 提出する会社名を入力してください（必須）</p>
-                <p class="mb-1">2. 職歴や特技、アピールポイントなどを入力してください（任意）</p>
-                <p class="mb-2">3. 「AI生成」ボタンをクリックすると、入力内容を基に志望動機が自動生成されます</p>
                 <p class="mb-1" style="font-family: 'Noto Sans Devanagari', Arial, sans-serif;"><strong>【प्रयोग विधि】</strong></p>
                 <p class="mb-1" style="font-family: 'Noto Sans Devanagari', Arial, sans-serif;">१. प्रस्तुत गर्ने कम्पनीको नाम प्रविष्ट गर्नुहोस् (आवश्यक)</p>
                 <p class="mb-1" style="font-family: 'Noto Sans Devanagari', Arial, sans-serif;">२. कामको अनुभव, विशेषता, आफूलाई प्रस्तुत गर्न सक्ने बुँदाहरू प्रविष्ट गर्नुहोस् (वैकल्पिक)</p>
@@ -1151,7 +1147,7 @@
                 
                 <div>
                     <label class="block font-medium mb-1.5 text-xs sm:text-sm" style="box-sizing: border-box;">
-                        思いつく限りの志望動機・特技・アピールポイント / आफ्नो तयारी, रुचि, विशेषता (任意)
+                        志望動機、アピールポイントを簡単に書いてください。言語は問いません。
                     </label>
                     <textarea id="modal-additional-info" name="additional_info" rows="4"
                         class="w-full border rounded px-2.5 py-1.5 focus:outline-none focus:ring-blue-400 focus:ring-2 resize-none text-sm"
@@ -1171,7 +1167,7 @@
                 <button type="submit" id="ai-generate-submit-btn" form="ai-generate-form"
                     class="px-3 py-1.5 bg-purple-600 text-white rounded hover:bg-purple-700 transition w-full sm:w-auto text-sm"
                     style="box-sizing: border-box;">
-                    AI生成
+                    AI生成 / AI निर्माण
                 </button>
             </div>
         </div>
