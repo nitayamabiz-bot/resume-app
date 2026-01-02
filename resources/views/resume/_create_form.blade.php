@@ -1121,6 +1121,16 @@
                 <h3 class="text-base sm:text-lg font-bold">AI生成 / AI निर्माण</h3>
                 <button type="button" onclick="closeAIModal()" class="text-gray-500 hover:text-gray-700 text-2xl flex-shrink-0 w-8 h-8 flex items-center justify-center" style="line-height: 1;">&times;</button>
             </div>
+            <div class="mb-2 p-2 bg-blue-50 rounded text-xs text-gray-700 leading-tight">
+                <p class="mb-1"><strong>【使い方】</strong></p>
+                <p class="mb-1">1. 提出する会社名を入力してください（必須）</p>
+                <p class="mb-1">2. 職歴や特技、アピールポイントなどを入力してください（任意）</p>
+                <p class="mb-2">3. 「AI生成」ボタンをクリックすると、入力内容を基に志望動機が自動生成されます</p>
+                <p class="mb-1" style="font-family: 'Noto Sans Devanagari', Arial, sans-serif;"><strong>【प्रयोग विधि】</strong></p>
+                <p class="mb-1" style="font-family: 'Noto Sans Devanagari', Arial, sans-serif;">१. प्रस्तुत गर्ने कम्पनीको नाम प्रविष्ट गर्नुहोस् (आवश्यक)</p>
+                <p class="mb-1" style="font-family: 'Noto Sans Devanagari', Arial, sans-serif;">२. कामको अनुभव, विशेषता, आफूलाई प्रस्तुत गर्न सक्ने बुँदाहरू प्रविष्ट गर्नुहोस् (वैकल्पिक)</p>
+                <p style="font-family: 'Noto Sans Devanagari', Arial, sans-serif;">३. "AI निर्माण" बटन थिच्नुहोस् भने, प्रविष्ट गरेको जानकारीको आधारमा तयारी स्वचालित रूपमा निर्माण हुनेछ</p>
+            </div>
             <p class="text-xs text-gray-500 leading-tight">
                 当サービスは記載内容に対し一切の責任を負いません。 / यस सेवाले सामग्रीको लागि कुनै जिम्मेवारी लिँदैन।
             </p>
