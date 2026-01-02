@@ -1305,15 +1305,23 @@
                     limitLineCount(appealPointsTextarea, 11);
                 }
                 
+                // 生成完了フラグをリセット
+                isGenerating = false;
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+                
                 // モーダルを閉じる
-                closeAIModal();
+                document.getElementById('ai-modal').classList.add('hidden');
+                document.getElementById('ai-generate-form').reset();
             } else {
                 alert('エラー: ' + (data.message || '志望動機の生成に失敗しました。'));
+                isGenerating = false;
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
             }
         } catch (error) {
             console.error('Error:', error);
             alert('エラーが発生しました。ページをリロードして再度お試しください。\n詳細: ' + error.message);
-        } finally {
             isGenerating = false;
             submitBtn.disabled = false;
             submitBtn.textContent = originalText;
