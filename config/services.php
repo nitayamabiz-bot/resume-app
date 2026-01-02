@@ -36,7 +36,16 @@ return [
     ],
 
     'gemini' => [
-        'api_key' => env('GEMINI_API_KEY'),
+        'api_key' => (function () {
+            $iniPath = config_path('api_keys.ini');
+            if (function_exists('parse_ini_file') && file_exists($iniPath)) {
+                $ini = @parse_ini_file($iniPath, true);
+                if ($ini !== false && isset($ini['gemini']['api_key']) && ! empty($ini['gemini']['api_key'])) {
+                    return $ini['gemini']['api_key'];
+                }
+            }
+            return env('GEMINI_API_KEY');
+        })(),
     ],
 
 ];
