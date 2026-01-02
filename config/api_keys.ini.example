@@ -1,0 +1,6 @@
+; API Keys Configuration Template
+; このファイルをコピーして api_keys.ini を作成し、実際のAPIキーを設定してください。
+
+[gemini]
+api_key=YOUR_GEMINI_API_KEY_HERE
+
