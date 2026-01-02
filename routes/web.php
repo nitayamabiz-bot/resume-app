@@ -54,6 +54,11 @@ Route::get('/career', function () {
     return view('career.index');
 })->name('career.index');
 
+// プライバシーポリシー
+Route::get('/privacy-policy', function () {
+    return view('privacy-policy');
+})->name('privacy-policy');
+
 // 広告募集関連のルート
 Route::get('/advertisement', [AdvertisementController::class, 'create'])->name('advertisement.create');
 Route::post('/advertisement', [AdvertisementController::class, 'store'])->name('advertisement.store');

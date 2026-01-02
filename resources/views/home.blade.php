@@ -305,6 +305,13 @@
         </div>
     </div>
     @endif
+
+    <!-- プライバシーポリシーリンク -->
+    <div class="text-center mt-6 mb-8">
+        <a href="{{ route('privacy-policy') }}" class="text-blue-600 hover:text-blue-800 underline text-sm">
+            プライバシーポリシー
+        </a>
+    </div>
 </div>
 @endsection
 
