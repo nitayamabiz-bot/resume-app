@@ -5,3 +5,6 @@ __MACOSX/
 database.sqlite
 storage/logs/
 storage/framework/views/
+.env
+.env.backup
+.env.production

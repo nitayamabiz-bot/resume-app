@@ -979,7 +979,17 @@ class ResumeController extends Controller
         $prompt .= '自然で人間らしい文章にしてください。AIが生成したとわかるような型にはまった表現は避けてください。';
 
         try {
-            $apiKey = 'AIzaSyCdpgT1Pxmc2Yhor1Wj5YiejcFBcmY8zDY';
+            $apiKey = config('services.gemini.api_key');
+
+            if (empty($apiKey)) {
+                \Log::error('Gemini API key is not configured');
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'AI生成サービスが利用できません。設定を確認してください。',
+                ], 500);
+            }
+
             // Gemini API 2.5 Flash を使用（v1betaでgemini-2.5-flashを使用）
             $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={$apiKey}";
 
