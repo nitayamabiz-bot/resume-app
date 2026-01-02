@@ -1073,15 +1073,6 @@
                     </span>
                     <span class="nav-item-sub">रोजगार</span>
                 </a>
-                <a href="{{ route('bank') }}" class="nav-item {{ request()->routeIs('bank') ? 'active' : '' }}">
-                    <span class="nav-item-main">
-                        <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                        </svg>
-                        銀行口座
-                    </span>
-                    <span class="nav-item-sub">बैंक खाता</span>
-                </a>
                 <a href="{{ route('internet') }}" class="nav-item {{ request()->routeIs('internet') ? 'active' : '' }}">
                     <span class="nav-item-main">
                         <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1099,6 +1090,15 @@
                         SIM
                     </span>
                     <span class="nav-item-sub">सिम</span>
+                </a>
+                <a href="{{ route('campaign') }}" class="nav-item {{ request()->routeIs('campaign') ? 'active' : '' }}">
+                    <span class="nav-item-main">
+                        <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path>
+                        </svg>
+                        キャンペーン
+                    </span>
+                    <span class="nav-item-sub">अभियान</span>
                 </a>
                 <a href="{{ route('resume.index') }}" class="nav-item {{ request()->routeIs('resume.*') ? 'active' : '' }}">
                     <span class="nav-item-main">
@@ -1151,15 +1151,6 @@
                     </span>
                     <span class="nav-item-sub">रोजगार</span>
                 </a>
-                <a href="{{ route('bank') }}" class="nav-item {{ request()->routeIs('bank') ? 'active' : '' }}">
-                    <span class="nav-item-main">
-                        <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                        </svg>
-                        銀行口座
-                    </span>
-                    <span class="nav-item-sub">बैंक खाता</span>
-                </a>
                 <a href="{{ route('internet') }}" class="nav-item {{ request()->routeIs('internet') ? 'active' : '' }}">
                     <span class="nav-item-main">
                         <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1177,6 +1168,15 @@
                         SIM
                     </span>
                     <span class="nav-item-sub">सिम</span>
+                </a>
+                <a href="{{ route('campaign') }}" class="nav-item {{ request()->routeIs('campaign') ? 'active' : '' }}">
+                    <span class="nav-item-main">
+                        <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path>
+                        </svg>
+                        キャンペーン
+                    </span>
+                    <span class="nav-item-sub">अभियान</span>
                 </a>
                 <a href="{{ route('resume.index') }}" class="nav-item {{ request()->routeIs('resume.*') ? 'active' : '' }}">
                     <span class="nav-item-main">

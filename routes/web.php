@@ -26,9 +26,9 @@ Route::get('/job', function () {
     return view('pages.job');
 })->name('job');
 
-Route::get('/bank', function () {
-    return view('pages.bank');
-})->name('bank');
+Route::get('/campaign', function () {
+    return view('pages.campaign');
+})->name('campaign');
 
 Route::get('/internet', function () {
     return view('pages.internet');
