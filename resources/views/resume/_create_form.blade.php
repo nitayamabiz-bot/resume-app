@@ -1079,10 +1079,17 @@
             <label class="block font-medium mb-1">志望動機・特技・アピールポイント / आफ्नो तयारी, रुचि, विशेषता</label>
             <p class="text-xs text-gray-500 mb-2">रोजगारको लागि तयारी, तपाईंको विशेषता, आफूलाई प्रस्तुत गर्न सक्ने बुँदाहरू लेख्नुहोस्। संक्षेपमा विस्तृत रूपमा लेख्नुहोस्। वैकल्पिक खण्ड हो।</p>
             <div class="flex flex-col sm:flex-row gap-2 items-start">
-                <button type="button" id="ai-generate-btn" onclick="openAIModal()"
-                    class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition whitespace-nowrap w-full sm:w-auto order-2 sm:order-1">
-                    AI生成 / AI निर्माण
-                </button>
+                @auth
+                    <button type="button" id="ai-generate-btn" onclick="openAIModal()"
+                        class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition whitespace-nowrap w-full sm:w-auto order-2 sm:order-1">
+                        AI生成 / AI निर्माण
+                    </button>
+                @else
+                    <button type="button" id="ai-generate-btn" onclick="showLoginRequiredMessage()"
+                        class="px-4 py-2 bg-gray-400 text-white rounded cursor-not-allowed transition whitespace-nowrap w-full sm:w-auto order-2 sm:order-1" disabled>
+                        AI生成 / AI निर्माण
+                    </button>
+                @endauth
                 <textarea name="appeal_points" id="appeal_points" rows="4" maxlength="624"
                     class="w-full sm:w-2/3 border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2 order-1 sm:order-2"
                     placeholder="उदाहरण: जापानमा काम गर्न चाहन्छु। भाषा कौशल प्रयोग गरेर विश्वव्यापी दृष्टिकोणबाट योगदान दिन चाहन्छु।">{{ $resumeData['appeal_points'] ?? old('appeal_points', '') }}</textarea>
@@ -1162,19 +1169,33 @@
 </div>
 
 <script>
+    // 連打防止フラグ
+    let isGenerating = false;
+    
+    // 未ログイン時のメッセージ表示
+    function showLoginRequiredMessage() {
+        alert('会員登録してログインしてください / कृपया खाता खोल्नुहोस् र लगइन गर्नुहोस्');
+    }
+    
     // AIモーダルの開閉
     function openAIModal() {
+        if (isGenerating) {
+            return;
+        }
         document.getElementById('ai-modal').classList.remove('hidden');
     }
     
     function closeAIModal() {
+        if (isGenerating) {
+            return;
+        }
         document.getElementById('ai-modal').classList.add('hidden');
         document.getElementById('ai-generate-form').reset();
     }
     
     // モーダル外をクリックで閉じる
     document.getElementById('ai-modal').addEventListener('click', function(e) {
-        if (e.target === this) {
+        if (e.target === this && !isGenerating) {
             closeAIModal();
         }
     });
@@ -1183,8 +1204,14 @@
     async function generateMotivation(event) {
         event.preventDefault();
         
+        // 連打防止
+        if (isGenerating) {
+            return;
+        }
+        
         const submitBtn = document.getElementById('ai-generate-submit-btn');
         const originalText = submitBtn.textContent;
+        isGenerating = true;
         submitBtn.disabled = true;
         submitBtn.textContent = '生成中... / निर्माण गर्दै...';
         
@@ -1281,6 +1308,7 @@
             console.error('Error:', error);
             alert('エラーが発生しました。ページをリロードして再度お試しください。\n詳細: ' + error.message);
         } finally {
+            isGenerating = false;
             submitBtn.disabled = false;
             submitBtn.textContent = originalText;
         }

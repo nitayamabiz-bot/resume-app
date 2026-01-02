@@ -915,10 +915,19 @@ class ResumeController extends Controller
      */
     public function generateMotivation(Request $request)
     {
+        // 会員限定機能
+        if (! Auth::check()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'この機能は会員限定です。ログインしてください。',
+            ], 403);
+        }
+
         \Log::info('generateMotivation called', [
             'method' => $request->method(),
             'url' => $request->fullUrl(),
             'path' => $request->path(),
+            'user_id' => Auth::id(),
         ]);
 
         $request->validate([
