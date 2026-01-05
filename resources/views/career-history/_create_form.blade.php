@@ -102,6 +102,10 @@
         let count = container.children.length;
         if (count >= 10) return;
         let clone = container.children[0].cloneNode(true);
+        // 追加される項目にも区切り線を設定
+        clone.style.borderBottom = '1px solid #f3f4f6';
+        clone.style.paddingBottom = '16px';
+        clone.style.marginBottom = '16px';
         Array.from(clone.querySelectorAll('input, textarea, select')).forEach(input => {
             if (input.type === 'month' || input.tagName === 'SELECT') {
                 input.value = '';
@@ -551,11 +555,11 @@
         </div>
         
         <!-- 職務経歴 -->
-        <div class="pt-4 border-t border-gray-200">
+        <div class="pt-4" style="border-top: 1px solid #f3f4f6 !important;">
             <label class="block font-medium mb-1">職務経歴 / कार्य अनुभव<span class="text-red-500">*</span></label>
             <p class="text-xs text-gray-500 mb-2">कम्पनीको नाम, कामको अवधि, र कामको विवरण लेख्नुहोस्। धेरै काम भएको खण्डमा "+" बटन थिचेर थप्नुहोस्।</p>
             <div id="careers-container">
-                <div class="career-row pb-4 mb-4 border-b border-gray-200">
+                <div class="career-row pb-4 mb-4" style="border-bottom: 1px solid #f3f4f6 !important;">
                     <div class="space-y-3">
                         <!-- 会社名 -->
                         <div class="mb-2">
@@ -663,7 +667,7 @@
         </div>
         
         <!-- 職務要約 -->
-        <div class="pt-4 border-t border-gray-200">
+        <div style="border-top: 1px solid #f3f4f6 !important; padding-top: 1rem !important;">
             <label class="block font-medium mb-1">職務要約 / कार्य सारांश</label>
             <p class="text-xs text-gray-500 mb-2">आफ्नो कामको सारांश लेख्नुहोस्। वैकल्पिक खण्ड हो।</p>
             <textarea name="job_summary" rows="5"
@@ -673,7 +677,7 @@
         </div>
         
         <!-- 自己PR -->
-        <div class="pt-4 border-t border-gray-200">
+        <div class="pt-4" style="border-top: 1px solid #f3f4f6 !important;">
             <label class="block font-medium mb-1">自己PR / आफ्नो PR</label>
             <p class="text-xs text-gray-500 mb-2">आफ्नो बारेमा लेख्नुहोस्। वैकल्पिक खण्ड हो।</p>
             <textarea name="self_pr" rows="5"
