@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\Admin\ResumeSubmissionController;
 use App\Http\Controllers\AdvertisementController;
+use App\Http\Controllers\CareerHistoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResumeController;
@@ -49,10 +50,14 @@ Route::post('/resume-download', [ResumeController::class, 'download'])->name('re
 Route::post('/resume/generate-motivation', [ResumeController::class, 'generateMotivation'])->name('resume.generate-motivation');
 Route::post('/resume', [ResumeController::class, 'store'])->name('resume.store');
 
-// 職務経歴書関連のルート（仮）
-Route::get('/career', function () {
-    return view('career.index');
-})->name('career.index');
+// 職務経歴書関連のルート
+Route::get('/career-history', [CareerHistoryController::class, 'index'])->name('career-history.index');
+Route::get('/career-history/create', [CareerHistoryController::class, 'create'])->name('career-history.create');
+Route::post('/career-history/confirm', [CareerHistoryController::class, 'confirm'])->name('career-history.confirm');
+Route::post('/career-history/save', [CareerHistoryController::class, 'save'])->name('career-history.save');
+Route::post('/career-history/download', [CareerHistoryController::class, 'download'])->name('career-history.download');
+Route::post('/career-history/generate-career-info', [CareerHistoryController::class, 'generateCareerInfo'])->name('career-history.generate-career-info');
+Route::post('/career-history', [CareerHistoryController::class, 'store'])->name('career-history.store');
 
 // プライバシーポリシー
 Route::get('/privacy-policy', function () {
@@ -74,6 +79,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('announcements', AdminAnnouncementController::class);
         Route::resource('news', AdminNewsController::class);
         Route::resource('resume-submissions', ResumeSubmissionController::class)->only(['index', 'show']);
+        Route::resource('career-history-submissions', \App\Http\Controllers\Admin\CareerHistorySubmissionController::class)->only(['index', 'show']);
         Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
         Route::post('users/{user}/block', [\App\Http\Controllers\Admin\UserController::class, 'block'])->name('users.block');
         Route::post('users/{user}/unblock', [\App\Http\Controllers\Admin\UserController::class, 'unblock'])->name('users.unblock');

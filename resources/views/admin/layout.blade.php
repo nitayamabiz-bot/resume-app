@@ -159,6 +159,10 @@
                        class="px-6 py-3 text-sm font-medium {{ request()->routeIs('admin.resume-submissions.*') ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700 hover:border-b-2 hover:border-gray-300' }}">
                         履歴書 / रिजुमे
                     </a>
+                    <a href="{{ route('admin.career-history-submissions.index') }}" 
+                       class="px-6 py-3 text-sm font-medium {{ request()->routeIs('admin.career-history-submissions.*') ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700 hover:border-b-2 hover:border-gray-300' }}">
+                        職務経歴書 / कार्य अनुभव
+                    </a>
                     <a href="{{ route('admin.users.index') }}" 
                        class="px-6 py-3 text-sm font-medium {{ request()->routeIs('admin.users.*') ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700 hover:border-b-2 hover:border-gray-300' }}">
                         会員情報 / सदस्य जानकारी

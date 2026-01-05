@@ -1114,58 +1114,58 @@
 </div>
 
 <!-- AI生成モーダル -->
-<div id="ai-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-start sm:items-center justify-center pt-4 sm:pt-8 p-3 sm:p-4" style="box-sizing: border-box; overflow-y: auto;">
-    <div class="bg-white rounded-lg shadow-xl max-w-lg w-full max-h-[85vh] sm:max-h-[80vh] overflow-hidden flex flex-col mt-8 sm:mt-0" style="box-sizing: border-box; margin: 0;">
-        <div class="flex-shrink-0 p-3 sm:p-4 border-b border-gray-200" style="box-sizing: border-box;">
-            <div class="flex justify-between items-center mb-2">
-                <h3 class="text-base sm:text-lg font-bold">AI生成 / AI निर्माण</h3>
-                <button type="button" onclick="closeAIModal()" class="text-gray-500 hover:text-gray-700 text-2xl flex-shrink-0 w-8 h-8 flex items-center justify-center" style="line-height: 1;">&times;</button>
+<div id="ai-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-start justify-center pt-4 pb-4 sm:pt-6 sm:pb-6 p-3 sm:p-4" style="box-sizing: border-box; overflow-y: auto;">
+    <div class="bg-white rounded-lg shadow-xl max-w-lg w-full overflow-hidden flex flex-col" style="box-sizing: border-box; margin: auto 0; max-height: calc(100vh - 120px);">
+        <div class="flex-shrink-0 p-1.5 sm:p-2 border-b border-gray-200" style="box-sizing: border-box;">
+            <div class="flex justify-between items-center mb-0.5">
+                <h3 class="text-sm sm:text-base font-bold">AI生成 / AI निर्माण</h3>
+                <button type="button" onclick="closeAIModal()" class="text-gray-500 hover:text-gray-700 text-xl flex-shrink-0 w-6 h-6 flex items-center justify-center" style="line-height: 1;">&times;</button>
             </div>
-            <div class="mb-2 p-2 bg-blue-50 rounded text-xs text-gray-700 leading-tight">
-                <p class="mb-1" style="font-family: 'Noto Sans Devanagari', Arial, sans-serif;"><strong>【प्रयोग विधि】</strong></p>
-                <p class="mb-1" style="font-family: 'Noto Sans Devanagari', Arial, sans-serif;">१. प्रस्तुत गर्ने कम्पनीको नाम प्रविष्ट गर्नुहोस् (आवश्यक)</p>
-                <p class="mb-1" style="font-family: 'Noto Sans Devanagari', Arial, sans-serif;">२. कामको अनुभव, विशेषता, आफूलाई प्रस्तुत गर्न सक्ने बुँदाहरू प्रविष्ट गर्नुहोस् (वैकल्पिक)</p>
-                <p style="font-family: 'Noto Sans Devanagari', Arial, sans-serif;">३. "AI निर्माण" बटन थिच्नुहोस् भने, प्रविष्ट गरेको जानकारीको आधारमा तयारी स्वचालित रूपमा निर्माण हुनेछ</p>
+            <div class="mb-0.5 p-1 bg-blue-50 rounded text-xs text-gray-700" style="line-height: 1.2;">
+                <p class="mb-0" style="font-family: 'Noto Sans Devanagari', Arial, sans-serif; margin-bottom: 2px;"><strong>【प्रयोग विधि】</strong></p>
+                <p class="mb-0" style="font-family: 'Noto Sans Devanagari', Arial, sans-serif; margin-bottom: 2px;">१. प्रस्तुत गर्ने कम्पनीको नाम प्रविष्ट गर्नुहोस् (आवश्यक)</p>
+                <p class="mb-0" style="font-family: 'Noto Sans Devanagari', Arial, sans-serif; margin-bottom: 2px;">२. कामको अनुभव, विशेषता, आफूलाई प्रस्तुत गर्न सक्ने बुँदाहरू प्रविष्ट गर्नुहोस् (वैकल्पिक)</p>
+                <p class="mb-0" style="font-family: 'Noto Sans Devanagari', Arial, sans-serif;">३. "AI निर्माण" बटन थिच्नुहोस् भने, प्रविष्ट गरेको जानकारीको आधारमा तयारी स्वचालित रूपमा निर्माण हुनेछ</p>
             </div>
-            <p class="text-xs text-gray-500 leading-tight">
+            <p class="text-xs text-gray-500 mb-0" style="line-height: 1.1;">
                 当サービスは記載内容に対し一切の責任を負いません。 / यस सेवाले सामग्रीको लागि कुनै जिम्मेवारी लिँदैन।
             </p>
         </div>
         
-        <div class="flex-1 overflow-y-auto p-3 sm:p-4" style="box-sizing: border-box;">
-            <form id="ai-generate-form" onsubmit="generateMotivation(event)" class="space-y-3">
+        <div class="flex-1 overflow-y-auto p-1.5 sm:p-2" style="box-sizing: border-box;">
+            <form id="ai-generate-form" onsubmit="generateMotivation(event)" class="space-y-1.5">
                 <div>
-                    <label class="block font-medium mb-1.5 text-xs sm:text-sm" style="box-sizing: border-box;">
+                    <label class="block font-medium mb-0.5 text-xs" style="box-sizing: border-box;">
                         提出する会社名 / प्रस्तुत गर्ने कम्पनीको नाम
                         <span class="text-red-500">*</span>
                     </label>
                     <input type="text" id="modal-company-name" name="company_name" required
-                        class="w-full border rounded px-2.5 py-1.5 focus:outline-none focus:ring-blue-400 focus:ring-2 text-sm"
+                        class="w-full border rounded px-2 py-1 focus:outline-none focus:ring-blue-400 focus:ring-2 text-sm"
                         style="box-sizing: border-box;"
                         placeholder="例: 株式会社〇〇">
                 </div>
                 
                 <div>
-                    <label class="block font-medium mb-1.5 text-xs sm:text-sm" style="box-sizing: border-box;">
+                    <label class="block font-medium mb-0.5 text-xs" style="box-sizing: border-box;">
                         志望動機、アピールポイントを簡単に書いてください。言語は問いません。
                     </label>
-                    <textarea id="modal-additional-info" name="additional_info" rows="4"
-                        class="w-full border rounded px-2.5 py-1.5 focus:outline-none focus:ring-blue-400 focus:ring-2 resize-none text-sm"
+                    <textarea id="modal-additional-info" name="additional_info" rows="2"
+                        class="w-full border rounded px-2 py-1 focus:outline-none focus:ring-blue-400 focus:ring-2 resize-none text-sm"
                         style="box-sizing: border-box;"
                         placeholder="例: 日本語能力試験N1取得、プログラミング経験3年など"></textarea>
                 </div>
             </form>
         </div>
         
-        <div class="flex-shrink-0 p-3 sm:p-4 border-t border-gray-200 bg-gray-50" style="box-sizing: border-box;">
+        <div class="flex-shrink-0 p-1.5 sm:p-2 border-t border-gray-200 bg-gray-50" style="box-sizing: border-box;">
             <div class="flex flex-col sm:flex-row justify-end gap-2">
                 <button type="button" onclick="closeAIModal()"
-                    class="px-3 py-1.5 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition w-full sm:w-auto text-sm"
+                    class="px-3 py-1 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition w-full sm:w-auto text-sm"
                     style="box-sizing: border-box;">
                     キャンセル
                 </button>
                 <button type="submit" id="ai-generate-submit-btn" form="ai-generate-form"
-                    class="px-3 py-1.5 bg-purple-600 text-white rounded hover:bg-purple-700 transition w-full sm:w-auto text-sm"
+                    class="px-3 py-1 bg-purple-600 text-white rounded hover:bg-purple-700 transition w-full sm:w-auto text-sm"
                     style="box-sizing: border-box;">
                     AI生成 / AI निर्माण
                 </button>
