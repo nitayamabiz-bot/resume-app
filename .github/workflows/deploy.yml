@@ -32,3 +32,4 @@ jobs:
           script: |
             cd /hamro-life-japan.com
             php artisan config:clear
+        continue-on-error: true
