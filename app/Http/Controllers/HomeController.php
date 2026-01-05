@@ -14,26 +14,26 @@ class HomeController extends Controller
      */
     public function index(): View
     {
-        // 公開中のお知らせを最大5件取得（表示順でソート）
+        // 公開中のお知らせを最大20件取得（表示順でソート）
         $announcements = Announcement::where('is_published', true)
             ->orderBy('display_order')
             ->orderBy('created_at', 'desc')
-            ->limit(5)
+            ->limit(20)
             ->get();
 
-        // 公開中のニュースを取得（国内・国外別）
+        // 公開中のニュースを取得（国内・国外別、最大20件）
         $domesticNews = News::where('is_published', true)
             ->where('category', 'domestic')
             ->orderBy('display_order')
             ->orderBy('published_date', 'desc')
-            ->limit(10)
+            ->limit(20)
             ->get();
 
         $internationalNews = News::where('is_published', true)
             ->where('category', 'international')
             ->orderBy('display_order')
             ->orderBy('published_date', 'desc')
-            ->limit(10)
+            ->limit(20)
             ->get();
 
         // 管理者チェック
