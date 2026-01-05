@@ -21,3 +21,14 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /hamro-life-japan.com/
           # vendorはGitHubにないので、ここでは送られません
+
+      # 2. デプロイ後にサーバーでconfig:clearを実行
+      - name: Clear config cache on server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          script: |
+            cd /hamro-life-japan.com
+            php artisan config:clear
