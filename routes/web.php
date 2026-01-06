@@ -57,6 +57,7 @@ Route::post('/career-history/confirm', [CareerHistoryController::class, 'confirm
 Route::post('/career-history/save', [CareerHistoryController::class, 'save'])->name('career-history.save');
 Route::post('/career-history/download', [CareerHistoryController::class, 'download'])->name('career-history.download');
 Route::post('/career-history/generate-career-info', [CareerHistoryController::class, 'generateCareerInfo'])->name('career-history.generate-career-info');
+Route::post('/career-history/generate-job-summary', [CareerHistoryController::class, 'generateJobSummary'])->name('career-history.generate-job-summary');
 Route::post('/career-history', [CareerHistoryController::class, 'store'])->name('career-history.store');
 
 // プライバシーポリシー

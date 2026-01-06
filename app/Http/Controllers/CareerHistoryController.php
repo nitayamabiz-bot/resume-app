@@ -701,14 +701,63 @@ class CareerHistoryController extends Controller
 
             // 文字数制限を適用
             if (isset($decoded['business_content']) && mb_strlen($decoded['business_content'], 'UTF-8') > 50) {
-                $decoded['business_content'] = mb_substr($decoded['business_content'], 0, 50, 'UTF-8');
+                $targetLength = 50;
+                $truncated = mb_substr($decoded['business_content'], 0, $targetLength, 'UTF-8');
+                // 最後の完全な文（句点で終わる文）を見つける
+                $lastPeriod = mb_strrpos($truncated, '。', 0, 'UTF-8');
+                if ($lastPeriod !== false && $lastPeriod > 30) {
+                    $decoded['business_content'] = mb_substr($decoded['business_content'], 0, $lastPeriod + 1, 'UTF-8');
+                } else {
+                    // 句点が見つからない場合は、読点を探す
+                    $lastComma = mb_strrpos($truncated, '、', 0, 'UTF-8');
+                    if ($lastComma !== false && $lastComma > 30) {
+                        $decoded['business_content'] = mb_substr($decoded['business_content'], 0, $lastComma + 1, 'UTF-8');
+                    } else {
+                        // それでも見つからない場合は、文字数制限を緩和
+                        $maxLength = (int)($targetLength * 1.1);
+                        $textLength = mb_strlen($decoded['business_content'], 'UTF-8');
+                        if ($textLength <= $maxLength) {
+                            // そのまま使用
+                        } else {
+                            $truncated = mb_substr($decoded['business_content'], 0, $maxLength, 'UTF-8');
+                            $lastPeriod = mb_strrpos($truncated, '。', 0, 'UTF-8');
+                            if ($lastPeriod !== false && $lastPeriod > 30) {
+                                $decoded['business_content'] = mb_substr($decoded['business_content'], 0, $lastPeriod + 1, 'UTF-8');
+                            } else {
+                                $decoded['business_content'] = $truncated;
+                            }
+                        }
+                    }
+                }
             }
             if (isset($decoded['job_description']) && mb_strlen($decoded['job_description'], 'UTF-8') > 200) {
-                $decoded['job_description'] = mb_substr($decoded['job_description'], 0, 200, 'UTF-8');
-                // 最後の句点まで戻す
-                $lastPeriod = mb_strrpos($decoded['job_description'], '。', 0, 'UTF-8');
+                $targetLength = 200;
+                $truncated = mb_substr($decoded['job_description'], 0, $targetLength, 'UTF-8');
+                // 最後の完全な文（句点で終わる文）を見つける
+                $lastPeriod = mb_strrpos($truncated, '。', 0, 'UTF-8');
                 if ($lastPeriod !== false && $lastPeriod > 100) {
                     $decoded['job_description'] = mb_substr($decoded['job_description'], 0, $lastPeriod + 1, 'UTF-8');
+                } else {
+                    // 句点が見つからない場合は、読点を探す
+                    $lastComma = mb_strrpos($truncated, '、', 0, 'UTF-8');
+                    if ($lastComma !== false && $lastComma > 100) {
+                        $decoded['job_description'] = mb_substr($decoded['job_description'], 0, $lastComma + 1, 'UTF-8');
+                    } else {
+                        // それでも見つからない場合は、文字数制限を緩和
+                        $maxLength = (int)($targetLength * 1.1);
+                        $textLength = mb_strlen($decoded['job_description'], 'UTF-8');
+                        if ($textLength <= $maxLength) {
+                            // そのまま使用
+                        } else {
+                            $truncated = mb_substr($decoded['job_description'], 0, $maxLength, 'UTF-8');
+                            $lastPeriod = mb_strrpos($truncated, '。', 0, 'UTF-8');
+                            if ($lastPeriod !== false && $lastPeriod > 100) {
+                                $decoded['job_description'] = mb_substr($decoded['job_description'], 0, $lastPeriod + 1, 'UTF-8');
+                            } else {
+                                $decoded['job_description'] = $truncated;
+                            }
+                        }
+                    }
                 }
             }
 
@@ -722,6 +771,211 @@ class CareerHistoryController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => '情報の生成中にエラーが発生しました。',
+            ], 500);
+        }
+    }
+
+    /**
+     * 職務要約をAI生成
+     */
+    public function generateJobSummary(Request $request)
+    {
+        \Log::info('generateJobSummary called', [
+            'method' => $request->method(),
+            'url' => $request->fullUrl(),
+            'user_id' => Auth::id(),
+            'is_authenticated' => Auth::check(),
+        ]);
+
+        // 会員限定機能
+        if (! Auth::check()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'この機能は会員限定です。ログインしてください。',
+            ], 403);
+        }
+
+        $careerHistories = $request->input('career_histories', []);
+
+        if (empty($careerHistories) || !is_array($careerHistories)) {
+            return response()->json([
+                'success' => false,
+                'message' => '職務経歴の職務内容が一つも入力されていません。',
+            ], 400);
+        }
+
+        // 職務内容を抽出
+        $jobDescriptions = [];
+        foreach ($careerHistories as $career) {
+            if (!empty($career['job_description'])) {
+                $jobDescriptions[] = $career['job_description'];
+            }
+        }
+
+        if (empty($jobDescriptions)) {
+            return response()->json([
+                'success' => false,
+                'message' => '職務経歴の職務内容が一つも入力されていません。',
+            ], 400);
+        }
+
+        // Gemini APIのプロンプトを作成
+        $prompt = "以下の職務経歴の職務内容をもとに、職務要約を生成してください。\n\n";
+        $prompt .= "【職務経歴の職務内容】\n";
+        foreach ($jobDescriptions as $index => $description) {
+            $prompt .= ($index + 1) . ". " . $description . "\n";
+        }
+        $prompt .= "\n";
+        $prompt .= "上記の職務内容をもとに、職務要約を100-200文字で簡潔にまとめてください。\n";
+        $prompt .= "文字通り職務の要約として、経験した業務内容を簡潔にまとめてください。\n\n";
+        $prompt .= "【出力形式】\n";
+        $prompt .= "以下のJSON形式で出力してください。\n";
+        $prompt .= "{\n";
+        $prompt .= '  "job_summary": "職務要約（100-200文字で簡潔に）"'."\n";
+        $prompt .= "}\n\n";
+        $prompt .= "【重要な指示】\n";
+        $prompt .= "1. 職務要約は100-200文字で簡潔にまとめてください。\n";
+        $prompt .= "2. 文字通り職務の要約として、経験した業務内容を簡潔にまとめてください。\n";
+        $prompt .= "3. 出力は必ずJSON形式のみで、余計な説明やコメントは一切含めないでください。\n";
+        $prompt .= "4. JSONの値に改行文字（\\n）は含めないでください。\n";
+
+        try {
+            $apiKey = config('services.gemini.api_key');
+
+            if (empty($apiKey)) {
+                \Log::error('Gemini API key is not configured');
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'AI生成サービスが利用できません。GEMINI_API_KEYが設定されていません。',
+                ], 500);
+            }
+
+            // Gemini API 2.5 Flash を使用
+            $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={$apiKey}";
+            \Log::info('Gemini API request for job summary', [
+                'url' => preg_replace('/key=[^&]+/', 'key=***', $url),
+                'prompt_length' => mb_strlen($prompt, 'UTF-8'),
+            ]);
+
+            $response = Http::post($url, [
+                'contents' => [
+                    [
+                        'parts' => [
+                            [
+                                'text' => $prompt,
+                            ],
+                        ],
+                    ],
+                ],
+            ]);
+
+            if (! $response->successful()) {
+                $errorBody = $response->body();
+                \Log::error('Gemini API HTTP error for job summary', [
+                    'status' => $response->status(),
+                    'body' => $errorBody,
+                    'url' => $url,
+                ]);
+
+                $errorMessage = '職務要約の生成に失敗しました。APIエラー: '.$response->status();
+                if ($errorData = $response->json()) {
+                    if (isset($errorData['error']['message'])) {
+                        $errorMessage .= ' - '.$errorData['error']['message'];
+                    }
+                }
+
+                return response()->json([
+                    'success' => false,
+                    'message' => $errorMessage,
+                ], 500);
+            }
+
+            $responseData = $response->json();
+
+            if (! isset($responseData['candidates'][0]['content']['parts'][0]['text'])) {
+                \Log::error('Gemini API response structure error for job summary', [
+                    'response_data' => $responseData,
+                ]);
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'APIからの応答形式が正しくありません。',
+                ], 500);
+            }
+
+            $generatedText = trim($responseData['candidates'][0]['content']['parts'][0]['text']);
+
+            // JSONを抽出（コードブロックがあれば除去）
+            $generatedText = preg_replace('/```json\s*/', '', $generatedText);
+            $generatedText = preg_replace('/```\s*/', '', $generatedText);
+            $generatedText = trim($generatedText);
+
+            // JSONをパース
+            $decoded = json_decode($generatedText, true);
+
+            if (json_last_error() !== JSON_ERROR_NONE || ! is_array($decoded)) {
+                \Log::error('Failed to parse JSON from Gemini API for job summary', [
+                    'generated_text' => $generatedText,
+                    'json_error' => json_last_error_msg(),
+                    'json_error_code' => json_last_error(),
+                ]);
+
+                return response()->json([
+                    'success' => false,
+                    'message' => '生成されたデータの解析に失敗しました。JSONエラー: '.json_last_error_msg(),
+                ], 500);
+            }
+
+            // 文字数制限を適用（100-200文字）
+            if (isset($decoded['job_summary'])) {
+                $summary = $decoded['job_summary'];
+                $textLength = mb_strlen($summary, 'UTF-8');
+                if ($textLength > 200) {
+                    $targetLength = 200;
+                    $truncated = mb_substr($summary, 0, $targetLength, 'UTF-8');
+                    // 最後の完全な文（句点で終わる文）を見つける
+                    $lastPeriod = mb_strrpos($truncated, '。', 0, 'UTF-8');
+                    if ($lastPeriod !== false && $lastPeriod > 100) {
+                        // 句点が見つかり、十分な長さがあれば、その位置まで戻す
+                        $summary = mb_substr($summary, 0, $lastPeriod + 1, 'UTF-8');
+                    } else {
+                        // 句点が見つからない場合や遠すぎる場合、読点を探す
+                        $lastComma = mb_strrpos($truncated, '、', 0, 'UTF-8');
+                        if ($lastComma !== false && $lastComma > 100) {
+                            // 読点が見つかり、十分な長さがあれば、その位置+1文字（読点含む）まで
+                            $summary = mb_substr($summary, 0, $lastComma + 1, 'UTF-8');
+                        } else {
+                            // それでも見つからない場合は、少し余裕を持たせて文字数制限を緩和
+                            $maxLength = (int)($targetLength * 1.1);
+                            if ($textLength <= $maxLength) {
+                                // そのまま使用
+                            } else {
+                                // 最大長まで切り詰め、句点を探す
+                                $truncated = mb_substr($summary, 0, $maxLength, 'UTF-8');
+                                $lastPeriod = mb_strrpos($truncated, '。', 0, 'UTF-8');
+                                if ($lastPeriod !== false && $lastPeriod > 100) {
+                                    $summary = mb_substr($summary, 0, $lastPeriod + 1, 'UTF-8');
+                                } else {
+                                    $summary = $truncated;
+                                }
+                            }
+                        }
+                    }
+                }
+                $decoded['job_summary'] = $summary;
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => $decoded,
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Job summary generation error: '.$e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => '職務要約の生成中にエラーが発生しました。',
             ], 500);
         }
     }

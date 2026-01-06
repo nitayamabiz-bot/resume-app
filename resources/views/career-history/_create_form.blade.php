@@ -515,6 +515,83 @@
         }
     }
     
+    // 職務要約をAI生成
+    let isGeneratingJobSummary = false;
+    async function generateJobSummary() {
+        if (isGeneratingJobSummary) {
+            return;
+        }
+        
+        // 職務経歴の職務内容を取得
+        const careerHistories = [];
+        document.querySelectorAll('.career-row').forEach((row) => {
+            const jobDescriptionTextarea = row.querySelector('textarea[name="job_description[]"]');
+            if (jobDescriptionTextarea && jobDescriptionTextarea.value.trim()) {
+                careerHistories.push({
+                    job_description: jobDescriptionTextarea.value.trim()
+                });
+            }
+        });
+        
+        if (careerHistories.length === 0) {
+            alert('職務経歴の職務内容が一つも入力されていません。');
+            return;
+        }
+        
+        isGeneratingJobSummary = true;
+        const submitBtn = document.getElementById('job-summary-ai-generate-btn');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="generating-spinner">⏳</span>生成中... / निर्माण गर्दै...';
+        
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || 
+                         document.querySelector('input[name="_token"]')?.value || 
+                         '{{ csrf_token() }}';
+        
+        try {
+            const response = await fetch('{{ route("career-history.generate-job-summary") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({
+                    career_histories: careerHistories,
+                }),
+            });
+            
+            const responseText = await response.text();
+            let data;
+            try {
+                data = JSON.parse(responseText);
+            } catch (e) {
+                throw new Error('サーバーからの応答の解析に失敗しました。');
+            }
+            
+            if (!response.ok) {
+                throw new Error(data.message || `職務要約の生成に失敗しました。 (HTTP ${response.status})`);
+            }
+            
+            if (data.success && data.data && data.data.job_summary) {
+                // 生成された職務要約をテキストエリアにセット
+                const jobSummaryTextarea = document.getElementById('job_summary');
+                if (jobSummaryTextarea) {
+                    jobSummaryTextarea.value = data.data.job_summary;
+                }
+            } else {
+                throw new Error(data.message || '職務要約の生成に失敗しました。');
+            }
+        } catch (error) {
+            console.error('エラー詳細:', error);
+            alert('エラー: ' + error.message);
+        } finally {
+            isGeneratingJobSummary = false;
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
+        }
+    }
+    
     // ログインが必要な場合のメッセージ表示
     function showLoginRequiredMessage() {
         alert('この機能は会員限定です。ログインしてください。 / यो सुविधा सदस्यहरूको लागि मात्र छ। कृपया लगइन गर्नुहोस्।');
@@ -686,10 +763,23 @@
         <div style="border-top: 1px solid #f3f4f6 !important; padding-top: 1rem !important;">
             <label class="block font-medium mb-1">職務要約 / कार्य सारांश</label>
             <p class="text-xs text-gray-500 mb-2">आफ्नो कामको सारांश लेख्नुहोस्। वैकल्पिक खण्ड हो।</p>
-            <textarea name="job_summary" rows="5"
-                class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2"
-                style="box-sizing: border-box; max-width: 100%; width: 100%;"
-                placeholder="例: 3年間のプログラマー経験があり、Webアプリケーション開発を担当していました。">{{ $careerHistoryData['job_summary'] ?? old('job_summary', '') }}</textarea>
+            <div class="flex flex-col sm:flex-row gap-2 items-start">
+                <textarea name="job_summary" id="job_summary" rows="5"
+                    class="w-full sm:flex-1 border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2"
+                    style="box-sizing: border-box; max-width: 100%;"
+                    placeholder="例: 3年間のプログラマー経験があり、Webアプリケーション開発を担当していました。">{{ $careerHistoryData['job_summary'] ?? old('job_summary', '') }}</textarea>
+                @auth
+                    <button type="button" id="job-summary-ai-generate-btn" onclick="generateJobSummary()"
+                        class="w-full sm:w-auto px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition whitespace-nowrap flex-shrink-0">
+                        AI生成 / AI निर्माण
+                    </button>
+                @else
+                    <button type="button" onclick="showLoginRequiredMessage()"
+                        class="w-full sm:w-auto px-4 py-2 bg-gray-400 text-white rounded cursor-not-allowed transition whitespace-nowrap flex-shrink-0" disabled>
+                        AI生成 / AI निर्माण
+                    </button>
+                @endauth
+            </div>
         </div>
         
         <!-- 自己PR -->

@@ -1045,20 +1045,70 @@ class ResumeController extends Controller
                 // 文字数制限をチェック（改行も含めて200文字〜300文字、最大624文字以内）
                 $textLength = mb_strlen($generatedText, 'UTF-8');
                 if ($textLength > 624) {
-                    // 624文字を超えている場合は切り詰める
-                    $generatedText = mb_substr($generatedText, 0, 624, 'UTF-8');
-                    // 文末が切れないように、最後の句点まで戻す
-                    $lastPeriod = mb_strrpos($generatedText, '。', 0, 'UTF-8');
+                    // 624文字を超えている場合は、最後の完全な文を見つけて切り詰める
+                    $targetLength = 624;
+                    // まず、目標文字数までの文章を取得
+                    $truncated = mb_substr($generatedText, 0, $targetLength, 'UTF-8');
+                    // 最後の完全な文（句点で終わる文）を見つける
+                    $lastPeriod = mb_strrpos($truncated, '。', 0, 'UTF-8');
                     if ($lastPeriod !== false && $lastPeriod > 500) {
+                        // 句点が見つかり、十分な長さがあれば、その位置まで戻す
                         $generatedText = mb_substr($generatedText, 0, $lastPeriod + 1, 'UTF-8');
+                    } else {
+                        // 句点が見つからない場合や遠すぎる場合、読点を探す
+                        $lastComma = mb_strrpos($truncated, '、', 0, 'UTF-8');
+                        if ($lastComma !== false && $lastComma > 500) {
+                            // 読点が見つかり、十分な長さがあれば、その位置+1文字（読点含む）まで
+                            $generatedText = mb_substr($generatedText, 0, $lastComma + 1, 'UTF-8');
+                        } else {
+                            // それでも見つからない場合は、少し余裕を持たせて文字数制限を緩和
+                            // 文章として成立するように、目標文字数の+10%まで許可
+                            $maxLength = (int)($targetLength * 1.1);
+                            if ($textLength <= $maxLength) {
+                                // そのまま使用
+                            } else {
+                                // 最大長まで切り詰め、句点を探す
+                                $truncated = mb_substr($generatedText, 0, $maxLength, 'UTF-8');
+                                $lastPeriod = mb_strrpos($truncated, '。', 0, 'UTF-8');
+                                if ($lastPeriod !== false && $lastPeriod > 500) {
+                                    $generatedText = mb_substr($generatedText, 0, $lastPeriod + 1, 'UTF-8');
+                                } else {
+                                    $generatedText = $truncated;
+                                }
+                            }
+                        }
                     }
                 } elseif ($textLength > 300) {
-                    // 300文字を超えている場合は、300文字まで切り詰める
-                    $generatedText = mb_substr($generatedText, 0, 300, 'UTF-8');
-                    // 文末が切れないように、最後の句点まで戻す
-                    $lastPeriod = mb_strrpos($generatedText, '。', 0, 'UTF-8');
+                    // 300文字を超えている場合は、最後の完全な文を見つけて切り詰める
+                    $targetLength = 300;
+                    $truncated = mb_substr($generatedText, 0, $targetLength, 'UTF-8');
+                    // 最後の完全な文（句点で終わる文）を見つける
+                    $lastPeriod = mb_strrpos($truncated, '。', 0, 'UTF-8');
                     if ($lastPeriod !== false && $lastPeriod > 200) {
+                        // 句点が見つかり、十分な長さがあれば、その位置まで戻す
                         $generatedText = mb_substr($generatedText, 0, $lastPeriod + 1, 'UTF-8');
+                    } else {
+                        // 句点が見つからない場合や遠すぎる場合、読点を探す
+                        $lastComma = mb_strrpos($truncated, '、', 0, 'UTF-8');
+                        if ($lastComma !== false && $lastComma > 200) {
+                            // 読点が見つかり、十分な長さがあれば、その位置+1文字（読点含む）まで
+                            $generatedText = mb_substr($generatedText, 0, $lastComma + 1, 'UTF-8');
+                        } else {
+                            // それでも見つからない場合は、少し余裕を持たせて文字数制限を緩和
+                            $maxLength = (int)($targetLength * 1.1);
+                            if ($textLength <= $maxLength) {
+                                // そのまま使用
+                            } else {
+                                // 最大長まで切り詰め、句点を探す
+                                $truncated = mb_substr($generatedText, 0, $maxLength, 'UTF-8');
+                                $lastPeriod = mb_strrpos($truncated, '。', 0, 'UTF-8');
+                                if ($lastPeriod !== false && $lastPeriod > 200) {
+                                    $generatedText = mb_substr($generatedText, 0, $lastPeriod + 1, 'UTF-8');
+                                } else {
+                                    $generatedText = $truncated;
+                                }
+                            }
+                        }
                     }
                 }
 
