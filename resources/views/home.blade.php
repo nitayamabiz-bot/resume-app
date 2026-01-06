@@ -298,7 +298,7 @@
                         {{ $announcement->title }}
                     </h3>
                     <div class="text-gray-700 whitespace-pre-wrap" style="line-height: 1.6;">
-                        {{ $announcement->content }}
+                        {!! nl2br(e($announcement->content)) !!}
                     </div>
                 </div>
             @endforeach
