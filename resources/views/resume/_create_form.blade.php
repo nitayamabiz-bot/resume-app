@@ -95,6 +95,22 @@
             display: none !important;
         }
     }
+    
+    /* 生成中スピナーアニメーション */
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+    
+    .generating-spinner {
+        display: inline-block;
+        animation: spin 1s linear infinite;
+        margin-right: 0.5rem;
+    }
 </style>
 <script>
     // 学歴追加/削除
@@ -1223,10 +1239,10 @@
         }
         
         const submitBtn = document.getElementById('ai-generate-submit-btn');
-        const originalText = submitBtn.textContent;
+        const originalText = submitBtn.innerHTML;
         isGenerating = true;
         submitBtn.disabled = true;
-        submitBtn.textContent = '生成中... / निर्माण गर्दै...';
+        submitBtn.innerHTML = '<span class="generating-spinner">⏳</span>生成中... / निर्माण गर्दै...';
         
         // フォームから職歴情報を取得
         const workHistory = [];
@@ -1315,7 +1331,7 @@
                 // 生成完了フラグをリセット
                 isGenerating = false;
                 submitBtn.disabled = false;
-                submitBtn.textContent = originalText;
+                submitBtn.innerHTML = originalText;
                 
                 // モーダルを閉じる
                 document.getElementById('ai-modal').classList.add('hidden');
@@ -1324,14 +1340,14 @@
                 alert('エラー: ' + (data.message || '志望動機の生成に失敗しました。'));
                 isGenerating = false;
                 submitBtn.disabled = false;
-                submitBtn.textContent = originalText;
+                submitBtn.innerHTML = originalText;
             }
         } catch (error) {
             console.error('Error:', error);
             alert('エラーが発生しました。ページをリロードして再度お試しください。\n詳細: ' + error.message);
             isGenerating = false;
             submitBtn.disabled = false;
-            submitBtn.textContent = originalText;
+            submitBtn.innerHTML = originalText;
         }
     }
 </script>

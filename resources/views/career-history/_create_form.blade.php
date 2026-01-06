@@ -94,6 +94,22 @@
             min-width: 150px;
         }
     }
+    
+    /* 生成中スピナーアニメーション */
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+    
+    .generating-spinner {
+        display: inline-block;
+        animation: spin 1s linear infinite;
+        margin-right: 0.5rem;
+    }
 </style>
 <script>
     // 職務経歴追加/削除
@@ -413,9 +429,9 @@
         
         isGeneratingCareerInfo = true;
         const submitBtn = document.getElementById('career-info-generate-submit-btn');
-        const originalText = submitBtn.textContent;
+        const originalText = submitBtn.innerHTML;
         submitBtn.disabled = true;
-        submitBtn.textContent = '生成中... / निर्माण गर्दै...';
+        submitBtn.innerHTML = '<span class="generating-spinner">⏳</span>生成中... / निर्माण गर्दै...';
         
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || 
                          document.querySelector('input[name="_token"]')?.value || 
@@ -495,7 +511,7 @@
         } finally {
             isGeneratingCareerInfo = false;
             submitBtn.disabled = false;
-            submitBtn.textContent = originalText;
+            submitBtn.innerHTML = originalText;
         }
     }
     
