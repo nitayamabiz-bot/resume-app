@@ -814,7 +814,7 @@
     <!-- 説明文 -->
     <div class="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
         <div class="text-sm text-gray-700 leading-relaxed">
-            <p class="font-medium">入力いただいた情報で簡単にPDFの履歴書が作成できます。</p>
+            <p class="font-medium">情報を入力していただくと、無料で簡単にPDFの履歴書が作成できます。</p>
             <p class="font-medium mt-2">会員登録をしていただくと、入力情報の保存と、AI生成機能をご利用いただけます。</p>
             <p class="text-gray-600 mt-2">तपाईंले प्रविष्ट गरेको जानकारीबाट सजिलैसँग PDF को बायोडाटा बनाउन सक्नुहुन्छ।</p>
             <p class="text-gray-600 mt-1">तपाईंले खाता खोलेमा, तपाईंको प्रविष्ट गरेको जानकारी सुरक्षित हुनेछ।</p>
