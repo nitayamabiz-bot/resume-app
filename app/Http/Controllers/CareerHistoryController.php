@@ -979,4 +979,209 @@ class CareerHistoryController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * 自己PRをAI生成
+     */
+    public function generateSelfPR(Request $request)
+    {
+        \Log::info('generateSelfPR called', [
+            'method' => $request->method(),
+            'url' => $request->fullUrl(),
+            'user_id' => Auth::id(),
+            'is_authenticated' => Auth::check(),
+        ]);
+
+        // 会員限定機能
+        if (! Auth::check()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'この機能は会員限定です。ログインしてください。',
+            ], 403);
+        }
+
+        $careerHistories = $request->input('career_histories', []);
+
+        if (empty($careerHistories) || !is_array($careerHistories)) {
+            return response()->json([
+                'success' => false,
+                'message' => '職務経歴の職務内容が一つも入力されていません。',
+            ], 400);
+        }
+
+        // 職務内容を抽出
+        $jobDescriptions = [];
+        foreach ($careerHistories as $career) {
+            if (!empty($career['job_description'])) {
+                $jobDescriptions[] = $career['job_description'];
+            }
+        }
+
+        if (empty($jobDescriptions)) {
+            return response()->json([
+                'success' => false,
+                'message' => '職務経歴の職務内容が一つも入力されていません。',
+            ], 400);
+        }
+
+        // Gemini APIのプロンプトを作成
+        $prompt = "以下の職務経歴の職務内容をもとに、自己PRを生成してください。\n\n";
+        $prompt .= "【職務経歴の職務内容】\n";
+        foreach ($jobDescriptions as $index => $description) {
+            $prompt .= ($index + 1) . ". " . $description . "\n";
+        }
+        $prompt .= "\n";
+        $prompt .= "上記の職務内容をもとに、自己PRを100-200文字で簡潔にまとめてください。\n";
+        $prompt .= "職務内容に基づいた自己PRとして、経験した業務内容から得たスキルや強みを簡潔にまとめてください。\n\n";
+        $prompt .= "【出力形式】\n";
+        $prompt .= "以下のJSON形式で出力してください。\n";
+        $prompt .= "{\n";
+        $prompt .= '  "self_pr": "自己PR（100-200文字で簡潔に）"'."\n";
+        $prompt .= "}\n\n";
+        $prompt .= "【重要な指示】\n";
+        $prompt .= "1. 自己PRは100-200文字で簡潔にまとめてください。\n";
+        $prompt .= "2. 職務内容に基づいた自己PRとして、経験した業務内容から得たスキルや強みを簡潔にまとめてください。\n";
+        $prompt .= "3. 出力は必ずJSON形式のみで、余計な説明やコメントは一切含めないでください。\n";
+        $prompt .= "4. JSONの値に改行文字（\\n）は含めないでください。\n";
+
+        try {
+            $apiKey = config('services.gemini.api_key');
+
+            if (empty($apiKey)) {
+                \Log::error('Gemini API key is not configured');
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'AI生成サービスが利用できません。GEMINI_API_KEYが設定されていません。',
+                ], 500);
+            }
+
+            // Gemini API 2.5 Flash を使用
+            $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={$apiKey}";
+            \Log::info('Gemini API request for self PR', [
+                'url' => preg_replace('/key=[^&]+/', 'key=***', $url),
+                'prompt_length' => mb_strlen($prompt, 'UTF-8'),
+            ]);
+
+            $response = Http::post($url, [
+                'contents' => [
+                    [
+                        'parts' => [
+                            [
+                                'text' => $prompt,
+                            ],
+                        ],
+                    ],
+                ],
+            ]);
+
+            if (! $response->successful()) {
+                $errorBody = $response->body();
+                \Log::error('Gemini API HTTP error for self PR', [
+                    'status' => $response->status(),
+                    'body' => $errorBody,
+                    'url' => $url,
+                ]);
+
+                $errorMessage = '自己PRの生成に失敗しました。APIエラー: '.$response->status();
+                if ($errorData = $response->json()) {
+                    if (isset($errorData['error']['message'])) {
+                        $errorMessage .= ' - '.$errorData['error']['message'];
+                    }
+                }
+
+                return response()->json([
+                    'success' => false,
+                    'message' => $errorMessage,
+                ], 500);
+            }
+
+            $responseData = $response->json();
+
+            if (! isset($responseData['candidates'][0]['content']['parts'][0]['text'])) {
+                \Log::error('Gemini API response structure error for self PR', [
+                    'response_data' => $responseData,
+                ]);
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'APIからの応答形式が正しくありません。',
+                ], 500);
+            }
+
+            $generatedText = trim($responseData['candidates'][0]['content']['parts'][0]['text']);
+
+            // JSONを抽出（コードブロックがあれば除去）
+            $generatedText = preg_replace('/```json\s*/', '', $generatedText);
+            $generatedText = preg_replace('/```\s*/', '', $generatedText);
+            $generatedText = trim($generatedText);
+
+            // JSONをパース
+            $decoded = json_decode($generatedText, true);
+
+            if (json_last_error() !== JSON_ERROR_NONE || ! is_array($decoded)) {
+                \Log::error('Failed to parse JSON from Gemini API for self PR', [
+                    'generated_text' => $generatedText,
+                    'json_error' => json_last_error_msg(),
+                    'json_error_code' => json_last_error(),
+                ]);
+
+                return response()->json([
+                    'success' => false,
+                    'message' => '生成されたデータの解析に失敗しました。JSONエラー: '.json_last_error_msg(),
+                ], 500);
+            }
+
+            // 文字数制限を適用（100-200文字）
+            if (isset($decoded['self_pr'])) {
+                $selfPR = $decoded['self_pr'];
+                $textLength = mb_strlen($selfPR, 'UTF-8');
+                if ($textLength > 200) {
+                    $targetLength = 200;
+                    $truncated = mb_substr($selfPR, 0, $targetLength, 'UTF-8');
+                    // 最後の完全な文（句点で終わる文）を見つける
+                    $lastPeriod = mb_strrpos($truncated, '。', 0, 'UTF-8');
+                    if ($lastPeriod !== false && $lastPeriod > 100) {
+                        // 句点が見つかり、十分な長さがあれば、その位置まで戻す
+                        $selfPR = mb_substr($selfPR, 0, $lastPeriod + 1, 'UTF-8');
+                    } else {
+                        // 句点が見つからない場合や遠すぎる場合、読点を探す
+                        $lastComma = mb_strrpos($truncated, '、', 0, 'UTF-8');
+                        if ($lastComma !== false && $lastComma > 100) {
+                            // 読点が見つかり、十分な長さがあれば、その位置+1文字（読点含む）まで
+                            $selfPR = mb_substr($selfPR, 0, $lastComma + 1, 'UTF-8');
+                        } else {
+                            // それでも見つからない場合は、少し余裕を持たせて文字数制限を緩和
+                            $maxLength = (int)($targetLength * 1.1);
+                            if ($textLength <= $maxLength) {
+                                // そのまま使用
+                            } else {
+                                // 最大長まで切り詰め、句点を探す
+                                $truncated = mb_substr($selfPR, 0, $maxLength, 'UTF-8');
+                                $lastPeriod = mb_strrpos($truncated, '。', 0, 'UTF-8');
+                                if ($lastPeriod !== false && $lastPeriod > 100) {
+                                    $selfPR = mb_substr($selfPR, 0, $lastPeriod + 1, 'UTF-8');
+                                } else {
+                                    $selfPR = $truncated;
+                                }
+                            }
+                        }
+                    }
+                }
+                $decoded['self_pr'] = $selfPR;
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => $decoded,
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Self PR generation error: '.$e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => '自己PRの生成中にエラーが発生しました。',
+            ], 500);
+        }
+    }
 }

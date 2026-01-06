@@ -1101,6 +1101,7 @@
         <div style="border-top: 1px solid #f3f4f6 !important; padding-top: 1rem !important;">
             <label class="block font-medium mb-1">志望動機・特技・アピールポイント / आफ्नो तयारी, रुचि, विशेषता</label>
             <p class="text-xs text-gray-500 mb-2">रोजगारको लागि तयारी, तपाईंको विशेषता, आफूलाई प्रस्तुत गर्न सक्ने बुँदाहरू लेख्नुहोस्। संक्षेपमा विस्तृत रूपमा लेख्नुहोस्। वैकल्पिक खण्ड हो।</p>
+            <p class="text-xs text-orange-600 mb-2 mt-1">注意：AI生成される文章は難しい専門用語などを多用することがあります。そのまま使用せず自身の日本語レベルに合わせて修正されることをおすすめします。 / सावधान: AI ले निर्माण गरेको लेखमा कठिन विशेष शब्दहरू धेरै प्रयोग गर्न सक्छ। यसलाई जस्ताको तस्तै प्रयोग नगरी, आफ्नो जापानी भाषा स्तर अनुसार सम्पादन गर्न सिफारिस गरिन्छ।</p>
             <div class="flex flex-col sm:flex-row gap-2 items-start">
                 <textarea name="appeal_points" id="appeal_points" rows="4" maxlength="624"
                     class="w-full sm:flex-1 border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2"

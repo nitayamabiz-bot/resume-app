@@ -592,6 +592,83 @@
         }
     }
     
+    // 自己PRをAI生成
+    let isGeneratingSelfPR = false;
+    async function generateSelfPR() {
+        if (isGeneratingSelfPR) {
+            return;
+        }
+        
+        // 職務経歴の職務内容を取得
+        const careerHistories = [];
+        document.querySelectorAll('.career-row').forEach((row) => {
+            const jobDescriptionTextarea = row.querySelector('textarea[name="job_description[]"]');
+            if (jobDescriptionTextarea && jobDescriptionTextarea.value.trim()) {
+                careerHistories.push({
+                    job_description: jobDescriptionTextarea.value.trim()
+                });
+            }
+        });
+        
+        if (careerHistories.length === 0) {
+            alert('職務経歴の職務内容が一つも入力されていません。');
+            return;
+        }
+        
+        isGeneratingSelfPR = true;
+        const submitBtn = document.getElementById('self-pr-ai-generate-btn');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="generating-spinner">⏳</span>生成中... / निर्माण गर्दै...';
+        
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || 
+                         document.querySelector('input[name="_token"]')?.value || 
+                         '{{ csrf_token() }}';
+        
+        try {
+            const response = await fetch('{{ route("career-history.generate-self-pr") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({
+                    career_histories: careerHistories,
+                }),
+            });
+            
+            const responseText = await response.text();
+            let data;
+            try {
+                data = JSON.parse(responseText);
+            } catch (e) {
+                throw new Error('サーバーからの応答の解析に失敗しました。');
+            }
+            
+            if (!response.ok) {
+                throw new Error(data.message || `自己PRの生成に失敗しました。 (HTTP ${response.status})`);
+            }
+            
+            if (data.success && data.data && data.data.self_pr) {
+                // 生成された自己PRをテキストエリアにセット
+                const selfPRTextarea = document.getElementById('self_pr');
+                if (selfPRTextarea) {
+                    selfPRTextarea.value = data.data.self_pr;
+                }
+            } else {
+                throw new Error(data.message || '自己PRの生成に失敗しました。');
+            }
+        } catch (error) {
+            console.error('エラー詳細:', error);
+            alert('エラー: ' + error.message);
+        } finally {
+            isGeneratingSelfPR = false;
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
+        }
+    }
+    
     // ログインが必要な場合のメッセージ表示
     function showLoginRequiredMessage() {
         alert('この機能は会員限定です。ログインしてください。 / यो सुविधा सदस्यहरूको लागि मात्र छ। कृपया लगइन गर्नुहोस्।');
@@ -650,7 +727,8 @@
         <!-- 職務経歴 -->
         <div class="pt-4" style="border-top: 1px solid #f3f4f6 !important;">
             <label class="block font-medium mb-1">職務経歴 / कार्य अनुभव<span class="text-red-500">*</span></label>
-            <p class="text-xs text-gray-500 mb-2">कम्पनीको नाम, कामको अवधि, र कामको विवरण लेख्नुहोस्। धेरै काम भएको खण्डमा "+" बटन थिचेर थप्नुहोस्।</p>
+            <p class="text-xs text-gray-500 mb-2">कम्पनीको नाम, कामको अवधि, र कामको विवरण लेख्नुहोस्। धेरै काम भएको खण्डमा "+" बटन थिचेर थप्नुहोस्। AI निर्माण सुविधा प्रयोग गर्नुभयो भने, प्रविष्ट गरिएको कम्पनीको नामबाट कर्मचारी संख्या, पूँजी, र कामको विवरण निर्माण हुन्छ।</p>
+            <p class="text-xs text-orange-600 mb-2 mt-1">注意：AI生成される文章は難しい専門用語などを多用することがあります。そのまま使用せず自身の日本語レベルに合わせて修正されることをおすすめします。 / सावधान: AI ले निर्माण गरेको लेखमा कठिन विशेष शब्दहरू धेरै प्रयोग गर्न सक्छ। यसलाई जस्ताको तस्तै प्रयोग नगरी, आफ्नो जापानी भाषा स्तर अनुसार सम्पादन गर्न सिफारिस गरिन्छ।</p>
             <div id="careers-container">
                 <div class="career-row pb-4 mb-4" style="border-bottom: 1px solid #f3f4f6 !important;">
                     <div class="space-y-3">
@@ -762,7 +840,8 @@
         <!-- 職務要約 -->
         <div style="border-top: 1px solid #f3f4f6 !important; padding-top: 1rem !important;">
             <label class="block font-medium mb-1">職務要約 / कार्य सारांश</label>
-            <p class="text-xs text-gray-500 mb-2">आफ्नो कामको सारांश लेख्नुहोस्। वैकल्पिक खण्ड हो।</p>
+            <p class="text-xs text-gray-500 mb-2">आफ्नो कामको सारांश लेख्नुहोस्। वैकल्पिक खण्ड हो। AI निर्माण सुविधा प्रयोग गर्नुभयो भने, प्रविष्ट गरिएको सबै कामको विवरण समावेश गरेर लेख बनाइन्छ।</p>
+            <p class="text-xs text-orange-600 mb-2 mt-1">注意：AI生成される文章は難しい専門用語などを多用することがあります。そのまま使用せず自身の日本語レベルに合わせて修正されることをおすすめします。 / सावधान: AI ले निर्माण गरेको लेखमा कठिन विशेष शब्दहरू धेरै प्रयोग गर्न सक्छ। यसलाई जस्ताको तस्तै प्रयोग नगरी, आफ्नो जापानी भाषा स्तर अनुसार सम्पादन गर्न सिफारिस गरिन्छ।</p>
             <div class="flex flex-col sm:flex-row gap-2 items-start">
                 <textarea name="job_summary" id="job_summary" rows="5"
                     class="w-full sm:flex-1 border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2"
@@ -785,11 +864,25 @@
         <!-- 自己PR -->
         <div class="pt-4" style="border-top: 1px solid #f3f4f6 !important;">
             <label class="block font-medium mb-1">自己PR / आफ्नो PR</label>
-            <p class="text-xs text-gray-500 mb-2">आफ्नो बारेमा लेख्नुहोस्। वैकल्पिक खण्ड हो।</p>
-            <textarea name="self_pr" rows="5"
-                class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2"
-                style="box-sizing: border-box; max-width: 100%; width: 100%;"
-                placeholder="例: チームワークを大切にし、常に前向きに取り組むことを心がけています。">{{ $careerHistoryData['self_pr'] ?? old('self_pr', '') }}</textarea>
+            <p class="text-xs text-gray-500 mb-2">आफ्नो बारेमा लेख्नुहोस्। वैकल्पिक खण्ड हो। AI निर्माण सुविधा प्रयोग गर्नुभयो भने, प्रविष्ट गरिएको सबै कामको विवरण समावेश गरेर लेख बनाइन्छ।</p>
+            <p class="text-xs text-orange-600 mb-2 mt-1">注意：AI生成される文章は難しい専門用語などを多用することがあります。そのまま使用せず自身の日本語レベルに合わせて修正されることをおすすめします。 / सावधान: AI ले निर्माण गरेको लेखमा कठिन विशेष शब्दहरू धेरै प्रयोग गर्न सक्छ। यसलाई जस्ताको तस्तै प्रयोग नगरी, आफ्नो जापानी भाषा स्तर अनुसार सम्पादन गर्न सिफारिस गरिन्छ।</p>
+            <div class="flex flex-col sm:flex-row gap-2 items-start">
+                <textarea name="self_pr" id="self_pr" rows="5"
+                    class="w-full sm:flex-1 border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2"
+                    style="box-sizing: border-box; max-width: 100%;"
+                    placeholder="例: チームワークを大切にし、常に前向きに取り組むことを心がけています。">{{ $careerHistoryData['self_pr'] ?? old('self_pr', '') }}</textarea>
+                @auth
+                    <button type="button" id="self-pr-ai-generate-btn" onclick="generateSelfPR()"
+                        class="w-full sm:w-auto px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition whitespace-nowrap flex-shrink-0">
+                        AI生成 / AI निर्माण
+                    </button>
+                @else
+                    <button type="button" onclick="showLoginRequiredMessage()"
+                        class="w-full sm:w-auto px-4 py-2 bg-gray-400 text-white rounded cursor-not-allowed transition whitespace-nowrap flex-shrink-0" disabled>
+                        AI生成 / AI निर्माण
+                    </button>
+                @endauth
+            </div>
         </div>
         
         <div class="mt-6 flex justify-center gap-4">
