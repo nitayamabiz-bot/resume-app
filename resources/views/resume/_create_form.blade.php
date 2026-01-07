@@ -148,7 +148,7 @@
     function addJobField() {
         let container = document.getElementById('jobs-container');
         let count = container.children.length;
-        if (count >= 6) return;
+        if (count >= 8) return;
         let clone = container.children[0].cloneNode(true);
         // 追加される項目にも区切り線を設定
         clone.style.borderBottom = '1px solid #f3f4f6';
@@ -173,7 +173,7 @@
     function toggleJobAddButton() {
         let container = document.getElementById('jobs-container');
         let btn = document.getElementById('add-job-btn');
-        if (btn) btn.disabled = container.children.length >= 6;
+        if (btn) btn.disabled = container.children.length >= 8;
     }
 
     // 入力チェック 
@@ -223,7 +223,7 @@
             let date = row.querySelector('input[name="school_date[]"]').value;
             if (!school && !eventType && !date && idx > 0) return; // 最初以外空欄許可
             if (!school) errors.push(`学歴${idx+1}：学校名を入力してください।`);
-            if (!eventType) errors.push(`学歴${idx+1}：入学、卒業、または卒業見込みを選択してください।`);
+            if (!eventType) errors.push(`学歴${idx+1}：入学、中退、卒業、または卒業見込みを選択してください।`);
             if (!date) errors.push(`学歴${idx+1}：年月を選択してください।`);
         });
         // 職歴チェック
@@ -1018,6 +1018,7 @@
                             class="border rounded px-3 py-2 sm:w-32 focus:outline-none focus:ring-blue-400 focus:ring-2" required>
                             <option value="">छान्नुहोस्</option>
                             <option value="入学">入学 / प्रवेश</option>
+                            <option value="中退">中退 / बीचमा छोड्नु</option>
                             <option value="卒業">卒業 / स्नातक</option>
                             <option value="卒業見込み">卒業見込み / स्नातकको लागि तयारी</option>
                         </select>
