@@ -39,6 +39,19 @@ Route::get('/sim', function () {
     return view('pages.sim');
 })->name('sim');
 
+// 開発中ページ
+Route::get('/coming-soon', function () {
+    return view('pages.coming-soon');
+})->name('coming-soon');
+
+Route::get('/exchange', function () {
+    return view('pages.coming-soon');
+})->name('exchange');
+
+Route::get('/work-permit', function () {
+    return view('pages.coming-soon');
+})->name('work-permit');
+
 // 履歴書関連のルート
 Route::get('/resume', [ResumeController::class, 'index'])->name('resume.index');
 

@@ -24,6 +24,8 @@
             position: relative;
             margin: 0 !important;
             box-sizing: border-box !important;
+            overflow: visible !important;
+            z-index: 100;
         }
         .header .header-content {
             max-width: 1200px !important;
@@ -31,6 +33,8 @@
             margin: 0 auto !important;
             padding: 0 20px !important;
             box-sizing: border-box !important;
+            overflow: visible !important;
+            position: relative;
         }
         .header .nav-menu {
             display: flex !important;
@@ -39,7 +43,8 @@
             flex-wrap: nowrap !important;
             border-top: 1px solid #e5e7eb !important;
             padding-top: 12px !important;
-            overflow: hidden !important;
+            padding-bottom: 20px !important;
+            overflow: visible !important;
         }
         .logo-section {
             text-align: center;
@@ -133,7 +138,119 @@
             flex-wrap: nowrap;
             border-top: 1px solid #e5e7eb;
             padding-top: 12px;
-            overflow: hidden;
+            padding-bottom: 20px;
+            overflow: visible !important;
+            position: relative;
+            z-index: 100;
+            width: 100%;
+        }
+        /* ドロップダウンメニューのスタイル */
+        .dropdown {
+            position: relative;
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            justify-content: center;
+        }
+        .dropdown .nav-item {
+            position: relative;
+            width: 100%;
+        }
+        /* ドロップダウンの区切り線は表示する */
+        .nav-menu > .dropdown:not(:last-child) > .nav-item::after {
+            content: '' !important;
+            display: block !important;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1px;
+            height: 24px;
+            background-color: #e5e7eb;
+            z-index: 1;
+        }
+        /* 通常のnav-itemの区切り線 */
+        .nav-menu > .nav-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1px;
+            height: 24px;
+            background-color: #e5e7eb;
+        }
+        .dropdown-toggle {
+            cursor: pointer;
+            user-select: none;
+        }
+        .dropdown-menu {
+            display: none !important;
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            min-width: 200px;
+            z-index: 1001;
+            white-space: nowrap;
+        }
+        .dropdown.active .dropdown-menu {
+            display: block !important;
+        }
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            color: #1e293b;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            border-bottom: 1px solid #e2e8f0;
+            white-space: nowrap;
+        }
+        .dropdown-item:first-child {
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+        }
+        .dropdown-item:last-child {
+            border-bottom: none;
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+        }
+        .dropdown-item:hover {
+            background-color: #e0e7ff;
+            color: #1160E6;
+        }
+        .dropdown-item.active {
+            background-color: #dbeafe;
+            color: #1160E6;
+            font-weight: 600;
+        }
+        .dropdown-item-icon {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+            vertical-align: middle;
+            flex-shrink: 0;
+        }
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+        }
+        .dropdown-arrow {
+            display: inline-block;
+            margin-left: 4px;
+            transition: transform 0.2s;
+            font-size: 0.7rem;
+            vertical-align: middle;
+        }
+        .dropdown.active .dropdown-arrow {
+            transform: rotate(180deg);
         }
         .mobile-menu {
             display: none;
@@ -153,7 +270,7 @@
             overflow-y: auto;
         }
         .mobile-menu .nav-item {
-            display: block;
+            display: flex;
             width: 100%;
             padding: 12px 20px;
             border-bottom: 1px solid #e5e7eb;
@@ -161,26 +278,55 @@
             min-width: auto;
             text-align: left;
             flex-direction: row;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
         }
         .mobile-menu .nav-item:not(:last-child)::after {
             display: none;
         }
         .mobile-menu .nav-item-main {
-            flex: 1;
             display: flex;
             align-items: center;
             gap: 8px;
+            justify-content: flex-start;
+            flex-shrink: 0;
+            padding-left: 8px;
         }
         .mobile-menu .nav-item-icon {
             width: 20px;
             height: 20px;
             flex-shrink: 0;
+            min-width: 20px;
         }
         .mobile-menu .nav-item-sub {
             margin-left: 12px;
             font-size: 0.75rem;
+            flex-shrink: 0;
+        }
+        /* モバイルドロップダウンメニュー内のアイコンをさらに右にずらす（サブメニューであることを視覚的に明確にする） */
+        html body .mobile-menu .mobile-dropdown-menu .nav-item {
+            padding-left: 32px !important;
+        }
+        html body .mobile-menu .mobile-dropdown-menu .nav-item-main {
+            padding-left: 12px !important;
+        }
+        /* モバイルドロップダウン */
+        .mobile-dropdown {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .mobile-dropdown-toggle {
+            cursor: pointer;
+            user-select: none;
+        }
+        .mobile-dropdown-menu {
+            display: none;
+            background-color: #f9fafb;
+        }
+        .mobile-dropdown.active .mobile-dropdown-menu {
+            display: block;
+        }
+        .mobile-dropdown.active .dropdown-arrow {
+            transform: rotate(180deg);
         }
         .nav-item {
             text-decoration: none;
@@ -195,6 +341,29 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            flex: 1;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+        /* PC表示時のみ、メニュー項目の幅を均等に */
+        @media (min-width: 769px) {
+            .nav-menu {
+                display: flex !important;
+            }
+            .nav-menu > .nav-item {
+                flex: 1;
+                min-width: 0;
+            }
+            .nav-menu > .dropdown {
+                flex: 1;
+                min-width: 0;
+                display: flex;
+                justify-content: center;
+            }
+            .nav-menu > .dropdown > .nav-item {
+                flex: 1;
+                width: 100%;
+            }
         }
         .nav-item:not(:last-child)::after {
             content: '';
@@ -1039,165 +1208,262 @@
                     <img src="{{ asset('images/logo.png') }}" alt="就労支援サービス" class="logo-image">
                     <span class="logo-text-wrapper">
                         <span class="logo-main">就労支援サービス</span>
-                        <span class="logo-sub">रोजगार सहायता सेवा</span>
-                    </span>
+                    <span class="logo-sub">रोजगार सहायता सेवा</span>
+                </span>
                 </a>
             </div>
             <nav class="nav-menu" id="desktopMenu">
                 <a href="{{ route('home') }}" class="nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
-                    <span class="nav-item-main">トップページ</span>
-                    <span class="nav-item-sub">मुख्य पृष्ठ</span>
-                </a>
-                <a href="{{ route('rental') }}" class="nav-item {{ request()->routeIs('rental') ? 'active' : '' }}">
                     <span class="nav-item-main">
                         <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                         </svg>
-                        賃貸
+                        トップページ
                     </span>
-                    <span class="nav-item-sub">भाडा</span>
+                    <span class="nav-item-sub">मुख्य पृष्ठ</span>
                 </a>
-                <a href="{{ route('parttime') }}" class="nav-item {{ request()->routeIs('parttime') ? 'active' : '' }}">
+                <a href="{{ route('exchange') }}" class="nav-item {{ request()->routeIs('exchange') ? 'active' : '' }}">
                     <span class="nav-item-main">
                         <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-                        アルバイト
+                        為替
                     </span>
-                    <span class="nav-item-sub">अंशकालिक</span>
+                    <span class="nav-item-sub">विनिमय दर</span>
                 </a>
-                <a href="{{ route('job') }}" class="nav-item {{ request()->routeIs('job') ? 'active' : '' }}">
-                    <span class="nav-item-main">
-                        <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                        </svg>
-                        就職
-                    </span>
-                    <span class="nav-item-sub">रोजगार</span>
-                </a>
-                <a href="{{ route('internet') }}" class="nav-item {{ request()->routeIs('internet') ? 'active' : '' }}">
-                    <span class="nav-item-main">
-                        <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"></path>
-                        </svg>
-                        ネット回線
-                    </span>
-                    <span class="nav-item-sub">इन्टरनेट</span>
-                </a>
-                <a href="{{ route('sim') }}" class="nav-item {{ request()->routeIs('sim') ? 'active' : '' }}">
-                    <span class="nav-item-main">
-                        <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
-                        </svg>
-                        SIM
-                    </span>
-                    <span class="nav-item-sub">सिम</span>
-                </a>
-                <a href="{{ route('campaign') }}" class="nav-item {{ request()->routeIs('campaign') ? 'active' : '' }}">
-                    <span class="nav-item-main">
-                        <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path>
-                        </svg>
-                        キャンペーン
-                    </span>
-                    <span class="nav-item-sub">अभियान</span>
-                </a>
-                <a href="{{ route('resume.index') }}" class="nav-item {{ request()->routeIs('resume.*') ? 'active' : '' }}">
-                    <span class="nav-item-main">
-                        <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                        </svg>
-                        履歴書作成
-                    </span>
-                    <span class="nav-item-sub">बायोडाटा</span>
-                </a>
-                <a href="{{ route('career-history.index') }}" class="nav-item {{ request()->routeIs('career-history.*') ? 'active' : '' }}">
-                    <span class="nav-item-main">
-                        <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                        </svg>
-                        職務経歴書作成
-                    </span>
-                    <span class="nav-item-sub">कामको अनुभव</span>
-                </a>
+                <div class="dropdown">
+                    <div class="nav-item dropdown-toggle {{ request()->routeIs('parttime') || request()->routeIs('job') ? 'active' : '' }}">
+                        <span class="nav-item-main">
+                            <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                            仕事を探す<span class="dropdown-arrow">▼</span>
+                        </span>
+                        <span class="nav-item-sub">काम खोज्नुहोस्</span>
+                    </div>
+                    <div class="dropdown-menu">
+                        <a href="{{ route('parttime') }}" class="dropdown-item {{ request()->routeIs('parttime') ? 'active' : '' }}">
+                            <svg class="dropdown-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span>アルバイト / अंशकालिक</span>
+                        </a>
+                        <a href="{{ route('job') }}" class="dropdown-item {{ request()->routeIs('job') ? 'active' : '' }}">
+                            <svg class="dropdown-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                            <span>就職 / रोजगार</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <div class="nav-item dropdown-toggle {{ request()->routeIs('rental') || request()->routeIs('internet') || request()->routeIs('sim') || request()->routeIs('campaign') ? 'active' : '' }}">
+                        <span class="nav-item-main">
+                            <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                            </svg>
+                            生活サポート<span class="dropdown-arrow">▼</span>
+                        </span>
+                        <span class="nav-item-sub">जीवन सहायता</span>
+                    </div>
+                    <div class="dropdown-menu">
+                        <a href="{{ route('rental') }}" class="dropdown-item {{ request()->routeIs('rental') ? 'active' : '' }}">
+                            <svg class="dropdown-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                            </svg>
+                            <span>賃貸 / भाडा</span>
+                        </a>
+                        <a href="{{ route('internet') }}" class="dropdown-item {{ request()->routeIs('internet') ? 'active' : '' }}">
+                            <svg class="dropdown-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"></path>
+                            </svg>
+                            <span>ネット回線 / इन्टरनेट</span>
+                        </a>
+                        <a href="{{ route('sim') }}" class="dropdown-item {{ request()->routeIs('sim') ? 'active' : '' }}">
+                            <svg class="dropdown-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                            </svg>
+                            <span>SIM / सिम</span>
+                        </a>
+                        <a href="{{ route('campaign') }}" class="dropdown-item {{ request()->routeIs('campaign') ? 'active' : '' }}">
+                            <svg class="dropdown-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path>
+                            </svg>
+                            <span>キャンペーン / अभियान</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <div class="nav-item dropdown-toggle {{ request()->routeIs('resume.*') || request()->routeIs('career-history.*') || request()->routeIs('work-permit') ? 'active' : '' }}">
+                        <span class="nav-item-main">
+                            <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            書類作成<span class="dropdown-arrow">▼</span>
+                        </span>
+                        <span class="nav-item-sub">कागजात निर्माण</span>
+                    </div>
+                    <div class="dropdown-menu">
+                        <a href="{{ route('resume.index') }}" class="dropdown-item {{ request()->routeIs('resume.*') ? 'active' : '' }}">
+                            <svg class="dropdown-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            <span>履歴書 / बायोडाटा</span>
+                        </a>
+                        <a href="{{ route('career-history.index') }}" class="dropdown-item {{ request()->routeIs('career-history.*') ? 'active' : '' }}">
+                            <svg class="dropdown-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            <span>職務経歴書 / कामको अनुभव</span>
+                        </a>
+                        <a href="{{ route('work-permit') }}" class="dropdown-item {{ request()->routeIs('work-permit') ? 'active' : '' }}">
+                            <svg class="dropdown-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                            </svg>
+                            <span>資格外活動許可申請書 / कामको अनुमति</span>
+                        </a>
+                    </div>
+                </div>
             </nav>
             <nav class="mobile-menu" id="mobileMenu">
                 <a href="{{ route('home') }}" class="nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
-                    <span class="nav-item-main">トップページ</span>
-                    <span class="nav-item-sub">मुख्य पृष्ठ</span>
-                </a>
-                <a href="{{ route('rental') }}" class="nav-item {{ request()->routeIs('rental') ? 'active' : '' }}">
                     <span class="nav-item-main">
                         <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                         </svg>
-                        賃貸
+                        トップページ
                     </span>
-                    <span class="nav-item-sub">भाडा</span>
+                    <span class="nav-item-sub">मुख्य पृष्ठ</span>
                 </a>
-                <a href="{{ route('parttime') }}" class="nav-item {{ request()->routeIs('parttime') ? 'active' : '' }}">
+                <a href="{{ route('exchange') }}" class="nav-item {{ request()->routeIs('exchange') ? 'active' : '' }}">
                     <span class="nav-item-main">
                         <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-                        アルバイト
+                        為替
                     </span>
-                    <span class="nav-item-sub">अंशकालिक</span>
+                    <span class="nav-item-sub">विनिमय दर</span>
                 </a>
-                <a href="{{ route('job') }}" class="nav-item {{ request()->routeIs('job') ? 'active' : '' }}">
-                    <span class="nav-item-main">
-                        <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                        </svg>
-                        就職
-                    </span>
-                    <span class="nav-item-sub">रोजगार</span>
-                </a>
-                <a href="{{ route('internet') }}" class="nav-item {{ request()->routeIs('internet') ? 'active' : '' }}">
-                    <span class="nav-item-main">
-                        <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"></path>
-                        </svg>
-                        ネット回線
-                    </span>
-                    <span class="nav-item-sub">इन्टरनेट</span>
-                </a>
-                <a href="{{ route('sim') }}" class="nav-item {{ request()->routeIs('sim') ? 'active' : '' }}">
-                    <span class="nav-item-main">
-                        <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
-                        </svg>
-                        SIM
-                    </span>
-                    <span class="nav-item-sub">सिम</span>
-                </a>
-                <a href="{{ route('campaign') }}" class="nav-item {{ request()->routeIs('campaign') ? 'active' : '' }}">
-                    <span class="nav-item-main">
-                        <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path>
-                        </svg>
-                        キャンペーン
-                    </span>
-                    <span class="nav-item-sub">अभियान</span>
-                </a>
-                <a href="{{ route('resume.index') }}" class="nav-item {{ request()->routeIs('resume.*') ? 'active' : '' }}">
-                    <span class="nav-item-main">
-                        <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                        </svg>
-                        履歴書作成
-                    </span>
-                    <span class="nav-item-sub">बायोडाटा</span>
-                </a>
-                <a href="{{ route('career-history.index') }}" class="nav-item {{ request()->routeIs('career-history.*') ? 'active' : '' }}">
-                    <span class="nav-item-main">
-                        <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                        </svg>
-                        職務経歴書作成
-                    </span>
-                    <span class="nav-item-sub">कामको अनुभव</span>
-                </a>
+                <div class="mobile-dropdown">
+                    <div class="nav-item mobile-dropdown-toggle">
+                        <span class="nav-item-main">
+                            <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                            仕事を探す<span class="dropdown-arrow">▼</span>
+                        </span>
+                        <span class="nav-item-sub">काम खोज्नुहोस्</span>
+                    </div>
+                    <div class="mobile-dropdown-menu">
+                        <a href="{{ route('parttime') }}" class="nav-item {{ request()->routeIs('parttime') ? 'active' : '' }}" style="padding-left: 32px;">
+                            <span class="nav-item-main">
+                                <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                アルバイト
+                            </span>
+                            <span class="nav-item-sub">अंशकालिक</span>
+                        </a>
+                        <a href="{{ route('job') }}" class="nav-item {{ request()->routeIs('job') ? 'active' : '' }}" style="padding-left: 32px;">
+                            <span class="nav-item-main">
+                                <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                </svg>
+                                就職
+                            </span>
+                            <span class="nav-item-sub">रोजगार</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="mobile-dropdown">
+                    <div class="nav-item mobile-dropdown-toggle">
+                        <span class="nav-item-main">
+                            <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                            </svg>
+                            生活サポート<span class="dropdown-arrow">▼</span>
+                        </span>
+                        <span class="nav-item-sub">जीवन सहायता</span>
+                    </div>
+                    <div class="mobile-dropdown-menu">
+                        <a href="{{ route('rental') }}" class="nav-item {{ request()->routeIs('rental') ? 'active' : '' }}" style="padding-left: 32px;">
+                            <span class="nav-item-main">
+                                <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                                </svg>
+                                賃貸
+                            </span>
+                            <span class="nav-item-sub">भाडा</span>
+                        </a>
+                        <a href="{{ route('internet') }}" class="nav-item {{ request()->routeIs('internet') ? 'active' : '' }}" style="padding-left: 32px;">
+                            <span class="nav-item-main">
+                                <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"></path>
+                                </svg>
+                                ネット回線
+                            </span>
+                            <span class="nav-item-sub">इन्टरनेट</span>
+                        </a>
+                        <a href="{{ route('sim') }}" class="nav-item {{ request()->routeIs('sim') ? 'active' : '' }}" style="padding-left: 32px;">
+                            <span class="nav-item-main">
+                                <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                </svg>
+                                SIM
+                            </span>
+                            <span class="nav-item-sub">सिम</span>
+                        </a>
+                        <a href="{{ route('campaign') }}" class="nav-item {{ request()->routeIs('campaign') ? 'active' : '' }}" style="padding-left: 32px;">
+                            <span class="nav-item-main">
+                                <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path>
+                                </svg>
+                                キャンペーン
+                            </span>
+                            <span class="nav-item-sub">अभियान</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="mobile-dropdown">
+                    <div class="nav-item mobile-dropdown-toggle">
+                        <span class="nav-item-main">
+                            <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            書類作成<span class="dropdown-arrow">▼</span>
+                        </span>
+                        <span class="nav-item-sub">कागजात निर्माण</span>
+                    </div>
+                    <div class="mobile-dropdown-menu">
+                        <a href="{{ route('resume.index') }}" class="nav-item {{ request()->routeIs('resume.*') ? 'active' : '' }}" style="padding-left: 32px;">
+                            <span class="nav-item-main">
+                                <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                履歴書
+                            </span>
+                            <span class="nav-item-sub">बायोडाटा</span>
+                        </a>
+                        <a href="{{ route('career-history.index') }}" class="nav-item {{ request()->routeIs('career-history.*') ? 'active' : '' }}" style="padding-left: 32px;">
+                            <span class="nav-item-main">
+                                <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                職務経歴書
+                            </span>
+                            <span class="nav-item-sub">कामको अनुभव</span>
+                        </a>
+                        <a href="{{ route('work-permit') }}" class="nav-item {{ request()->routeIs('work-permit') ? 'active' : '' }}" style="padding-left: 32px;">
+                            <span class="nav-item-main">
+                                <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                </svg>
+                                資格外活動許可申請書
+                            </span>
+                            <span class="nav-item-sub">कामको अनुमति</span>
+                        </a>
+                    </div>
+                </div>
             </nav>
         </div>
         <div class="nav-links">
@@ -1316,7 +1582,8 @@
                 const originalDisplay = desktopMenu.style.display;
                 desktopMenu.style.display = 'flex';
                 
-                const menuItems = desktopMenu.querySelectorAll('.nav-item');
+                // 直接の子要素（.nav-itemと.dropdown）を取得
+                const menuItems = Array.from(desktopMenu.children);
                 let totalWidth = 0;
                 menuItems.forEach(item => {
                     totalWidth += item.offsetWidth;
@@ -1346,15 +1613,64 @@
                 resizeTimer = setTimeout(checkMenuOverflow, 100);
             });
             
+            // デスクトップドロップダウンの制御
+            const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+            dropdownToggles.forEach(toggle => {
+                toggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const dropdown = this.closest('.dropdown');
+                    if (!dropdown) {
+                        console.error('Dropdown not found');
+                        return;
+                    }
+                    
+                    const isActive = dropdown.classList.contains('active');
+                    const dropdownMenu = dropdown.querySelector('.dropdown-menu');
+                    
+                    // 他のドロップダウンを閉じる
+                    document.querySelectorAll('.dropdown').forEach(d => {
+                        if (d !== dropdown) {
+                            d.classList.remove('active');
+                        }
+                    });
+                    
+                    // クリックしたドロップダウンを開閉
+                    if (isActive) {
+                        dropdown.classList.remove('active');
+                    } else {
+                        dropdown.classList.add('active');
+                    }
+                });
+            });
+            
+            // ドロップダウン外をクリックしたら閉じる
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.dropdown')) {
+                    document.querySelectorAll('.dropdown').forEach(d => {
+                        d.classList.remove('active');
+                    });
+                }
+            });
+            
             if (hamburgerBtn && mobileMenu) {
                 hamburgerBtn.addEventListener('click', function() {
                     hamburgerBtn.classList.toggle('active');
                     mobileMenu.classList.toggle('active');
                 });
                 
-                // メニュー項目をクリックしたらメニューを閉じる
-                const menuItems = mobileMenu.querySelectorAll('.nav-item');
-                menuItems.forEach(item => {
+                // モバイルドロップダウンの制御
+                document.querySelectorAll('.mobile-dropdown-toggle').forEach(toggle => {
+                    toggle.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const dropdown = this.closest('.mobile-dropdown');
+                        dropdown.classList.toggle('active');
+                    });
+                });
+                
+                // メニュー項目（リンク）をクリックしたらメニューを閉じる
+                const menuLinks = mobileMenu.querySelectorAll('.nav-item[href]');
+                menuLinks.forEach(item => {
                     item.addEventListener('click', function() {
                         hamburgerBtn.classList.remove('active');
                         mobileMenu.classList.remove('active');
@@ -1367,46 +1683,46 @@
             const adIndicators = document.getElementById('adIndicators');
             
             if (adSlides && adIndicators) {
-                const indicators = adIndicators.querySelectorAll('.ad-indicator');
-                let currentSlide = 0;
-                const totalSlides = indicators.length;
+            const indicators = adIndicators.querySelectorAll('.ad-indicator');
+            let currentSlide = 0;
+            const totalSlides = indicators.length;
                 
                 if (totalSlides > 0) {
                     const slideInterval = 8000; // 8秒ごとにスライド
 
-                    function showSlide(index) {
+            function showSlide(index) {
                         if (adSlides && index >= 0 && index < totalSlides) {
-                            adSlides.style.transform = `translateX(-${index * 100}%)`;
+                adSlides.style.transform = `translateX(-${index * 100}%)`;
                         }
-                        
-                        // インジケーターを更新
-                        indicators.forEach((indicator, i) => {
-                            if (i === index) {
-                                indicator.classList.add('active');
-                            } else {
-                                indicator.classList.remove('active');
-                            }
-                        });
+                
+                // インジケーターを更新
+                indicators.forEach((indicator, i) => {
+                    if (i === index) {
+                        indicator.classList.add('active');
+                    } else {
+                        indicator.classList.remove('active');
                     }
+                });
+            }
 
-                    function nextSlide() {
+            function nextSlide() {
                         if (totalSlides > 0) {
-                            currentSlide = (currentSlide + 1) % totalSlides;
-                            showSlide(currentSlide);
+                currentSlide = (currentSlide + 1) % totalSlides;
+                showSlide(currentSlide);
                         }
-                    }
+            }
 
-                    // インジケーターをクリックしたらそのスライドに移動
-                    indicators.forEach((indicator, index) => {
-                        indicator.addEventListener('click', function() {
-                            currentSlide = index;
-                            showSlide(currentSlide);
-                        });
-                    });
+            // インジケーターをクリックしたらそのスライドに移動
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', function() {
+                    currentSlide = index;
+                    showSlide(currentSlide);
+                });
+            });
 
                     // 自動スライド（複数スライドがある場合のみ）
                     if (totalSlides > 1) {
-                        setInterval(nextSlide, slideInterval);
+            setInterval(nextSlide, slideInterval);
                     }
                 }
             }

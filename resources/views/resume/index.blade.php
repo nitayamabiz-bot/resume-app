@@ -281,26 +281,158 @@
         flex-wrap: nowrap !important;
         margin: 0 !important;
         padding-top: 12px !important;
-        padding-bottom: 0 !important;
+        padding-bottom: 20px !important;
         padding-left: 0 !important;
         padding-right: 0 !important;
         min-height: auto !important;
         height: auto !important;
         line-height: normal !important;
         border-top: 1px solid #e5e7eb !important;
+        overflow: visible !important;
+        position: relative !important;
+        z-index: 100 !important;
+        gap: 0 !important;
     }
     
-    html body .header .nav-item {
+    html body .header .nav-menu > .nav-item {
         margin: 0 !important;
         padding: 8px 16px !important;
         min-width: 100px !important;
-        width: auto !important;
-        flex: 0 0 auto !important;
+        flex: 1 !important;
         min-height: auto !important;
         height: auto !important;
         box-sizing: border-box !important;
         line-height: normal !important;
         font-size: 0.9rem !important;
+        position: relative !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+    }
+    
+    /* ドロップダウンメニューのスタイル */
+    html body .header .nav-menu > .dropdown {
+        position: relative !important;
+        flex: 1 !important;
+        min-width: 0 !important;
+        display: flex !important;
+        justify-content: center !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    html body .header .nav-menu > .dropdown > .nav-item {
+        margin: 0 !important;
+        padding: 8px 16px !important;
+        min-width: 100px !important;
+        width: 100% !important;
+        flex: 1 !important;
+        min-height: auto !important;
+        height: auto !important;
+        box-sizing: border-box !important;
+        line-height: normal !important;
+        font-size: 0.9rem !important;
+        position: relative !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+    }
+    
+    html body .header .dropdown-toggle {
+        cursor: pointer !important;
+        user-select: none !important;
+    }
+    
+    html body .header .dropdown-menu {
+        display: none !important;
+        position: absolute !important;
+        top: calc(100% + 8px) !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        background-color: #f8fafc !important;
+        border: 1px solid #cbd5e1 !important;
+        border-radius: 6px !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+        min-width: 200px !important;
+        z-index: 1001 !important;
+        white-space: nowrap !important;
+    }
+    
+    html body .header .dropdown.active .dropdown-menu {
+        display: block !important;
+    }
+    
+    html body .header .dropdown-item {
+        display: block !important;
+        padding: 12px 16px !important;
+        color: #1e293b !important;
+        text-decoration: none !important;
+        font-size: 0.9rem !important;
+        transition: all 0.2s !important;
+        border-bottom: 1px solid #e2e8f0 !important;
+        white-space: nowrap !important;
+    }
+    
+    html body .header .dropdown-item:first-child {
+        border-top-left-radius: 6px !important;
+        border-top-right-radius: 6px !important;
+    }
+    
+    html body .header .dropdown-item:last-child {
+        border-bottom: none !important;
+        border-bottom-left-radius: 6px !important;
+        border-bottom-right-radius: 6px !important;
+    }
+    
+    html body .header .dropdown-item:hover {
+        background-color: #e0e7ff !important;
+        color: #1160E6 !important;
+    }
+    
+    html body .header .dropdown-item.active {
+        background-color: #dbeafe !important;
+        color: #1160E6 !important;
+        font-weight: 600 !important;
+    }
+    
+    html body .header .dropdown-arrow {
+        display: inline-block !important;
+        margin-left: 4px !important;
+        transition: transform 0.2s !important;
+        font-size: 0.7rem !important;
+        vertical-align: middle !important;
+    }
+    
+    html body .header .dropdown.active .dropdown-arrow {
+        transform: rotate(180deg) !important;
+    }
+    
+    /* ドロップダウンの区切り線 */
+    html body .header .nav-menu > .dropdown:not(:last-child) > .nav-item::after {
+        content: '' !important;
+        display: block !important;
+        position: absolute !important;
+        right: 0 !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        width: 1px !important;
+        height: 24px !important;
+        background-color: #e5e7eb !important;
+        z-index: 1 !important;
+    }
+    
+    /* 通常のnav-itemの区切り線 */
+    html body .header .nav-menu > .nav-item:not(:last-child)::after {
+        content: '' !important;
+        position: absolute !important;
+        right: 0 !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        width: 1px !important;
+        height: 24px !important;
+        background-color: #e5e7eb !important;
     }
     
     html body .header .nav-item-main {
