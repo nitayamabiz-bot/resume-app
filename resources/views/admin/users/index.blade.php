@@ -1,8 +1,8 @@
 @extends('admin.layout')
 
 @section('content')
-<div class="bg-white rounded-lg shadow-md p-6">
-    <h2 class="text-2xl font-bold mb-6">会員情報一覧 / सदस्य जानकारी सूची</h2>
+<div class="bg-white rounded-lg shadow-md p-4 sm:p-6">
+    <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">会員情報一覧</h2>
 
     <!-- 検索フォーム -->
     <div class="mb-4 bg-gray-50 rounded-lg p-2">
@@ -66,11 +66,11 @@
             <thead>
                 <tr class="bg-gray-100">
                     <th class="border p-3 text-left">ID</th>
-                    <th class="border p-3 text-left">名前 / नाम</th>
-                    <th class="border p-3 text-left">メールアドレス / इमेल</th>
-                    <th class="border p-3 text-left">ステータス / स्थिति</th>
-                    <th class="border p-3 text-left">登録日 / दर्ता मिति</th>
-                    <th class="border p-3 text-left">操作 / कार्य</th>
+                    <th class="border p-3 text-left">名前</th>
+                    <th class="border p-3 text-left">メールアドレス</th>
+                    <th class="border p-3 text-left">ステータス</th>
+                    <th class="border p-3 text-left">登録日</th>
+                    <th class="border p-3 text-left">操作</th>
                 </tr>
             </thead>
             <tbody>
@@ -81,11 +81,11 @@
                         <td class="border p-3">{{ $user->email }}</td>
                         <td class="border p-3">
                             @if($user->is_blocked)
-                                <span class="px-2 py-1 bg-red-100 text-red-800 rounded text-sm">ブロック / अवरुद्ध</span>
+                                <span class="px-2 py-1 bg-red-100 text-red-800 rounded text-sm">ブロック</span>
                             @elseif($user->is_suspended)
-                                <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded text-sm">停止中 / निलम्बित</span>
+                                <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded text-sm">停止中</span>
                             @else
-                                <span class="px-2 py-1 bg-green-100 text-green-800 rounded text-sm">アクティブ / सक्रिय</span>
+                                <span class="px-2 py-1 bg-green-100 text-green-800 rounded text-sm">アクティブ</span>
                             @endif
                         </td>
                         <td class="border p-3">{{ $user->created_at->format('Y-m-d H:i') }}</td>
@@ -93,25 +93,25 @@
                             <div class="flex gap-2 flex-wrap">
                                 <a href="{{ route('admin.users.show', $user) }}" 
                                    class="inline-block px-3 py-1 bg-blue-500 text-white rounded text-sm hover:bg-blue-600 whitespace-nowrap">
-                                    詳細 / विवरण
+                                    詳細
                                 </a>
                                 <a href="{{ route('admin.users.edit', $user) }}" 
                                    class="inline-block px-3 py-1 bg-green-500 text-white rounded text-sm hover:bg-green-600 whitespace-nowrap">
-                                    編集 / सम्पादन
+                                    編集
                                 </a>
                                 @if($user->is_blocked)
                                     <form action="{{ route('admin.users.unblock', $user) }}" method="POST" class="inline-block">
                                         @csrf
                                         <button type="submit" class="px-3 py-1 bg-yellow-500 text-white rounded text-sm hover:bg-yellow-600 whitespace-nowrap">
-                                            ブロック解除 / अवरुद्ध हटाउनुहोस्
+                                            ブロック解除
                                         </button>
                                     </form>
                                 @else
-                                    <form action="{{ route('admin.users.block', $user) }}" method="POST" class="inline-block" onsubmit="return confirm('ブロックしますか？ / अवरुद्ध गर्नुहुन्छ?');">
+                                    <form action="{{ route('admin.users.block', $user) }}" method="POST" class="inline-block" onsubmit="return confirm('ブロックしますか？');">
                                         @csrf
                                         <input type="hidden" name="block_reason" value="">
                                         <button type="submit" class="px-3 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-600 whitespace-nowrap">
-                                            ブロック / अवरुद्ध
+                                            ブロック
                                         </button>
                                     </form>
                                 @endif
@@ -119,23 +119,23 @@
                                     <form action="{{ route('admin.users.unsuspend', $user) }}" method="POST" class="inline-block">
                                         @csrf
                                         <button type="submit" class="px-3 py-1 bg-yellow-500 text-white rounded text-sm hover:bg-yellow-600 whitespace-nowrap">
-                                            停止解除 / निलम्बन हटाउनुहोस्
+                                            停止解除
                                         </button>
                                     </form>
                                 @else
-                                    <form action="{{ route('admin.users.suspend', $user) }}" method="POST" class="inline-block" onsubmit="return confirm('アカウントを停止しますか？ / खाता निलम्बन गर्नुहुन्छ?');">
+                                    <form action="{{ route('admin.users.suspend', $user) }}" method="POST" class="inline-block" onsubmit="return confirm('アカウントを停止しますか？');">
                                         @csrf
                                         <input type="hidden" name="suspended_until" value="">
                                         <button type="submit" class="px-3 py-1 bg-orange-500 text-white rounded text-sm hover:bg-orange-600 whitespace-nowrap">
-                                            停止 / निलम्बन
+                                            停止
                                         </button>
                                     </form>
                                 @endif
-                                <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="inline-block" onsubmit="return confirm('削除してもよろしいですか？ / के तपाईं मेटाउन चाहनुहुन्छ?');">
+                                <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="inline-block" onsubmit="return confirm('削除してもよろしいですか？');">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="px-3 py-1 bg-gray-500 text-white rounded text-sm hover:bg-gray-600 whitespace-nowrap">
-                                        削除 / मेटाउनुहोस्
+                                        削除
                                     </button>
                                 </form>
                             </div>
@@ -144,7 +144,7 @@
                 @empty
                     <tr>
                         <td colspan="6" class="border p-3 text-center text-gray-500">
-                            会員がありません / कुनै सदस्य छैन
+                            会員がありません
                         </td>
                     </tr>
                 @endforelse
@@ -160,8 +160,7 @@
     @endif
 
     <div class="mt-4 text-sm text-gray-600">
-        全{{ $users->total() }}件中 {{ $users->firstItem() ?? 0 }}-{{ $users->lastItem() ?? 0 }}件を表示 / 
-        कुल {{ $users->total() }} मध्ये {{ $users->firstItem() ?? 0 }}-{{ $users->lastItem() ?? 0 }} देखाउनुहोस्
+        全{{ $users->total() }}件中 {{ $users->firstItem() ?? 0 }}-{{ $users->lastItem() ?? 0 }}件を表示
     </div>
 </div>
 @endsection

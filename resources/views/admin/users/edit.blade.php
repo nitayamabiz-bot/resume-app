@@ -1,12 +1,12 @@
 @extends('admin.layout')
 
 @section('content')
-<div class="bg-white rounded-lg shadow-md p-6">
+<div class="bg-white rounded-lg shadow-md p-4 sm:p-6">
     <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-bold">会員情報編集 / सदस्य जानकारी सम्पादन</h2>
+        <h2 class="text-2xl font-bold">会員情報編集</h2>
         <a href="{{ route('admin.users.show', $user) }}" 
            class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
-            詳細に戻る / विवरणमा फर्कनुहोस्
+            詳細に戻る
         </a>
     </div>
 
@@ -17,7 +17,7 @@
         <div class="space-y-4">
             <div>
                 <label for="name" class="block text-sm font-medium text-gray-700 mb-1">
-                    名前 / नाम <span class="text-red-500">*</span>
+                    名前<span class="text-red-500">*</span>
                 </label>
                 <input type="text" 
                        id="name" 
@@ -33,7 +33,7 @@
 
             <div>
                 <label for="email" class="block text-sm font-medium text-gray-700 mb-1">
-                    メールアドレス / इमेल ठेगाना <span class="text-red-500">*</span>
+                    メールアドレス<span class="text-red-500">*</span>
                 </label>
                 <input type="email" 
                        id="email" 
@@ -54,13 +54,13 @@
                            value="1" 
                            {{ old('is_blocked', $user->is_blocked) ? 'checked' : '' }}
                            class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-                    <span class="ml-2">ブロック / अवरुद्ध</span>
+                    <span class="ml-2">ブロック</span>
                 </label>
             </div>
 
             <div>
                 <label for="block_reason" class="block text-sm font-medium text-gray-700 mb-1">
-                    ブロック理由 / अवरुद्ध कारण
+                    ブロック理由
                 </label>
                 <textarea id="block_reason" 
                           name="block_reason" 
@@ -79,13 +79,13 @@
                            value="1" 
                            {{ old('is_suspended', $user->is_suspended) ? 'checked' : '' }}
                            class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-                    <span class="ml-2">アカウント停止 / खाता निलम्बन</span>
+                    <span class="ml-2">アカウント停止</span>
                 </label>
             </div>
 
             <div>
                 <label for="suspended_until" class="block text-sm font-medium text-gray-700 mb-1">
-                    停止期限 / निलम्बन म्याद
+                    停止期限
                 </label>
                 <input type="datetime-local" 
                        id="suspended_until" 
@@ -99,10 +99,10 @@
 
             <div class="flex gap-4 pt-4">
                 <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                    更新 / अपडेट गर्नुहोस्
+                    更新
                 </button>
                 <a href="{{ route('admin.users.show', $user) }}" class="px-6 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">
-                    キャンセル / रद्द गर्नुहोस्
+                    キャンセル
                 </a>
             </div>
         </div>

@@ -1,10 +1,13 @@
 @extends('admin.layout')
 
 @section('content')
-<div class="main-content" style="max-width: 1000px; margin: 0 auto; padding: 40px 20px;">
-    <div class="bg-white rounded-lg shadow-md p-6">
-        <div class="mb-6">
-            <h1 class="text-2xl font-bold">お知らせ管理 / सूचना व्यवस्थापन</h1>
+<div class="bg-white rounded-lg shadow-md p-4 sm:p-6">
+        <div class="mb-4 sm:mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <h1 class="text-xl sm:text-2xl font-bold">お知らせ管理</h1>
+            <a href="{{ route('admin.announcements.create') }}" 
+               class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm whitespace-nowrap">
+                新規作成
+            </a>
         </div>
 
         @if(session('success'))
@@ -29,11 +32,11 @@
             <table class="w-full border-collapse admin-table">
                 <thead>
                     <tr class="bg-gray-100">
-                        <th class="border p-3 text-left">表示順 / प्रदर्शन क्रम</th>
-                        <th class="border p-3 text-left">タイトル / शीर्षक</th>
-                        <th class="border p-3 text-left">公開状態 / सार्वजनिक स्थिति</th>
-                        <th class="border p-3 text-left">作成日時 / सिर्जना मिति</th>
-                        <th class="border p-3 text-left">操作 / कार्य</th>
+                        <th class="border p-3 text-left">表示順</th>
+                        <th class="border p-3 text-left">タイトル</th>
+                        <th class="border p-3 text-left">公開状態</th>
+                        <th class="border p-3 text-left">作成日時</th>
+                        <th class="border p-3 text-left">操作</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,22 +46,22 @@
                             <td class="border p-3">{{ $announcement->title }}</td>
                             <td class="border p-3">
                                 @if($announcement->is_published)
-                                    <span class="text-green-600">公開中 / सार्वजनिक</span>
+                                    <span class="text-green-600">公開中</span>
                                 @else
-                                    <span class="text-gray-500">非公開 / निजी</span>
+                                    <span class="text-gray-500">非公開</span>
                                 @endif
                             </td>
                             <td class="border p-3">{{ $announcement->created_at->format('Y-m-d H:i') }}</td>
                             <td class="border p-3">
                                 <div class="flex gap-2 flex-wrap">
                                     <a href="{{ route('admin.announcements.edit', $announcement) }}" class="inline-block px-3 py-1 bg-blue-500 text-white rounded text-sm hover:bg-blue-600 whitespace-nowrap">
-                                        編集 / सम्पादन
+                                        編集
                                     </a>
-                                    <form action="{{ route('admin.announcements.destroy', $announcement) }}" method="POST" onsubmit="return confirm('削除してもよろしいですか？ / के तपाईं मेटाउन चाहनुहुन्छ?');" class="inline-block">
+                                    <form action="{{ route('admin.announcements.destroy', $announcement) }}" method="POST" onsubmit="return confirm('削除してもよろしいですか？');" class="inline-block">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="px-3 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-600 whitespace-nowrap">
-                                            削除 / मेटाउनुहोस्
+                                            削除
                                         </button>
                                     </form>
                                 </div>
@@ -67,7 +70,7 @@
                     @empty
                         <tr>
                             <td colspan="5" class="border p-3 text-center text-gray-500">
-                                お知らせがありません / कुनै सूचना छैन
+                                お知らせがありません
                             </td>
                         </tr>
                     @endforelse
@@ -76,7 +79,7 @@
         </div>
 
         <div class="mt-4 text-sm text-gray-600">
-            登録件数: {{ $announcements->count() }} / 20件 / दर्ता संख्या: {{ $announcements->count() }} / २०
+            登録件数: {{ $announcements->count() }}
         </div>
     </div>
 </div>

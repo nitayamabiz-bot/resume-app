@@ -1,8 +1,8 @@
 @extends('admin.layout')
 
 @section('content')
-<div class="bg-white rounded-lg shadow-md p-6">
-    <h2 class="text-2xl font-bold mb-6">職務経歴書提出一覧 / कार्य अनुभव सबमिट सूची</h2>
+<div class="bg-white rounded-lg shadow-md p-4 sm:p-6">
+    <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">職務経歴書提出一覧</h2>
 
     <!-- 検索フォーム -->
     <div class="mb-4 bg-gray-50 rounded-lg p-2">
@@ -54,14 +54,14 @@
                     <th class="border p-3 text-left">
                         <a href="{{ route('admin.career-history-submissions.index', array_merge(request()->all(), ['sort_by' => 'created_at', 'sort_order' => request('sort_order') == 'asc' ? 'desc' : 'asc'])) }}" 
                            class="hover:text-blue-600">
-                            提出日時 / सबमिट मिति
+                            提出日時
                             @if(request('sort_by') == 'created_at')
                                 {{ request('sort_order') == 'asc' ? '▲' : '▼' }}
                             @endif
                         </a>
                     </th>
-                    <th class="border p-3 text-left">名前 / नाम</th>
-                    <th class="border p-3 text-left">操作 / कार्य</th>
+                    <th class="border p-3 text-left">名前</th>
+                    <th class="border p-3 text-left">操作</th>
                 </tr>
             </thead>
             <tbody>
@@ -74,14 +74,14 @@
                         <td class="border p-3">
                             <a href="{{ route('admin.career-history-submissions.show', $submission) }}" 
                                class="px-3 py-1 bg-blue-500 text-white rounded text-sm hover:bg-blue-600">
-                                詳細 / विवरण
+                                詳細
                             </a>
                         </td>
                     </tr>
                 @empty
                     <tr>
                         <td colspan="3" class="border p-3 text-center text-gray-500">
-                            職務経歴書提出がありません / कुनै कार्य अनुभव सबमिट छैन
+                            職務経歴書提出がありません
                         </td>
                     </tr>
                 @endforelse

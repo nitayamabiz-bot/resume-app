@@ -1,15 +1,15 @@
 @extends('admin.layout')
 
 @section('content')
-<div class="bg-white rounded-lg shadow-md p-6">
-        <h1 class="text-2xl font-bold mb-6">お知らせ作成 / सूचना सिर्जना</h1>
+<div class="bg-white rounded-lg shadow-md p-4 sm:p-6">
+        <h1 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">お知らせ作成</h1>
 
         <form action="{{ route('admin.announcements.store') }}" method="POST">
             @csrf
 
             <div class="mb-4">
                 <label for="title" class="block text-sm font-medium mb-2">
-                    タイトル / शीर्षक <span class="text-red-500">*</span>
+                    タイトル<span class="text-red-500">*</span>
                 </label>
                 <input type="text" 
                        id="title" 
@@ -25,7 +25,7 @@
 
             <div class="mb-4">
                 <label for="content" class="block text-sm font-medium mb-2">
-                    内容 / सामग्री <span class="text-red-500">*</span>
+                    内容<span class="text-red-500">*</span>
                 </label>
                 <textarea id="content" 
                           name="content" 
@@ -39,7 +39,7 @@
 
             <div class="mb-4">
                 <label for="display_order" class="block text-sm font-medium mb-2">
-                    表示順 / प्रदर्शन क्रम
+                    表示順
                 </label>
                 <input type="number" 
                        id="display_order" 
@@ -47,7 +47,7 @@
                        value="{{ old('display_order', 0) }}" 
                        min="0"
                        class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2">
-                <p class="text-xs text-gray-500 mt-1">数値が小さいほど上に表示されます / सानो संख्या माथि प्रदर्शन हुन्छ</p>
+                <p class="text-xs text-gray-500 mt-1">数値が小さいほど上に表示されます</p>
                 @error('display_order')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
@@ -60,16 +60,16 @@
                            value="1" 
                            {{ old('is_published') ? 'checked' : '' }}
                            class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-                    <span class="ml-2">公開する / सार्वजनिक गर्नुहोस्</span>
+                    <span class="ml-2">公開する</span>
                 </label>
             </div>
 
-            <div class="flex gap-4">
-                <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                    作成 / सिर्जना गर्नुहोस्
+            <div class="flex flex-col sm:flex-row gap-2 sm:gap-4">
+                <button type="submit" class="px-4 sm:px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm sm:text-base">
+                    作成
                 </button>
-                <a href="{{ route('admin.announcements.index') }}" class="px-6 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">
-                    キャンセル / रद्द गर्नुहोस्
+                <a href="{{ route('admin.announcements.index') }}" class="px-4 sm:px-6 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 text-sm sm:text-base text-center">
+                    キャンセル
                 </a>
             </div>
         </form>

@@ -1,8 +1,8 @@
 @extends('admin.layout')
 
 @section('content')
-<div class="bg-white rounded-lg shadow-md p-6">
-        <h1 class="text-2xl font-bold mb-6">ニュース編集 / समाचार सम्पादन</h1>
+<div class="bg-white rounded-lg shadow-md p-4 sm:p-6">
+        <h1 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">ニュース編集</h1>
 
         <form action="{{ route('admin.news.update', $news) }}" method="POST">
             @csrf
@@ -10,7 +10,7 @@
 
             <div class="mb-4">
                 <label for="title" class="block text-sm font-medium mb-2">
-                    タイトル / शीर्षक <span class="text-red-500">*</span>
+                    タイトル<span class="text-red-500">*</span>
                 </label>
                 <input type="text" 
                        id="title" 
@@ -26,7 +26,7 @@
 
             <div class="mb-4">
                 <label for="image_url" class="block text-sm font-medium mb-2">
-                    画像URL / छवि URL
+                    画像URL
                 </label>
                 <input type="url" 
                        id="image_url" 
@@ -35,7 +35,7 @@
                        maxlength="500"
                        placeholder="https://example.com/image.jpg"
                        class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2">
-                <p class="text-xs text-gray-500 mt-1">画像URLが未指定の場合は、デフォルト画像が表示されます / छवि URL निर्दिष्ट नभएको खण्डमा, पूर्वनिर्धारित छवि प्रदर्शन हुनेछ</p>
+                <p class="text-xs text-gray-500 mt-1">画像URLが未指定の場合は、デフォルト画像が表示されます</p>
                 @error('image_url')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
@@ -43,7 +43,7 @@
 
             <div class="mb-4">
                 <label for="external_url" class="block text-sm font-medium mb-2">
-                    外部リンクURL / बाह्य लिङ्क URL <span class="text-red-500">*</span>
+                    外部リンクURL<span class="text-red-500">*</span>
                 </label>
                 <input type="url" 
                        id="external_url" 
@@ -60,14 +60,14 @@
 
             <div class="mb-4">
                 <label for="category" class="block text-sm font-medium mb-2">
-                    カテゴリ / श्रेणी <span class="text-red-500">*</span>
+                    カテゴリ<span class="text-red-500">*</span>
                 </label>
                 <select id="category" 
                         name="category" 
                         required
                         class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2">
-                    <option value="domestic" {{ old('category', $news->category) === 'domestic' ? 'selected' : '' }}>国内 / घरेलु</option>
-                    <option value="international" {{ old('category', $news->category) === 'international' ? 'selected' : '' }}>国外 / अन्तर्राष्ट्रिय</option>
+                    <option value="domestic" {{ old('category', $news->category) === 'domestic' ? 'selected' : '' }}>国内</option>
+                    <option value="international" {{ old('category', $news->category) === 'international' ? 'selected' : '' }}>国外</option>
                 </select>
                 @error('category')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -76,7 +76,7 @@
 
             <div class="mb-4">
                 <label for="published_date" class="block text-sm font-medium mb-2">
-                    投稿日 / प्रकाशन मिति <span class="text-red-500">*</span>
+                    投稿日<span class="text-red-500">*</span>
                 </label>
                 <input type="date" 
                        id="published_date" 
@@ -91,7 +91,7 @@
 
             <div class="mb-4">
                 <label for="display_order" class="block text-sm font-medium mb-2">
-                    表示順 / प्रदर्शन क्रम
+                    表示順
                 </label>
                 <input type="number" 
                        id="display_order" 
@@ -99,7 +99,7 @@
                        value="{{ old('display_order', $news->display_order) }}" 
                        min="0"
                        class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-blue-400 focus:ring-2">
-                <p class="text-xs text-gray-500 mt-1">数値が小さいほど上に表示されます / सानो संख्या माथि प्रदर्शन हुन्छ</p>
+                <p class="text-xs text-gray-500 mt-1">数値が小さいほど上に表示されます</p>
                 @error('display_order')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
@@ -112,16 +112,16 @@
                            value="1" 
                            {{ old('is_published', $news->is_published) ? 'checked' : '' }}
                            class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-                    <span class="ml-2">公開する / सार्वजनिक गर्नुहोस्</span>
+                    <span class="ml-2">公開する</span>
                 </label>
             </div>
 
             <div class="flex gap-4">
                 <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                    更新 / अपडेट गर्नुहोस्
+                    更新
                 </button>
                 <a href="{{ route('admin.news.index') }}" class="px-6 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">
-                    キャンセル / रद्द गर्नुहोस्
+                    キャンセル
                 </a>
             </div>
         </form>

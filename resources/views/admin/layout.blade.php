@@ -117,6 +117,35 @@
             overflow-x: auto !important;
             overflow-y: visible !important;
         }
+        /* スクロールバーを非表示（WebKit系ブラウザ） */
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        /* スマホ表示の改善 */
+        @media (max-width: 640px) {
+            .admin-table {
+                font-size: 0.875rem;
+            }
+            .admin-table th,
+            .admin-table td {
+                padding: 0.5rem 0.25rem;
+            }
+            .admin-table td .flex {
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+            .admin-table td a,
+            .admin-table td button {
+                font-size: 0.75rem;
+                padding: 0.25rem 0.5rem;
+                width: 100%;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body class="font-sans antialiased bg-gray-100">
@@ -125,14 +154,14 @@
         <header class="bg-white shadow-sm border-b">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
                 <div class="flex justify-between items-center">
-                    <h1 class="text-2xl font-bold text-gray-900">管理画面 / व्यवस्थापन प्यानल</h1>
-                    <div class="flex items-center gap-4">
-                        <div class="text-sm text-gray-600">
+                    <h1 class="text-xl sm:text-2xl font-bold text-gray-900">管理画面</h1>
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
+                        <div class="text-xs sm:text-sm text-gray-600">
                             <div>本日のアクセス数: <span class="font-bold text-blue-600">{{ $todayAccessCount ?? \App\Models\AccessLog::getTodayCount() }}</span></div>
                             <div>総アクセス数: <span class="font-bold text-blue-600">{{ $totalAccessCount ?? \App\Models\AccessLog::getTotalCount() }}</span></div>
                         </div>
-                        <a href="{{ route('home') }}" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
-                            サイトに戻る / साइटमा फर्कनुहोस्
+                        <a href="{{ route('home') }}" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-gray-500 text-white rounded hover:bg-gray-600 text-sm whitespace-nowrap">
+                            サイトに戻る
                         </a>
                     </div>
                 </div>
@@ -141,38 +170,38 @@
 
         <!-- タブナビゲーション -->
         <nav class="bg-white border-b">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex space-x-1">
+            <div class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
+                <div class="flex space-x-1 overflow-x-auto scrollbar-hide">
                     <a href="{{ route('admin.dashboard') }}" 
-                       class="px-6 py-3 text-sm font-medium {{ request()->routeIs('admin.dashboard') ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700 hover:border-b-2 hover:border-gray-300' }}">
-                        ダッシュボード / ड्यासबोर्ड
+                       class="px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap {{ request()->routeIs('admin.dashboard') ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700 hover:border-b-2 hover:border-gray-300' }}">
+                        ダッシュボード
                     </a>
                     <a href="{{ route('admin.announcements.index') }}" 
-                       class="px-6 py-3 text-sm font-medium {{ request()->routeIs('admin.announcements.*') ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700 hover:border-b-2 hover:border-gray-300' }}">
-                        お知らせ / सूचना
+                       class="px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap {{ request()->routeIs('admin.announcements.*') ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700 hover:border-b-2 hover:border-gray-300' }}">
+                        お知らせ
                     </a>
                     <a href="{{ route('admin.news.index') }}" 
-                       class="px-6 py-3 text-sm font-medium {{ request()->routeIs('admin.news.*') ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700 hover:border-b-2 hover:border-gray-300' }}">
-                        ニュース / समाचार
+                       class="px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap {{ request()->routeIs('admin.news.*') ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700 hover:border-b-2 hover:border-gray-300' }}">
+                        ニュース
                     </a>
                     <a href="{{ route('admin.resume-submissions.index') }}" 
-                       class="px-6 py-3 text-sm font-medium {{ request()->routeIs('admin.resume-submissions.*') ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700 hover:border-b-2 hover:border-gray-300' }}">
-                        履歴書 / रिजुमे
+                       class="px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap {{ request()->routeIs('admin.resume-submissions.*') ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700 hover:border-b-2 hover:border-gray-300' }}">
+                        履歴書
                     </a>
                     <a href="{{ route('admin.career-history-submissions.index') }}" 
-                       class="px-6 py-3 text-sm font-medium {{ request()->routeIs('admin.career-history-submissions.*') ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700 hover:border-b-2 hover:border-gray-300' }}">
-                        職務経歴書 / कार्य अनुभव
+                       class="px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap {{ request()->routeIs('admin.career-history-submissions.*') ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700 hover:border-b-2 hover:border-gray-300' }}">
+                        職務経歴書
                     </a>
                     <a href="{{ route('admin.users.index') }}" 
-                       class="px-6 py-3 text-sm font-medium {{ request()->routeIs('admin.users.*') ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700 hover:border-b-2 hover:border-gray-300' }}">
-                        会員情報 / सदस्य जानकारी
+                       class="px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap {{ request()->routeIs('admin.users.*') ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700 hover:border-b-2 hover:border-gray-300' }}">
+                        会員情報
                     </a>
                 </div>
             </div>
         </nav>
 
         <!-- メインコンテンツ -->
-        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <main class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-4 sm:py-8">
             @if(session('success'))
                 <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
                     {{ session('success') }}
