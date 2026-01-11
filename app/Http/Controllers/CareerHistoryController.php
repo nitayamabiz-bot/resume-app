@@ -72,13 +72,21 @@ class CareerHistoryController extends Controller
 
         // 職務経歴データを整理
         $careerHistories = [];
+        // is_currentの値を数値配列に変換（JavaScriptからインデックスが値として送信される）
+        $isCurrentIndexes = [];
+        if (isset($validated['is_current']) && is_array($validated['is_current'])) {
+            // 配列の値（実際のインデックス）を取得
+            $isCurrentIndexes = array_map('intval', array_values($validated['is_current']));
+        }
+
         foreach ($validated['company_name'] as $index => $companyName) {
             if (! empty($companyName) && ! empty($validated['start_date'][$index]) && ! empty($validated['job_description'][$index])) {
+                $isCurrent = in_array($index, $isCurrentIndexes, true);
                 $careerHistories[] = [
                     'company_name' => $companyName,
                     'start_date' => $validated['start_date'][$index],
-                    'end_date' => isset($validated['is_current'][$index]) && $validated['is_current'][$index] ? '現在' : ($validated['end_date'][$index] ?? ''),
-                    'is_current' => isset($validated['is_current'][$index]) && $validated['is_current'][$index],
+                    'end_date' => $isCurrent ? '現在' : ($validated['end_date'][$index] ?? ''),
+                    'is_current' => $isCurrent,
                     'job_description' => $validated['job_description'][$index],
                     'business_content' => $validated['business_content'][$index] ?? null,
                     'employee_count' => $validated['employee_count'][$index] ?? null,
@@ -714,7 +722,7 @@ class CareerHistoryController extends Controller
                         $decoded['business_content'] = mb_substr($decoded['business_content'], 0, $lastComma + 1, 'UTF-8');
                     } else {
                         // それでも見つからない場合は、文字数制限を緩和
-                        $maxLength = (int)($targetLength * 1.1);
+                        $maxLength = (int) ($targetLength * 1.1);
                         $textLength = mb_strlen($decoded['business_content'], 'UTF-8');
                         if ($textLength <= $maxLength) {
                             // そのまま使用
@@ -744,7 +752,7 @@ class CareerHistoryController extends Controller
                         $decoded['job_description'] = mb_substr($decoded['job_description'], 0, $lastComma + 1, 'UTF-8');
                     } else {
                         // それでも見つからない場合は、文字数制限を緩和
-                        $maxLength = (int)($targetLength * 1.1);
+                        $maxLength = (int) ($targetLength * 1.1);
                         $textLength = mb_strlen($decoded['job_description'], 'UTF-8');
                         if ($textLength <= $maxLength) {
                             // そのまま使用
@@ -797,7 +805,7 @@ class CareerHistoryController extends Controller
 
         $careerHistories = $request->input('career_histories', []);
 
-        if (empty($careerHistories) || !is_array($careerHistories)) {
+        if (empty($careerHistories) || ! is_array($careerHistories)) {
             return response()->json([
                 'success' => false,
                 'message' => '職務経歴の職務内容が一つも入力されていません。',
@@ -807,7 +815,7 @@ class CareerHistoryController extends Controller
         // 職務内容を抽出
         $jobDescriptions = [];
         foreach ($careerHistories as $career) {
-            if (!empty($career['job_description'])) {
+            if (! empty($career['job_description'])) {
                 $jobDescriptions[] = $career['job_description'];
             }
         }
@@ -823,7 +831,7 @@ class CareerHistoryController extends Controller
         $prompt = "以下の職務経歴の職務内容をもとに、職務要約を生成してください。\n\n";
         $prompt .= "【職務経歴の職務内容】\n";
         foreach ($jobDescriptions as $index => $description) {
-            $prompt .= ($index + 1) . ". " . $description . "\n";
+            $prompt .= ($index + 1).'. '.$description."\n";
         }
         $prompt .= "\n";
         $prompt .= "上記の職務内容をもとに、職務要約を100-200文字で簡潔にまとめてください。\n";
@@ -947,7 +955,7 @@ class CareerHistoryController extends Controller
                             $summary = mb_substr($summary, 0, $lastComma + 1, 'UTF-8');
                         } else {
                             // それでも見つからない場合は、少し余裕を持たせて文字数制限を緩和
-                            $maxLength = (int)($targetLength * 1.1);
+                            $maxLength = (int) ($targetLength * 1.1);
                             if ($textLength <= $maxLength) {
                                 // そのまま使用
                             } else {
@@ -1002,7 +1010,7 @@ class CareerHistoryController extends Controller
 
         $careerHistories = $request->input('career_histories', []);
 
-        if (empty($careerHistories) || !is_array($careerHistories)) {
+        if (empty($careerHistories) || ! is_array($careerHistories)) {
             return response()->json([
                 'success' => false,
                 'message' => '職務経歴の職務内容が一つも入力されていません。',
@@ -1012,7 +1020,7 @@ class CareerHistoryController extends Controller
         // 職務内容を抽出
         $jobDescriptions = [];
         foreach ($careerHistories as $career) {
-            if (!empty($career['job_description'])) {
+            if (! empty($career['job_description'])) {
                 $jobDescriptions[] = $career['job_description'];
             }
         }
@@ -1028,7 +1036,7 @@ class CareerHistoryController extends Controller
         $prompt = "以下の職務経歴の職務内容をもとに、自己PRを生成してください。\n\n";
         $prompt .= "【職務経歴の職務内容】\n";
         foreach ($jobDescriptions as $index => $description) {
-            $prompt .= ($index + 1) . ". " . $description . "\n";
+            $prompt .= ($index + 1).'. '.$description."\n";
         }
         $prompt .= "\n";
         $prompt .= "上記の職務内容をもとに、自己PRを100-200文字で簡潔にまとめてください。\n";
@@ -1152,7 +1160,7 @@ class CareerHistoryController extends Controller
                             $selfPR = mb_substr($selfPR, 0, $lastComma + 1, 'UTF-8');
                         } else {
                             // それでも見つからない場合は、少し余裕を持たせて文字数制限を緩和
-                            $maxLength = (int)($targetLength * 1.1);
+                            $maxLength = (int) ($targetLength * 1.1);
                             if ($textLength <= $maxLength) {
                                 // そのまま使用
                             } else {

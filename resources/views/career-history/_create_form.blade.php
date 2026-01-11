@@ -231,8 +231,6 @@
     // フォーム送信処理（確認画面へ）
     function submitCareerHistoryForm() {
         const form = document.getElementById('career-history-form');
-        const formData = new FormData(form);
-        
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || 
                          document.querySelector('input[name="_token"]')?.value || 
                          '{{ csrf_token() }}';
@@ -249,27 +247,104 @@
         csrfInput.value = csrfToken;
         formElement.appendChild(csrfInput);
         
-        // フォームデータを追加
-        for (let [key, value] of formData.entries()) {
-            if (value instanceof File) {
-                continue;
-            }
-            if (Array.isArray(value)) {
-                value.forEach((v) => {
-                    const arrayInput = document.createElement('input');
-                    arrayInput.type = 'hidden';
-                    arrayInput.name = key + '[]';
-                    arrayInput.value = v;
-                    formElement.appendChild(arrayInput);
-                });
-            } else {
+        // 単一フィールドを追加
+        const singleFields = ['last_name_roman', 'first_name_roman', 'job_summary', 'self_pr'];
+        singleFields.forEach(fieldName => {
+            const field = form.querySelector(`[name="${fieldName}"]`);
+            if (field && field.value) {
                 const input = document.createElement('input');
                 input.type = 'hidden';
-                input.name = key;
-                input.value = value;
+                input.name = fieldName;
+                input.value = field.value;
                 formElement.appendChild(input);
             }
-        }
+        });
+        
+        // 職務経歴データを配列として追加（インデックスを保持）
+        const careerRows = form.querySelectorAll('.career-row');
+        console.log('Total career rows:', careerRows.length);
+        careerRows.forEach((row, index) => {
+            // company_name
+            const companyName = row.querySelector('input[name="company_name[]"]');
+            if (companyName && companyName.value) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'company_name[]';
+                input.value = companyName.value;
+                formElement.appendChild(input);
+            }
+            
+            // start_date
+            const startDate = row.querySelector('input[name="start_date[]"]');
+            if (startDate && startDate.value) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'start_date[]';
+                input.value = startDate.value;
+                formElement.appendChild(input);
+            }
+            
+            // end_date
+            const endDate = row.querySelector('input[name="end_date[]"]');
+            if (endDate && endDate.value) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'end_date[]';
+                input.value = endDate.value;
+                formElement.appendChild(input);
+            }
+            
+            // is_current（チェックボックスのみチェック時、値をインデックスに設定）
+            const isCurrentCheckbox = row.querySelector('input[name="is_current[]"]');
+            if (isCurrentCheckbox && isCurrentCheckbox.checked) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'is_current[]';
+                input.value = index.toString(); // インデックスを文字列として送信
+                formElement.appendChild(input);
+                console.log('Sending is_current for index:', index);
+            }
+            
+            // job_description
+            const jobDescription = row.querySelector('textarea[name="job_description[]"]');
+            if (jobDescription && jobDescription.value) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'job_description[]';
+                input.value = jobDescription.value;
+                formElement.appendChild(input);
+            }
+            
+            // business_content
+            const businessContent = row.querySelector('input[name="business_content[]"]');
+            if (businessContent && businessContent.value) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'business_content[]';
+                input.value = businessContent.value;
+                formElement.appendChild(input);
+            }
+            
+            // employee_count
+            const employeeCount = row.querySelector('input[name="employee_count[]"]');
+            if (employeeCount && employeeCount.value) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'employee_count[]';
+                input.value = employeeCount.value;
+                formElement.appendChild(input);
+            }
+            
+            // capital
+            const capital = row.querySelector('input[name="capital[]"]');
+            if (capital && capital.value) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'capital[]';
+                input.value = capital.value;
+                formElement.appendChild(input);
+            }
+        });
         
         document.body.appendChild(formElement);
         formElement.submit();
