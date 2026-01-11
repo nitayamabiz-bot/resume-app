@@ -208,7 +208,9 @@
         });
         
         if (errors.length > 0) {
-            event.preventDefault();
+            if (event) {
+                event.preventDefault();
+            }
             let errDiv = document.getElementById('form-errors');
             errDiv.innerHTML = errors.map(e => `<div class="text-red-600 mb-2">${e}</div>`).join('');
             window.scrollTo(0, 0);
@@ -216,6 +218,14 @@
         }
         
         return true;
+    }
+    
+    // 内容確認ボタンのクリック処理（iPhone/Safari対応）
+    function handleCareerHistoryConfirmClick(event) {
+        event.preventDefault();
+        if (validateCareerHistoryForm(event)) {
+            submitCareerHistoryForm();
+        }
     }
     
     // フォーム送信処理（確認画面へ）
@@ -701,7 +711,7 @@
     </div>
     
     <div id="form-errors" class="mb-4"></div>
-    <form id="career-history-form" class="space-y-4" onsubmit="event.preventDefault(); if (validateCareerHistoryForm(event)) { submitCareerHistoryForm(); }" style="box-sizing: border-box; overflow-x: hidden; width: 100%;">
+    <form id="career-history-form" class="space-y-4" style="box-sizing: border-box; overflow-x: hidden; width: 100%;">
         @csrf
         
         <!-- 氏名（ローマ字） -->
@@ -886,7 +896,7 @@
         </div>
         
         <div class="mt-6 flex justify-center gap-4">
-            <button type="submit"
+            <button type="button" onclick="handleCareerHistoryConfirmClick(event)"
                 class="px-6 py-3 bg-blue-600 text-white rounded font-semibold hover:bg-blue-700 transition">
                 内容確認 / विवरण जाँच गर्नुहोस्
             </button>

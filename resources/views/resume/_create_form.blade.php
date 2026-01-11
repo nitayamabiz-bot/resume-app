@@ -176,9 +176,17 @@
         if (btn) btn.disabled = container.children.length >= 8;
     }
 
+    // 内容確認ボタンのクリック処理（iPhone/Safari対応）
+    function handleConfirmClick(event) {
+        event.preventDefault();
+        validateForm();
+    }
+    
     // 入力チェック 
     function validateForm(event) {
-        event.preventDefault();
+        if (event) {
+            event.preventDefault();
+        }
         let form = document.getElementById('resume-form');
         let errors = [];
 
@@ -1130,7 +1138,7 @@
         </div>
 
         <div class="mt-6 flex justify-center">
-            <button type="submit"
+            <button type="button" onclick="handleConfirmClick(event)"
                 class="px-6 py-3 bg-blue-600 text-white rounded font-semibold hover:bg-blue-700 transition">
                 内容確認 / विवरण जाँच गर्नुहोस्
             </button>

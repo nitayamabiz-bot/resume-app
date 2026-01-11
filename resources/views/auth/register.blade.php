@@ -16,7 +16,7 @@
         </p>
     </div>
 
-    <form method="POST" action="{{ route('register') }}">
+    <form method="POST" action="{{ route('register') }}" id="register-form">
         @csrf
 
         <!-- Name -->
@@ -69,9 +69,38 @@
                 既に登録済みですか？<span class="block text-xs" style="font-family: 'Noto Sans Devanagari', Arial, sans-serif;">पहिले नै दर्ता भएको छ?</span>
             </a>
 
-            <x-primary-button class="ms-4">
+            <x-primary-button class="ms-4" id="register-button">
                 登録 / दर्ता
             </x-primary-button>
         </div>
     </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('register-form');
+            const registerButton = document.getElementById('register-button');
+            let isSubmitting = false;
+
+            // フォーム送信をインターセプトして二重送信を防止
+            form.addEventListener('submit', function(e) {
+                if (isSubmitting) {
+                    e.preventDefault();
+                    return false;
+                }
+
+                isSubmitting = true;
+                registerButton.disabled = true;
+                registerButton.innerHTML = '登録中... / दर्ता गर्दै...';
+
+                // フォームが正常に送信されなかった場合（エラーなど）にボタンを再有効化
+                setTimeout(function() {
+                    if (isSubmitting) {
+                        isSubmitting = false;
+                        registerButton.disabled = false;
+                        registerButton.innerHTML = '登録 / दर्ता';
+                    }
+                }, 5000);
+            });
+        });
+    </script>
 </x-guest-layout>

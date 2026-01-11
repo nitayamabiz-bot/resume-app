@@ -19,7 +19,7 @@
         </p>
     </div>
 
-    <form method="POST" action="{{ route('login') }}">
+    <form method="POST" action="{{ route('login') }}" id="login-form">
         @csrf
 
         <!-- Email Address -->
@@ -60,9 +60,38 @@
                 </a>
             @endif
 
-            <x-primary-button class="ms-3">
+            <x-primary-button class="ms-3" id="login-button">
                 ログイン / लगइन
             </x-primary-button>
         </div>
     </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('login-form');
+            const loginButton = document.getElementById('login-button');
+            let isSubmitting = false;
+
+            // フォーム送信をインターセプトして二重送信を防止
+            form.addEventListener('submit', function(e) {
+                if (isSubmitting) {
+                    e.preventDefault();
+                    return false;
+                }
+
+                isSubmitting = true;
+                loginButton.disabled = true;
+                loginButton.innerHTML = 'ログイン中... / लगइन गर्दै...';
+
+                // フォームが正常に送信されなかった場合（エラーなど）にボタンを再有効化
+                setTimeout(function() {
+                    if (isSubmitting) {
+                        isSubmitting = false;
+                        loginButton.disabled = false;
+                        loginButton.innerHTML = 'ログイン / लगइन';
+                    }
+                }, 5000);
+            });
+        });
+    </script>
 </x-guest-layout>
