@@ -21,19 +21,19 @@ class HomeController extends Controller
             ->limit(20)
             ->get();
 
-        // 公開中のニュースを取得（国内・国外別、最大20件）
+        // 公開中のニュースを取得（国内・国外別、最大50件）
         $domesticNews = News::where('is_published', true)
             ->where('category', 'domestic')
             ->orderBy('display_order')
             ->orderBy('published_date', 'desc')
-            ->limit(20)
+            ->limit(50)
             ->get();
 
         $internationalNews = News::where('is_published', true)
             ->where('category', 'international')
             ->orderBy('display_order')
             ->orderBy('published_date', 'desc')
-            ->limit(20)
+            ->limit(50)
             ->get();
 
         // 管理者チェック
