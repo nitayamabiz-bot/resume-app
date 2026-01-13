@@ -1518,27 +1518,41 @@
     <footer class="footer">
         <div class="footer-content">
             <div class="ad-slider">
+                @php
+                    $slideIndex = 0;
+                    $hasVinayaka = file_exists(public_path('images/ads/vinayaka.jpg'));
+                    $hasAd2 = file_exists(public_path('images/ads/ad2.jpg'));
+                    $hasAd3 = file_exists(public_path('images/ads/ad3.jpg'));
+                    $hasAd4 = file_exists(public_path('images/ads/ad4.jpg'));
+                @endphp
                 <div class="ad-slides" id="adSlides">
+                    @if($hasVinayaka)
+                    <div class="ad-slide">
+                        <a href="https://tabelog.com/fukuoka/A4001/A400202/40057305/" target="_blank" rel="noopener noreferrer">
+                            <img src="{{ asset('images/ads/vinayaka.jpg') }}" alt="VINAYAKA ネパール＆インドレストラン" style="object-fit: contain; width: 100%; height: 100%;">
+                        </a>
+                    </div>
+                    @endif
                     <div class="ad-slide">
                         {!! '<a href="https://rpx.a8.net/svt/ejp?a8mat=45KOC7+DTQEIA+2HOM+62U35&rakuten=y&a8ejpredirect=http%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2F0ea62065.34400275.0ea62066.204f04c0%2Fa25122762590_45KOC7_DTQEIA_2HOM_62U35%3Fpc%3Dhttp%253A%252F%252Fwww.rakuten.co.jp%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252F" rel="nofollow">
 <img src="http://hbb.afl.rakuten.co.jp/hsb/0eb4bbdb.d3e5aa19.0eb4bbaa.95151395/" border="0"></a>
 <img border="0" width="1" height="1" src="https://www17.a8.net/0.gif?a8mat=45KOC7+DTQEIA+2HOM+62U35" alt="">' !!}
                     </div>
-                    @if(file_exists(public_path('images/ads/ad2.jpg')))
+                    @if($hasAd2)
                     <div class="ad-slide">
                         <a href="{{ route('advertisement.create') }}">
                             <img src="{{ asset('images/ads/ad2.jpg') }}" alt="広告募集" onerror="this.src='https://via.placeholder.com/1200x120/0346b0/FFFFFF?text=広告募集+Advertisement+Application'">
                         </a>
                     </div>
                     @endif
-                    @if(file_exists(public_path('images/ads/ad3.jpg')))
+                    @if($hasAd3)
                     <div class="ad-slide">
                         <a href="{{ route('advertisement.create') }}">
                             <img src="{{ asset('images/ads/ad3.jpg') }}" alt="広告募集" onerror="this.src='https://via.placeholder.com/1200x120/3E5387/FFFFFF?text=広告募集+Advertisement+Application'">
                         </a>
                     </div>
                     @endif
-                    @if(file_exists(public_path('images/ads/ad4.jpg')))
+                    @if($hasAd4)
                     <div class="ad-slide">
                         <a href="{{ route('advertisement.create') }}">
                             <img src="{{ asset('images/ads/ad4.jpg') }}" alt="広告募集" onerror="this.src='https://via.placeholder.com/1200x120/6b7280/FFFFFF?text=広告募集+Advertisement+Application'">
@@ -1547,15 +1561,18 @@
                     @endif
                 </div>
                 <div class="ad-indicators" id="adIndicators">
+                    @if($hasVinayaka)
                     <span class="ad-indicator active" data-slide="0"></span>
-                    @if(file_exists(public_path('images/ads/ad2.jpg')))
-                    <span class="ad-indicator" data-slide="1"></span>
                     @endif
-                    @if(file_exists(public_path('images/ads/ad3.jpg')))
+                    <span class="ad-indicator {{ !$hasVinayaka ? 'active' : '' }}" data-slide="1"></span>
+                    @if($hasAd2)
                     <span class="ad-indicator" data-slide="2"></span>
                     @endif
-                    @if(file_exists(public_path('images/ads/ad4.jpg')))
+                    @if($hasAd3)
                     <span class="ad-indicator" data-slide="3"></span>
+                    @endif
+                    @if($hasAd4)
+                    <span class="ad-indicator" data-slide="4"></span>
                     @endif
                 </div>
             </div>
