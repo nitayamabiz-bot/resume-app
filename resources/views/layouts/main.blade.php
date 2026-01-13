@@ -1529,7 +1529,7 @@
                     @if($hasVinayaka)
                     <div class="ad-slide">
                         <a href="https://tabelog.com/fukuoka/A4001/A400202/40057305/" target="_blank" rel="noopener noreferrer">
-                            <img src="{{ asset('images/ads/vinayaka.jpg') }}" alt="VINAYAKA ネパール＆インドレストラン" style="object-fit: contain; width: 100%; height: 100%;">
+                            <img src="{{ asset('images/ads/vinayaka.jpg') }}" alt="VINAYAKA ネパール＆インドレストラン">
                         </a>
                     </div>
                     @endif
