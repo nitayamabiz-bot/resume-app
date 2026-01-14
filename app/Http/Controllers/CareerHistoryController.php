@@ -526,7 +526,8 @@ class CareerHistoryController extends Controller
         // 自己PR本文（左揃え）- ページ分割に対応
         if (! empty($selfPr)) {
             $pdf->SetFont('kozminproregular', '', 12);
-            $pageBottom = 297 - 10; // A4高さ297mm - 下マージン10mm
+            // ページ番号の位置（297 - 15 = 282mm）より上で終わるように、277mmを上限とする
+            $pageBottom = 277; // A4高さ297mm - ページ番号位置(15mm) - 余白(5mm)
             $lineHeight = 6; // 行の高さ
             
             // テキストを行に分割（改行文字で分割）
@@ -538,7 +539,7 @@ class CareerHistoryController extends Controller
                 if (empty(trim($line))) {
                     $currentY += $lineHeight;
                     // ページを超える場合は新しいページを追加
-                    if ($currentY > $pageBottom) {
+                    if ($currentY + $lineHeight > $pageBottom) {
                         $pdf->AddPage('P', 'A4');
                         $currentY = 20;
                     }
@@ -549,6 +550,11 @@ class CareerHistoryController extends Controller
                 $lineWidth = $pdf->GetStringWidth($line);
                 if ($lineWidth <= $pageWidth) {
                     // 1行に収まる場合
+                    // ページを超える場合は新しいページを追加
+                    if ($currentY + $lineHeight > $pageBottom) {
+                        $pdf->AddPage('P', 'A4');
+                        $currentY = 20;
+                    }
                     $pdf->SetXY($x, $currentY);
                     $pdf->Cell($pageWidth, $lineHeight, $line, 0, 0, 'L');
                     $currentY += $lineHeight;
@@ -562,16 +568,15 @@ class CareerHistoryController extends Controller
                         $testWidth = $pdf->GetStringWidth($testLine);
                         
                         if ($testWidth > $pageWidth && ! empty($currentLine)) {
+                            // ページを超える場合は新しいページを追加
+                            if ($currentY + $lineHeight > $pageBottom) {
+                                $pdf->AddPage('P', 'A4');
+                                $currentY = 20;
+                            }
                             // 現在の行を出力
                             $pdf->SetXY($x, $currentY);
                             $pdf->Cell($pageWidth, $lineHeight, $currentLine, 0, 0, 'L');
                             $currentY += $lineHeight;
-                            
-                            // ページを超える場合は新しいページを追加
-                            if ($currentY > $pageBottom) {
-                                $pdf->AddPage('P', 'A4');
-                                $currentY = 20;
-                            }
                             
                             $currentLine = $word;
                         } else {
@@ -581,15 +586,14 @@ class CareerHistoryController extends Controller
                     
                     // 残りの行を出力
                     if (! empty($currentLine)) {
-                        $pdf->SetXY($x, $currentY);
-                        $pdf->Cell($pageWidth, $lineHeight, $currentLine, 0, 0, 'L');
-                        $currentY += $lineHeight;
-                        
                         // ページを超える場合は新しいページを追加
-                        if ($currentY > $pageBottom) {
+                        if ($currentY + $lineHeight > $pageBottom) {
                             $pdf->AddPage('P', 'A4');
                             $currentY = 20;
                         }
+                        $pdf->SetXY($x, $currentY);
+                        $pdf->Cell($pageWidth, $lineHeight, $currentLine, 0, 0, 'L');
+                        $currentY += $lineHeight;
                     }
                 }
             }
