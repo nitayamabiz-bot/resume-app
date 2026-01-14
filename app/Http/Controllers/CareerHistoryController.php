@@ -523,12 +523,78 @@ class CareerHistoryController extends Controller
         $pdf->Text($x, $y, '■自己PR');
         $y += 8;
 
-        // 自己PR本文（左揃え）
+        // 自己PR本文（左揃え）- ページ分割に対応
         if (! empty($selfPr)) {
             $pdf->SetFont('kozminproregular', '', 12);
-            $pdf->SetXY($x, $y);
-            $pdf->MultiCell($pageWidth, 6, $selfPr, 0, 'L', false, 1);
-            $y = $pdf->GetY() + 3;
+            $pageBottom = 297 - 10; // A4高さ297mm - 下マージン10mm
+            $lineHeight = 6; // 行の高さ
+            
+            // テキストを行に分割（改行文字で分割）
+            $lines = explode("\n", $selfPr);
+            $currentY = $y;
+            
+            foreach ($lines as $line) {
+                // 空行の処理
+                if (empty(trim($line))) {
+                    $currentY += $lineHeight;
+                    // ページを超える場合は新しいページを追加
+                    if ($currentY > $pageBottom) {
+                        $pdf->AddPage('P', 'A4');
+                        $currentY = 20;
+                    }
+                    continue;
+                }
+                
+                // 行の幅をチェックして、必要に応じて複数行に分割
+                $lineWidth = $pdf->GetStringWidth($line);
+                if ($lineWidth <= $pageWidth) {
+                    // 1行に収まる場合
+                    $pdf->SetXY($x, $currentY);
+                    $pdf->Cell($pageWidth, $lineHeight, $line, 0, 0, 'L');
+                    $currentY += $lineHeight;
+                } else {
+                    // 複数行に分割が必要な場合
+                    $words = mb_str_split($line, 1, 'UTF-8');
+                    $currentLine = '';
+                    
+                    foreach ($words as $word) {
+                        $testLine = $currentLine.$word;
+                        $testWidth = $pdf->GetStringWidth($testLine);
+                        
+                        if ($testWidth > $pageWidth && ! empty($currentLine)) {
+                            // 現在の行を出力
+                            $pdf->SetXY($x, $currentY);
+                            $pdf->Cell($pageWidth, $lineHeight, $currentLine, 0, 0, 'L');
+                            $currentY += $lineHeight;
+                            
+                            // ページを超える場合は新しいページを追加
+                            if ($currentY > $pageBottom) {
+                                $pdf->AddPage('P', 'A4');
+                                $currentY = 20;
+                            }
+                            
+                            $currentLine = $word;
+                        } else {
+                            $currentLine = $testLine;
+                        }
+                    }
+                    
+                    // 残りの行を出力
+                    if (! empty($currentLine)) {
+                        $pdf->SetXY($x, $currentY);
+                        $pdf->Cell($pageWidth, $lineHeight, $currentLine, 0, 0, 'L');
+                        $currentY += $lineHeight;
+                        
+                        // ページを超える場合は新しいページを追加
+                        if ($currentY > $pageBottom) {
+                            $pdf->AddPage('P', 'A4');
+                            $currentY = 20;
+                        }
+                    }
+                }
+            }
+            
+            $y = $currentY + 3;
         }
     }
 
