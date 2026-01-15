@@ -898,6 +898,17 @@
                             खाता खोलेर लगइन गरेपछि, यहाँबाट फोटो दर्ता गर्न सकिन्छ।
                         </p>
                     @endauth
+
+                    @php
+                        $user = Auth::user();
+                        $hasProfilePhoto = $user && $user->profile_photo_path;
+                    @endphp
+                    @if($hasProfilePhoto)
+                        <p class="mt-1 text-xs text-green-600">
+                            証明写真は登録済みです。このままPDFに写真が印刷されます。<br>
+                            प्रमाण फोटो पहिले नै दर्ता गरिएको छ। यही फोटो बायोडाटाको PDF मा पनि देखा पर्छ।
+                        </p>
+                    @endif
                 </div>
             </div>
         </div>
