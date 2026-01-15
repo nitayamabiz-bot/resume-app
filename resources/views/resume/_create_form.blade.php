@@ -899,21 +899,6 @@
                         </p>
                     @endauth
                 </div>
-                @php
-                    $user = Auth::user();
-                    $hasProfilePhoto = $user && $user->profile_photo_path;
-                @endphp
-                @if($hasProfilePhoto)
-                    <div class="flex flex-col items-center">
-                        <span class="text-xs text-gray-600 mb-1">現在登録されている写真 / अहिले दर्ता गरिएको फोटो</span>
-                        <div class="border border-gray-300 rounded overflow-hidden bg-gray-50"
-                             style="width: 90px; height: 120px; display: flex; align-items: center; justify-content: center;">
-                            <img src="{{ asset('storage/' . $user->profile_photo_path) }}"
-                                 alt="証明写真"
-                                 style="max-width: 90px; max-height: 120px; object-fit: contain; display: block;">
-                        </div>
-                    </div>
-                @endif
             </div>
         </div>
         <!-- 氏名（ローマ字） -->
