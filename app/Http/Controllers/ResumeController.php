@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use setasign\Fpdi\Tcpdf\Fpdi;
 
@@ -77,7 +78,7 @@ class ResumeController extends Controller
      */
     public function confirm(Request $request)
     {
-        $validated = $request->validate([
+        $rules = [
             'first_name_roman' => 'required|string|max:25',
             'last_name_roman' => 'required|string|max:25',
             'first_name_kana' => 'required|string|max:25',
@@ -100,7 +101,14 @@ class ResumeController extends Controller
             'license_date' => 'nullable|array',
             'appeal_points' => 'nullable|string|max:624',
             'self_request' => 'nullable|string|max:260',
-        ]);
+        ];
+
+        // 証明写真アップロード（会員限定）
+        if (Auth::check()) {
+            $rules['profile_photo'] = 'nullable|image|mimes:jpg,jpeg,png|max:5120';
+        }
+
+        $validated = $request->validate($rules);
 
         // 学歴データを整理
         $education = [];
@@ -139,6 +147,23 @@ class ResumeController extends Controller
                         'date' => $date,
                     ];
                 }
+            }
+        }
+
+        // ログインユーザに証明写真を保存（会員限定機能）
+        if (Auth::check() && $request->hasFile('profile_photo')) {
+            $user = Auth::user();
+            $file = $request->file('profile_photo');
+
+            if ($file && $file->isValid()) {
+                // 既存の画像があれば削除
+                if ($user->profile_photo_path && Storage::disk('public')->exists($user->profile_photo_path)) {
+                    Storage::disk('public')->delete($user->profile_photo_path);
+                }
+
+                $path = $file->store('profile_photos', 'public');
+                $user->profile_photo_path = $path;
+                $user->save();
             }
         }
 
@@ -553,6 +578,60 @@ class ResumeController extends Controller
         $pdf->Text(88, 31, $now->format('Y'));
         $pdf->Text(104, 31, $now->format('n'));
         $pdf->Text(114, 31, $now->format('j'));
+
+        // 証明写真（会員限定）
+        // 基準:
+        //   - 提出日（年）の座標 (114, 31) を基準点とし、
+        //   - そこから上に+2mm、右に+4mmの位置に一度配置座標を計算したうえで、
+        //   - さらにそこから「右に55mm、下に40mm」移動させた位置に縦40mm×横30mm枠内で比率を保って配置する
+        if (Auth::check()) {
+            $user = Auth::user();
+            if ($user && $user->profile_photo_path) {
+                $imagePath = storage_path('app/public/'.$user->profile_photo_path);
+                if (file_exists($imagePath)) {
+                    $maxWidth = 30.0; // 横30mm
+                    $maxHeight = 40.0; // 縦40mm
+
+                    $displayWidth = $maxWidth;
+                    $displayHeight = $maxHeight;
+
+                    // 画像のアスペクト比を取得し、枠内に収まるように調整
+                    $imageSize = @getimagesize($imagePath);
+                    if ($imageSize && $imageSize[0] > 0 && $imageSize[1] > 0) {
+                        $originalWidth = (float) $imageSize[0];
+                        $originalHeight = (float) $imageSize[1];
+                        $ratio = $originalWidth / $originalHeight;
+
+                        // 枠（30x40）の中に収まるようにスケーリング
+                        if (($maxWidth / $maxHeight) > $ratio) {
+                            // 枠の方が横長 -> 高さを最大にして幅を合わせる
+                            $displayHeight = $maxHeight;
+                            $displayWidth = $maxHeight * $ratio;
+                        } else {
+                            // 画像の方が横長 -> 幅を最大にして高さを合わせる
+                            $displayWidth = $maxWidth;
+                            $displayHeight = $maxWidth / $ratio;
+                        }
+                    }
+
+                    // 日付（年）の位置を基準点とし、そこから上に2mm、右に4mm移動した位置を「枠の右下」とみなし、
+                    // そこから画像の高さ分だけ上にずらしたうえで、さらに右に55mm・下に40mmオフセットして配置
+                    $anchorX = 114.0;
+                    $anchorY = 31.0;
+
+                    $photoRight = $anchorX + 4.0;
+                    $photoBottom = $anchorY - 2.0;
+                    $photoX = $photoRight - $displayWidth;
+                    $photoY = $photoBottom - $displayHeight;
+
+                    // ユーザー指定のオフセット: 右に55mm、下に40mm（さらに全体を2mm上に調整）
+                    $photoX += 55.0;
+                    $photoY += 40.0 - 2.0;
+
+                    $pdf->Image($imagePath, $photoX, $photoY, $displayWidth, $displayHeight);
+                }
+            }
+        }
 
         // 氏名（ふりがな）: (40, 40)
         $nameKana = trim(($data['last_name_kana'] ?? '').' '.($data['first_name_kana'] ?? ''));
@@ -1063,7 +1142,7 @@ class ResumeController extends Controller
                         } else {
                             // それでも見つからない場合は、少し余裕を持たせて文字数制限を緩和
                             // 文章として成立するように、目標文字数の+10%まで許可
-                            $maxLength = (int)($targetLength * 1.1);
+                            $maxLength = (int) ($targetLength * 1.1);
                             if ($textLength <= $maxLength) {
                                 // そのまま使用
                             } else {
@@ -1095,7 +1174,7 @@ class ResumeController extends Controller
                             $generatedText = mb_substr($generatedText, 0, $lastComma + 1, 'UTF-8');
                         } else {
                             // それでも見つからない場合は、少し余裕を持たせて文字数制限を緩和
-                            $maxLength = (int)($targetLength * 1.1);
+                            $maxLength = (int) ($targetLength * 1.1);
                             if ($textLength <= $maxLength) {
                                 // そのまま使用
                             } else {

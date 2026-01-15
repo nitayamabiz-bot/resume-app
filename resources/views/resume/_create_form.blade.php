@@ -291,6 +291,10 @@
         // フォームデータをセッションストレージに保存（戻るボタン用）
         const formObject = {};
         formData.forEach((value, key) => {
+            // 証明写真（ファイル）はセッションストレージには保存しない
+            if (key === 'profile_photo') {
+                return;
+            }
             if (formObject[key]) {
                 if (Array.isArray(formObject[key])) {
                     formObject[key].push(value);
@@ -567,6 +571,11 @@
         });
         // 前後の空白を削除（textareaの志望動機と本人希望欄は改行を保持するため除外）
         document.querySelectorAll('input, textarea').forEach(input => {
+            // ファイル入力は value を書き換えない（ブラウザ仕様でエラーになるため）
+            if (input.type === 'file') {
+                return;
+            }
+
             if (input.type !== 'month' && input.type !== 'date' && 
                 input.name !== 'appeal_points' && input.name !== 'self_request') {
                 input.value = input.value.trim().replace(/\s+/g, ' ');
@@ -839,15 +848,74 @@
     <div class="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
         <div class="text-sm text-gray-700 leading-relaxed">
             <p class="font-medium">情報を入力していただくと、無料で簡単にPDFの履歴書が作成できます。</p>
-            <p class="font-medium mt-2">会員登録をしていただくと、入力情報の保存と、AI生成機能をご利用いただけます。</p>
-            <p class="text-gray-600 mt-2">तपाईंले जानकारी प्रविष्ट गर्नुभयो भने, नि:शुल्क रूपमा सजिलैसँग PDF को बायोडाटा बनाउन सक्नुहुन्छ।</p>
-            <p class="text-gray-600 mt-1">तपाईंले खाता खोलेमा, तपाईंको प्रविष्ट गरेको जानकारी सुरक्षित हुनेछ।</p>
+            <p class="font-medium mt-2">会員登録をしていただくと、入力情報の保存に加えて、AI生成機能や証明写真の登録機能をご利用いただけます。</p>
+            <p class="text-gray-600 mt-2">
+                तपाईंले जानकारी प्रविष्ट गर्नुभयो भने, निःशुल्क रूपमा सजिलैसँग PDF को बायोडाटा बनाउन सक्नुहुन्छ।
+            </p>
+            <p class="text-gray-600 mt-1">
+                तपाईंले खाता खोलेर लगइन गर्नुभयो भने, तपाईंको प्रविष्ट गरेको जानकारी सुरक्षित भण्डारण हुन्छ, र AI द्वारा स्वतः पाठ निर्माण गर्ने सुविधा र
+                प्रमाण फोटो (ID फोटो) दर्ता गर्ने सुविधा पनि प्रयोग गर्न सक्नुहुन्छ।
+            </p>
         </div>
     </div>
     
     <div id="form-errors" class="mb-4"></div>
-    <form id="resume-form" class="space-y-4" onsubmit="validateForm(event)" style="box-sizing: border-box; overflow-x: hidden; width: 100%;">
+    <form id="resume-form" class="space-y-4" onsubmit="validateForm(event)" style="box-sizing: border-box; overflow-x: hidden; width: 100%;" enctype="multipart/form-data">
         @csrf
+        <!-- 証明写真 -->
+        <div class="pt-4" style="border-top: 1px solid #f3f4f6 !important;">
+            <label class="block font-medium mb-1">
+                証明写真 / फोटो (ID Photo)
+                <span class="text-xs text-gray-500 ml-1">※ JPG / PNG, 5MBまで</span>
+            </label>
+            <p class="text-xs text-gray-500 mb-2">
+                縦36〜40mm、横24〜30mm程度の証明写真をご用意ください。<br>
+                一度登録すると次回以降の履歴書でも自動的に使用されます。<br>
+                画像は縦横比を保ったまま縮小され、PDF上では縦40mm×横30mmの枠内におさまるように配置されます。
+            </p>
+            <p class="text-xs text-gray-500 mb-2">
+                कृपया करिब उचाइ 36〜40mm, चौडाइ 24〜30mm वरिपरिको प्रमाण फोटो (ID फोटो) तयार राख्नुहोस्।<br>
+                एक पटक दर्ता गरेपछि, त्यसपछि बनाइने सबै बायोडाटामा स्वचालित रूपमा सोही फोटो प्रयोग गरिनेछ।<br>
+                फोटोको लम्बाइ–चौडाइको अनुपात जस्ताको तस्तै राखी सानो बनाइन्छ, र PDF मा उचाइ 40mm × चौडाइ 30mm को फ्रेम भित्र मिलाएर राखिन्छ।
+            </p>
+            <div class="flex flex-col sm:flex-row items-start gap-4">
+                <div>
+                    @auth
+                        <input type="file" name="profile_photo" accept="image/jpeg,image/png"
+                            class="block w-full text-sm text-gray-700 border border-gray-300 rounded cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
+                        <p class="mt-1 text-xs text-gray-500">
+                            顔がはっきり写った正面の写真を推奨します。<br>
+                            अनुहार स्पष्ट देखिने, अगाडिबाट खिचिएको फोटो प्रयोग गर्न सिफारिस गरिन्छ।
+                        </p>
+                    @else
+                        <input type="file" name="profile_photo" accept="image/jpeg,image/png"
+                            class="block w-full text-sm text-gray-500 border border-gray-300 rounded bg-gray-100 cursor-not-allowed"
+                            disabled>
+                        <p class="mt-1 text-xs text-gray-500">
+                            証明写真の登録は会員限定機能です。<br>
+                            会員登録してログインすると、ここから写真を登録できます。<br>
+                            प्रमाण फोटो दर्ता गर्ने सुविधा केवल सदस्यहरूका लागि हो।<br>
+                            खाता खोलेर लगइन गरेपछि, यहाँबाट फोटो दर्ता गर्न सकिन्छ।
+                        </p>
+                    @endauth
+                </div>
+                @php
+                    $user = Auth::user();
+                    $hasProfilePhoto = $user && $user->profile_photo_path;
+                @endphp
+                @if($hasProfilePhoto)
+                    <div class="flex flex-col items-center">
+                        <span class="text-xs text-gray-600 mb-1">現在登録されている写真 / अहिले दर्ता गरिएको फोटो</span>
+                        <div class="border border-gray-300 rounded overflow-hidden bg-gray-50"
+                             style="width: 90px; height: 120px; display: flex; align-items: center; justify-content: center;">
+                            <img src="{{ asset('storage/' . $user->profile_photo_path) }}"
+                                 alt="証明写真"
+                                 style="max-width: 90px; max-height: 120px; object-fit: contain; display: block;">
+                        </div>
+                    </div>
+                @endif
+            </div>
+        </div>
         <!-- 氏名（ローマ字） -->
         <div class="pt-4" style="border-top: 1px solid #f3f4f6 !important;">
             <label class="block font-medium mb-1">氏名（ローマ字） / नाम (Roman Alphabet)<span class="text-red-500">*</span></label>
