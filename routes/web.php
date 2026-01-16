@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\Admin\ResumeSubmissionController;
 use App\Http\Controllers\AdvertisementController;
+use App\Http\Controllers\AdminProcedureController;
 use App\Http\Controllers\CareerHistoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
@@ -44,13 +45,12 @@ Route::get('/coming-soon', function () {
     return view('pages.coming-soon');
 })->name('coming-soon');
 
-Route::get('/exchange', function () {
-    return view('pages.coming-soon');
-})->name('exchange');
-
 Route::get('/work-permit', function () {
     return view('pages.coming-soon');
 })->name('work-permit');
+
+// 行政手続きガイド（為替メニューの位置に表示）
+Route::get('/admin-procedures', AdminProcedureController::class)->name('admin-procedures.index');
 
 // 履歴書関連のルート
 Route::get('/resume', [ResumeController::class, 'index'])->name('resume.index');
