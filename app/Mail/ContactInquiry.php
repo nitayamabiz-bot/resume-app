@@ -13,7 +13,7 @@ class ContactInquiry extends Mailable
     use Queueable, SerializesModels;
 
     public $title;
-    public $message;
+    public $body;
     public $name;
     public $email;
     public $userId;
@@ -24,7 +24,7 @@ class ContactInquiry extends Mailable
     public function __construct($title, $message, $name, $email, $userId = null)
     {
         $this->title = $title;
-        $this->message = $message;
+        $this->body = $message;
         $this->name = $name;
         $this->email = $email;
         $this->userId = $userId;
