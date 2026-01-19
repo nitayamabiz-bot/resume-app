@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\ResumeSubmissionController;
 use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\AdminProcedureController;
 use App\Http\Controllers\CareerHistoryController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResumeController;
@@ -82,6 +83,10 @@ Route::get('/privacy-policy', function () {
 // 広告募集関連のルート
 Route::get('/advertisement', [AdvertisementController::class, 'create'])->name('advertisement.create');
 Route::post('/advertisement', [AdvertisementController::class, 'store'])->name('advertisement.store');
+
+// お問い合わせ関連のルート
+Route::get('/contact', [ContactController::class, 'create'])->name('contact.create');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

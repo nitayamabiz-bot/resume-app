@@ -1326,6 +1326,15 @@
                         </a>
                     </div>
                 </div>
+                <a href="{{ route('contact.create') }}" class="nav-item {{ request()->routeIs('contact.*') ? 'active' : '' }}">
+                    <span class="nav-item-main">
+                        <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                        お問い合わせ
+                    </span>
+                    <span class="nav-item-sub">सम्पर्क</span>
+                </a>
             </nav>
             <nav class="mobile-menu" id="mobileMenu">
                 <a href="{{ route('home') }}" class="nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
@@ -1468,6 +1477,15 @@
                         </a>
                     </div>
                 </div>
+                <a href="{{ route('contact.create') }}" class="nav-item {{ request()->routeIs('contact.*') ? 'active' : '' }}">
+                    <span class="nav-item-main">
+                        <svg class="nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                        お問い合わせ
+                    </span>
+                    <span class="nav-item-sub">सम्पर्क</span>
+                </a>
             </nav>
         </div>
         <div class="nav-links">
