@@ -41,32 +41,42 @@ class ContactController extends Controller
         $userId = $user ? $user->id : null;
 
         // メール送信
-        try {
-            Mail::to('info@hamro-life-japan.com')
-                ->send(new ContactInquiry(
-                    $validated['title'],
-                    $validated['message'],
-                    $name,
-                    $email,
-                    $userId
-                ));
-            
-            \Log::info('お問い合わせメール送信成功', [
-                'email' => $email,
-                'title' => $validated['title'],
-            ]);
-        } catch (\Exception $e) {
-            \Log::error('お問い合わせメール送信エラー', [
-                'message' => $e->getMessage(),
-                'email' => $email,
-            ]);
-            
-            return redirect()->route('contact.create')
-                ->withErrors(['error' => 'メールの送信に失敗しました。しばらく時間をおいて再度お試しください。'])
-                ->withInput();
-        }
+        $this->sendEmail(
+            $validated['title'],
+            $validated['message'],
+            $name,
+            $email,
+            $userId
+        );
 
         return redirect()->route('contact.create')
             ->with('success', 'お問い合わせを受け付けました。ありがとうございます。');
+    }
+
+    /**
+     * メール送信
+     */
+    private function sendEmail($title, $message, $name, $email, $userId)
+    {
+        try {
+            \Log::info('お問い合わせメール送信開始', [
+                'to' => 'info@hamro-life-japan.com',
+                'email' => $email,
+                'title' => $title,
+            ]);
+            
+            Mail::to('info@hamro-life-japan.com')
+                ->send(new ContactInquiry($title, $message, $name, $email, $userId));
+            
+            \Log::info('お問い合わせメール送信成功');
+        } catch (\Exception $e) {
+            // メール送信エラーはログに記録するが、処理は続行
+            \Log::error('お問い合わせメール送信エラー', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'email' => $email,
+                'title' => $title,
+            ]);
+        }
     }
 }
