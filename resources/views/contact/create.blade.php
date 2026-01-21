@@ -230,6 +230,15 @@
                 <textarea name="message" class="form-textarea" required>{{ old('message') }}</textarea>
             </div>
 
+            @if($recaptcha_site_key)
+            <div class="form-group" style="display: flex; justify-content: center;">
+                <div class="g-recaptcha" data-sitekey="{{ $recaptcha_site_key }}"></div>
+            </div>
+            @endif
+            @error('g-recaptcha-response')
+                <div class="text-red-500 text-sm mt-1 text-center">{{ $message }}</div>
+            @enderror
+
             <button type="submit" class="submit-btn">
                 送信する
                 <span class="block text-sm mt-1" style="font-family: 'Noto Sans Devanagari', Arial, sans-serif; opacity: 0.9;">पठाउनुहोस्</span>
@@ -237,4 +246,7 @@
         </form>
     </div>
 </div>
+@if($recaptcha_site_key)
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+@endif
 @endsection

@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\RecaptchaHelper;
 use App\Models\Resume;
 use App\Models\ResumeSubmission;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
@@ -452,6 +454,27 @@ class ResumeController extends Controller
      */
     public function download(Request $request)
     {
+        // レート制限チェック（1分間に5回まで）
+        $key = 'resume-pdf-download:'.($request->ip() ?? 'unknown');
+        if (RateLimiter::tooManyAttempts($key, 5)) {
+            $seconds = RateLimiter::availableIn($key);
+            return response()->json([
+                'success' => false,
+                'message' => "リクエストが多すぎます。{$seconds}秒後に再度お試しください。",
+            ], 429);
+        }
+
+        // reCAPTCHA検証
+        if (! RecaptchaHelper::verify($request->input('g-recaptcha-response', ''))) {
+            RateLimiter::hit($key, 60); // 検証失敗もカウント
+            return response()->json([
+                'success' => false,
+                'message' => 'セキュリティチェックの検証に失敗しました。再度お試しください。 / सुरक्षा जाँच प्रमाणीकरण असफल भयो। कृपया पुन: प्रयास गर्नुहोस्।',
+            ], 400);
+        }
+
+        RateLimiter::hit($key, 60); // 成功時もカウント
+
         try {
             $templatePath = storage_path('app/templates/01_A4_format.pdf');
 
@@ -1001,6 +1024,18 @@ class ResumeController extends Controller
                 'message' => 'この機能は会員限定です。ログインしてください。',
             ], 403);
         }
+
+        // レート制限チェック（1分間に5回まで）
+        $key = 'resume-ai-generation:'.(Auth::id() ?? $request->ip() ?? 'unknown');
+        if (RateLimiter::tooManyAttempts($key, 5)) {
+            $seconds = RateLimiter::availableIn($key);
+            return response()->json([
+                'success' => false,
+                'message' => "リクエストが多すぎます。{$seconds}秒後に再度お試しください。",
+            ], 429);
+        }
+
+        RateLimiter::hit($key, 60);
 
         \Log::info('generateMotivation called', [
             'method' => $request->method(),

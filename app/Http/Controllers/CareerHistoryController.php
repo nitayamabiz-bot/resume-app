@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\RecaptchaHelper;
 use App\Models\CareerHistory;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\View\View;
 use setasign\Fpdi\Tcpdf\Fpdi;
 
@@ -225,6 +227,27 @@ class CareerHistoryController extends Controller
      */
     public function download(Request $request)
     {
+        // レート制限チェック（1分間に5回まで）
+        $key = 'career-history-pdf-download:'.($request->ip() ?? 'unknown');
+        if (RateLimiter::tooManyAttempts($key, 5)) {
+            $seconds = RateLimiter::availableIn($key);
+            return response()->json([
+                'success' => false,
+                'message' => "リクエストが多すぎます。{$seconds}秒後に再度お試しください。",
+            ], 429);
+        }
+
+        // reCAPTCHA検証
+        if (! RecaptchaHelper::verify($request->input('g-recaptcha-response', ''))) {
+            RateLimiter::hit($key, 60); // 検証失敗もカウント
+            return response()->json([
+                'success' => false,
+                'message' => 'セキュリティチェックの検証に失敗しました。再度お試しください。 / सुरक्षा जाँच प्रमाणीकरण असफल भयो। कृपया पुन: प्रयास गर्नुहोस्।',
+            ], 400);
+        }
+
+        RateLimiter::hit($key, 60); // 成功時もカウント
+
         try {
             // POSTリクエストから直接データを取得（優先）
             $careerHistoryData = null;
@@ -646,6 +669,18 @@ class CareerHistoryController extends Controller
             ], 403);
         }
 
+        // レート制限チェック（1分間に5回まで）
+        $key = 'career-history-ai-generation:'.(Auth::id() ?? $request->ip() ?? 'unknown');
+        if (RateLimiter::tooManyAttempts($key, 5)) {
+            $seconds = RateLimiter::availableIn($key);
+            return response()->json([
+                'success' => false,
+                'message' => "リクエストが多すぎます。{$seconds}秒後に再度お試しください。",
+            ], 429);
+        }
+
+        RateLimiter::hit($key, 60);
+
         $request->validate([
             'company_name' => 'required|string|max:255',
             'job_description' => 'nullable|string|max:2000',
@@ -873,6 +908,18 @@ class CareerHistoryController extends Controller
             ], 403);
         }
 
+        // レート制限チェック（1分間に5回まで）
+        $key = 'career-history-ai-generation:'.(Auth::id() ?? $request->ip() ?? 'unknown');
+        if (RateLimiter::tooManyAttempts($key, 5)) {
+            $seconds = RateLimiter::availableIn($key);
+            return response()->json([
+                'success' => false,
+                'message' => "リクエストが多すぎます。{$seconds}秒後に再度お試しください。",
+            ], 429);
+        }
+
+        RateLimiter::hit($key, 60);
+
         $careerHistories = $request->input('career_histories', []);
 
         if (empty($careerHistories) || ! is_array($careerHistories)) {
@@ -1077,6 +1124,18 @@ class CareerHistoryController extends Controller
                 'message' => 'この機能は会員限定です。ログインしてください。',
             ], 403);
         }
+
+        // レート制限チェック（1分間に5回まで）
+        $key = 'career-history-ai-generation:'.(Auth::id() ?? $request->ip() ?? 'unknown');
+        if (RateLimiter::tooManyAttempts($key, 5)) {
+            $seconds = RateLimiter::availableIn($key);
+            return response()->json([
+                'success' => false,
+                'message' => "リクエストが多すぎます。{$seconds}秒後に再度お試しください。",
+            ], 429);
+        }
+
+        RateLimiter::hit($key, 60);
 
         $careerHistories = $request->input('career_histories', []);
 

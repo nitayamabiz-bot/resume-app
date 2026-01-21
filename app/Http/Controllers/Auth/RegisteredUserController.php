@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Helpers\RecaptchaHelper;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -19,7 +20,9 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        return view('auth.register', [
+            'recaptcha_site_key' => config('recaptcha.site_key'),
+        ]);
     }
 
     /**
@@ -33,7 +36,15 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'g-recaptcha-response' => ['required', 'string'],
         ]);
+
+        // reCAPTCHA検証
+        if (! RecaptchaHelper::verify($request->input('g-recaptcha-response'))) {
+            return redirect()->back()
+                ->withInput($request->except(['password', 'password_confirmation']))
+                ->withErrors(['g-recaptcha-response' => 'セキュリティチェックの検証に失敗しました。再度お試しください。 / सुरक्षा जाँच प्रमाणीकरण असफल भयो। कृपया पुन: प्रयास गर्नुहोस्।']);
+        }
 
         $user = User::create([
             'name' => $request->name,

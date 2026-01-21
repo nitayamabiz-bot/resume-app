@@ -64,6 +64,13 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
+        @if($recaptcha_site_key ?? false)
+        <div class="mt-4 flex justify-center">
+            <div class="g-recaptcha" data-sitekey="{{ $recaptcha_site_key }}"></div>
+        </div>
+        <x-input-error :messages="$errors->get('g-recaptcha-response')" class="mt-2" />
+        @endif
+
         <div class="flex items-center justify-end mt-4">
             <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
                 既に登録済みですか？<span class="block text-xs" style="font-family: 'Noto Sans Devanagari', Arial, sans-serif;">पहिले नै दर्ता भएको छ?</span>
@@ -103,4 +110,7 @@
             });
         });
     </script>
+    @if($recaptcha_site_key ?? false)
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    @endif
 </x-guest-layout>

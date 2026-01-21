@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\RecaptchaHelper;
 use App\Mail\ContactInquiry;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,6 +19,7 @@ class ContactController extends Controller
         $user = Auth::user();
         return view('contact.create', [
             'user' => $user,
+            'recaptcha_site_key' => config('recaptcha.site_key'),
         ]);
     }
 
@@ -33,7 +35,15 @@ class ContactController extends Controller
             'message' => 'required|string|max:5000',
             'name' => $user ? 'nullable|string|max:255' : 'required|string|max:255',
             'email' => $user ? 'nullable|email|max:255' : 'required|email|max:255',
+            'g-recaptcha-response' => 'required|string',
         ]);
+
+        // reCAPTCHA検証
+        if (! RecaptchaHelper::verify($request->input('g-recaptcha-response'))) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['g-recaptcha-response' => 'セキュリティチェックの検証に失敗しました。再度お試しください。 / सुरक्षा जाँच प्रमाणीकरण असफल भयो। कृपया पुन: प्रयास गर्नुहोस्।']);
+        }
 
         // ログインしている場合はユーザー情報を使用
         $name = $user ? $user->name : $validated['name'];

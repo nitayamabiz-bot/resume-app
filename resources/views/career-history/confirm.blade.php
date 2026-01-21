@@ -106,8 +106,15 @@
             </table>
         </div>
 
+        <!-- reCAPTCHA -->
+        @if(config('recaptcha.site_key'))
+        <div class="mt-8 flex justify-center">
+            <div class="g-recaptcha" data-sitekey="{{ config('recaptcha.site_key') }}"></div>
+        </div>
+        @endif
+
         <!-- ボタン -->
-        <div class="mt-8 flex gap-4 justify-between items-center relative">
+        <div class="mt-6 flex gap-4 justify-between items-center relative">
             <button onclick="backToForm()" 
                 class="px-6 py-3 bg-gray-300 text-gray-700 rounded font-semibold hover:bg-gray-400 transition">
                 戻る / फिर्ता जानुहोस्
@@ -127,6 +134,14 @@
         const careerHistoryDataForPdf = @json($data);
         
         function downloadPdf() {
+            const recaptchaSiteKey = @json(config('recaptcha.site_key'));
+            const recaptchaResponse = document.querySelector('[name="g-recaptcha-response"]')?.value || '';
+            
+            if (recaptchaSiteKey && !recaptchaResponse) {
+                alert('セキュリティチェックを確認してください。 / सुरक्षा जाँच पुष्टि गर्नुहोस्।');
+                return;
+            }
+            
             const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || 
                              document.querySelector('input[name="_token"]')?.value || 
                              '{{ csrf_token() }}';
@@ -142,6 +157,15 @@
             csrfInput.name = '_token';
             csrfInput.value = csrfToken;
             form.appendChild(csrfInput);
+            
+            // reCAPTCHAトークンを追加
+            if (recaptchaResponse) {
+                const recaptchaInput = document.createElement('input');
+                recaptchaInput.type = 'hidden';
+                recaptchaInput.name = 'g-recaptcha-response';
+                recaptchaInput.value = recaptchaResponse;
+                form.appendChild(recaptchaInput);
+            }
             
             // 職務経歴書データをJSONで送信
             const dataInput = document.createElement('input');
@@ -200,6 +224,9 @@
             window.location.href = '{{ route("career-history.index") }}';
         }
         </script>
+        @if(config('recaptcha.site_key'))
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+        @endif
     @else
         <p class="text-center text-gray-500">データが見つかりませんでした। / डाटा फेला परेन।</p>
     @endif
