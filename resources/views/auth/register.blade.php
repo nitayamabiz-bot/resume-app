@@ -86,6 +86,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('register-form');
             const registerButton = document.getElementById('register-button');
+            const recaptchaSiteKey = @json($recaptcha_site_key ?? false);
             let isSubmitting = false;
 
             // フォーム送信をインターセプトして二重送信を防止
@@ -93,6 +94,16 @@
                 if (isSubmitting) {
                     e.preventDefault();
                     return false;
+                }
+
+                // reCAPTCHAチェック
+                if (recaptchaSiteKey) {
+                    const recaptchaResponse = document.querySelector('[name="g-recaptcha-response"]')?.value || '';
+                    if (!recaptchaResponse) {
+                        e.preventDefault();
+                        alert('セキュリティチェックを確認してください。 / सुरक्षा जाँच पुष्टि गर्नुहोस्।');
+                        return false;
+                    }
                 }
 
                 isSubmitting = true;

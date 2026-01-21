@@ -248,5 +248,23 @@
 </div>
 @if($recaptcha_site_key)
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form[action="{{ route("contact.store") }}"]');
+    const recaptchaSiteKey = @json($recaptcha_site_key);
+    
+    if (form && recaptchaSiteKey) {
+        form.addEventListener('submit', function(e) {
+            const recaptchaResponse = document.querySelector('[name="g-recaptcha-response"]')?.value || '';
+            
+            if (!recaptchaResponse) {
+                e.preventDefault();
+                alert('セキュリティチェックを確認してください。 / सुरक्षा जाँच पुष्टि गर्नुहोस्।');
+                return false;
+            }
+        });
+    }
+});
+</script>
 @endif
 @endsection
