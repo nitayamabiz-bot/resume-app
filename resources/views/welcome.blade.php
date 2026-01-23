@@ -6,7 +6,7 @@
     <title>就労支援サービス</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('images/logo.ico') }}">
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('images/logo.ico') }}">
-    <link rel="apple-touch-icon" href="{{ asset('images/logo.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/logo.webp') }}">
     <style>
         body {
             background-color: #f6f7fa;

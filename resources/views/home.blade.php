@@ -15,15 +15,16 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-image: url('{{ asset('images/backimage.jpg') }}');
+        background-image: url('{{ asset('images/backimage.webp') }}');
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        background-attachment: fixed;
+        /* background-attachment: fixed を削除してパフォーマンスを改善 */
         filter: blur(5px);
         opacity: 0.3;
         z-index: -1;
         pointer-events: none;
+        will-change: transform; /* パフォーマンス最適化 */
     }
     
     .center-content {

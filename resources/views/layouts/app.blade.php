@@ -10,7 +10,7 @@
         <!-- Favicon -->
         <link rel="icon" type="image/x-icon" href="{{ asset('images/logo.ico') }}">
         <link rel="shortcut icon" type="image/x-icon" href="{{ asset('images/logo.ico') }}">
-        <link rel="apple-touch-icon" href="{{ asset('images/logo.png') }}">
+        <link rel="apple-touch-icon" href="{{ asset('images/logo.webp') }}">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

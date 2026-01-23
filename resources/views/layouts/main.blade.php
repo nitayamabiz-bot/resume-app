@@ -6,14 +6,28 @@
     <title>@yield('title', '就労支援サービス')</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('images/logo.ico') }}">
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('images/logo.ico') }}">
-    <link rel="apple-touch-icon" href="{{ asset('images/logo.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/logo.webp') }}">
+    <link rel="preload" href="{{ asset('images/logo.webp') }}" as="image">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <style>
+        /* クリティカルCSS: レイアウトシフトを防ぐための初期スタイル */
+        html {
+            visibility: hidden;
+            opacity: 0;
+        }
+        html.loaded {
+            visibility: visible;
+            opacity: 1;
+            transition: opacity 0.1s;
+        }
         body {
             background-color: #f6f7fa;
             margin: 0;
             padding: 0;
             font-family: 'Noto Sans JP', 'Noto Sans Devanagari', Arial, sans-serif;
             color: #222;
+            min-height: 100vh;
         }
         .header {
             width: 100% !important;
@@ -26,6 +40,7 @@
             box-sizing: border-box !important;
             overflow: visible !important;
             z-index: 100;
+            min-height: 100px; /* 初期高さを固定してレイアウトシフトを防ぐ */
         }
         .header .header-content {
             max-width: 1200px !important;
@@ -45,6 +60,7 @@
             padding-top: 12px !important;
             padding-bottom: 20px !important;
             overflow: visible !important;
+            min-height: 50px; /* 初期高さを固定してレイアウトシフトを防ぐ */
         }
         .logo-section {
             text-align: center;
@@ -58,8 +74,10 @@
         .logo-image {
             height: 40px;
             width: auto;
+            min-width: 40px; /* 初期幅を指定 */
             flex-shrink: 0;
             margin-top: 0.1em;
+            display: block; /* レイアウトシフトを防ぐ */
         }
         .logo-text-wrapper {
             display: flex;
@@ -71,6 +89,8 @@
             font-weight: 600;
             letter-spacing: 0.07em;
             line-height: 1.2;
+            min-height: 1.2em; /* フォント読み込み前の高さを固定 */
+            display: inline-block; /* レイアウトシフトを防ぐ */
         }
         .logo-link {
             text-decoration: none;
@@ -83,22 +103,12 @@
         .logo-link:hover {
             opacity: 0.7;
         }
-        .logo-text-wrapper {
-            display: flex;
-            flex-direction: column;
-            line-height: 1.2;
-        }
-        .logo-main {
-            line-height: 1.2;
-        }
         .logo-sub {
             display: block;
             font-size: 0.92rem;
             color: #888;
             margin-top: 2px;
-        }
-        .logo-image {
-            margin-top: 0.1em;
+            min-height: 1.2em; /* フォント読み込み前の高さを固定 */
         }
         .hamburger-btn {
             display: none;
@@ -130,19 +140,6 @@
         }
         .hamburger-btn.active span:nth-child(3) {
             transform: rotate(-45deg) translate(7px, -7px);
-        }
-        .nav-menu {
-            display: flex;
-            justify-content: center;
-            gap: 0;
-            flex-wrap: nowrap;
-            border-top: 1px solid #e5e7eb;
-            padding-top: 12px;
-            padding-bottom: 20px;
-            overflow: visible !important;
-            position: relative;
-            z-index: 100;
-            width: 100%;
         }
         /* ドロップダウンメニューのスタイル */
         .dropdown {
@@ -237,10 +234,6 @@
             margin-right: 8px;
             vertical-align: middle;
             flex-shrink: 0;
-        }
-        .dropdown-item {
-            display: flex;
-            align-items: center;
         }
         .dropdown-arrow {
             display: inline-block;
@@ -347,33 +340,20 @@
         }
         /* PC表示時のみ、メニュー項目の幅を均等に */
         @media (min-width: 769px) {
-            .nav-menu {
-                display: flex !important;
-            }
-            .nav-menu > .nav-item {
+            .header .nav-menu > .nav-item {
                 flex: 1;
                 min-width: 0;
             }
-            .nav-menu > .dropdown {
+            .header .nav-menu > .dropdown {
                 flex: 1;
                 min-width: 0;
                 display: flex;
                 justify-content: center;
             }
-            .nav-menu > .dropdown > .nav-item {
+            .header .nav-menu > .dropdown > .nav-item {
                 flex: 1;
                 width: 100%;
             }
-        }
-        .nav-item:not(:last-child)::after {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 1px;
-            height: 24px;
-            background-color: #e5e7eb;
         }
         .nav-item:hover {
             background-color: #f3f4f6;
@@ -457,8 +437,7 @@
             --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
         }
         .main-content {
-            min-height: calc(100dvh - 200px);
-            min-height: calc(var(--vh, 1vh) * 100 - 200px); /* フォールバック */
+            min-height: calc(var(--vh, 1vh) * 100 - 200px);
             padding: 40px 20px 120px 20px;
         }
         /* スマホ表示時の認証ボタンブロック（デスクトップでは非表示） */
@@ -1170,32 +1149,6 @@
             box-sizing: border-box !important;
         }
         
-        /* コンテンツ部分のスタイルがヘッダーに影響しないように明示的に分離 */
-        .main-content,
-        .resume-container {
-            /* ヘッダーとは完全に分離 */
-        }
-        
-        /* より詳細度を上げて保護 - コンテンツ部分のスタイルがヘッダーに影響しないように */
-        html body .header,
-        html body .header *:not(.main-content):not(.main-content *):not(.resume-container):not(.resume-container *) {
-            /* ヘッダー内の要素を保護 */
-        }
-        
-        /* コンテンツ部分のスタイルがヘッダーに影響しないように */
-        .main-content,
-        .main-content *,
-        .resume-container,
-        .resume-container * {
-            /* ヘッダーに影響を与えない */
-        }
-        
-        /* より詳細度を上げて保護 */
-        html body .header,
-        html body .header *:not(.main-content):not(.main-content *) {
-            /* ヘッダー内の要素を保護 */
-        }
-        
         /* 画面幅が480px以下のスマホ表示時のみ適用 - 最優先で適用 */
         @media screen and (max-width: 480px) {
             html body .header .logo-main {
@@ -1214,7 +1167,7 @@
                     <span></span>
                 </button>
                 <a href="{{ route('home') }}" class="logo-link">
-                    <img src="{{ asset('images/logo.png') }}" alt="就労支援サービス" class="logo-image">
+                    <img src="{{ asset('images/logo.webp') }}" alt="就労支援サービス" class="logo-image" loading="eager" width="40" height="40">
                     <span class="logo-text-wrapper">
                         <span class="logo-main">就労支援サービス</span>
                     <span class="logo-sub">रोजगार सहायता सेवा</span>
@@ -1551,8 +1504,8 @@
             <div class="ad-slider">
                 @php
                     $slideIndex = 0;
-                    $hasVinayaka = file_exists(public_path('images/ads/vinayaka.jpg'));
-                    $hasAd2 = file_exists(public_path('images/ads/ad2.jpg'));
+                    $hasVinayaka = file_exists(public_path('images/ads/vinayaka.webp'));
+                    $hasAd2 = file_exists(public_path('images/ads/ad2.webp'));
                     $hasAd3 = file_exists(public_path('images/ads/ad3.jpg'));
                     $hasAd4 = file_exists(public_path('images/ads/ad4.jpg'));
                 @endphp
@@ -1560,7 +1513,7 @@
                     @if($hasVinayaka)
                     <div class="ad-slide">
                         <a href="https://tabelog.com/fukuoka/A4001/A400202/40057305/" target="_blank" rel="noopener noreferrer">
-                            <img src="{{ asset('images/ads/vinayaka.jpg') }}" alt="VINAYAKA ネパール＆インドレストラン">
+                            <img src="{{ asset('images/ads/vinayaka.webp') }}" alt="VINAYAKA ネパール＆インドレストラン">
                         </a>
                     </div>
                     @endif
@@ -1572,7 +1525,7 @@
                     @if($hasAd2)
                     <div class="ad-slide">
                         <a href="{{ route('advertisement.create') }}">
-                            <img src="{{ asset('images/ads/ad2.jpg') }}" alt="広告募集" onerror="this.src='https://via.placeholder.com/1200x120/0346b0/FFFFFF?text=広告募集+Advertisement+Application'">
+                            <img src="{{ asset('images/ads/ad2.webp') }}" alt="広告募集" onerror="this.src='https://via.placeholder.com/1200x120/0346b0/FFFFFF?text=広告募集+Advertisement+Application'">
                         </a>
                     </div>
                     @endif
@@ -1834,6 +1787,23 @@
 
         // 定期的にも更新（念のため）
         setInterval(setViewportHeight, 500);
+
+        // FOUCを防ぐ: ページ読み込み完了時に表示
+        (function() {
+            function showPage() {
+                document.documentElement.classList.add('loaded');
+            }
+            
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', showPage);
+            } else {
+                // DOMContentLoadedが既に発火している場合
+                showPage();
+            }
+            
+            // フォールバック: 一定時間経過後も表示
+            setTimeout(showPage, 100);
+        })();
     </script>
 </body>
 </html>
