@@ -457,7 +457,8 @@
             --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
         }
         .main-content {
-            min-height: calc(var(--vh, 1vh) * 100 - 200px);
+            min-height: calc(100dvh - 200px);
+            min-height: calc(var(--vh, 1vh) * 100 - 200px); /* フォールバック */
             padding: 40px 20px 120px 20px;
         }
         /* スマホ表示時の認証ボタンブロック（デスクトップでは非表示） */
@@ -505,9 +506,12 @@
             padding-bottom: calc(12px + var(--safe-area-inset-bottom));
             box-shadow: 0 -2px 8px rgba(180,180,180,0.05);
             position: fixed;
-            bottom: var(--safe-area-inset-bottom);
+            bottom: 0;
             left: 0;
+            right: 0;
             z-index: 100;
+            transform: translateY(0);
+            will-change: transform;
         }
         .footer-content {
             max-width: 1200px;
@@ -1776,27 +1780,60 @@
         function setViewportHeight() {
             const vh = window.innerHeight * 0.01;
             document.documentElement.style.setProperty('--vh', `${vh}px`);
+            
+            // フッターの位置を確実に最下部に固定
+            const footer = document.querySelector('.footer');
+            if (footer) {
+                footer.style.bottom = '0';
+                footer.style.transform = 'translateY(0)';
+            }
         }
 
-        // 初回設定
-        setViewportHeight();
+        // 初回設定（DOMContentLoadedとloadの両方で実行）
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', setViewportHeight);
+        } else {
+            setViewportHeight();
+        }
+        window.addEventListener('load', setViewportHeight);
 
         // リサイズ時とスクロール時に更新（iPhoneのアドレスバー非表示時に対応）
-        let resizeTimer;
-        window.addEventListener('resize', function() {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(setViewportHeight, 100);
-        });
+        let lastHeight = window.innerHeight;
+        let ticking = false;
 
-        window.addEventListener('scroll', function() {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(setViewportHeight, 100);
-        });
+        function updateViewportHeight() {
+            const currentHeight = window.innerHeight;
+            if (currentHeight !== lastHeight) {
+                lastHeight = currentHeight;
+                setViewportHeight();
+            }
+            ticking = false;
+        }
+
+        function requestTick() {
+            if (!ticking) {
+                requestAnimationFrame(updateViewportHeight);
+                ticking = true;
+            }
+        }
+
+        window.addEventListener('resize', requestTick);
+        window.addEventListener('scroll', requestTick);
+        window.addEventListener('touchmove', requestTick);
+        window.addEventListener('touchend', requestTick);
 
         // オリエンテーション変更時にも更新
         window.addEventListener('orientationchange', function() {
-            setTimeout(setViewportHeight, 100);
+            setTimeout(function() {
+                setViewportHeight();
+                // 複数回実行して確実に更新
+                setTimeout(setViewportHeight, 200);
+                setTimeout(setViewportHeight, 500);
+            }, 100);
         });
+
+        // 定期的にも更新（念のため）
+        setInterval(setViewportHeight, 500);
     </script>
 </body>
 </html>
