@@ -31,11 +31,14 @@
         flex-direction: column;
         align-items: center;
         max-width: 1000px;
+        width: 100%;
         margin: 0 auto;
         position: relative;
         z-index: 1;
         background-color: transparent;
         pointer-events: auto;
+        box-sizing: border-box;
+        overflow-x: hidden;
     }
     .main-heading {
         font-size: 1.75rem;
@@ -165,36 +168,45 @@
             margin: 20px 16px;
             padding: 16px;
             width: calc(100% - 32px);
+            max-width: calc(100% - 32px);
             box-sizing: border-box;
+            overflow-x: hidden;
         }
         .announcements-list {
             max-height: 350px !important; /* スマホでは少し短くする */
             width: 100%;
+            max-width: 100%;
             box-sizing: border-box;
+            overflow-x: hidden;
         }
         .news-list-container {
             height: 350px !important; /* スマホでは少し短くする */
             width: 100%;
+            max-width: 100%;
             box-sizing: border-box;
+            overflow-x: hidden;
         }
         /* ニュースの2段組みを1段にする */
         div[style*="grid-template-columns: 1fr 1fr"] {
             grid-template-columns: 1fr !important;
             gap: 20px !important;
-            width: 100%;
-            box-sizing: border-box;
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
         }
         .news-category {
             margin-bottom: 20px;
-            width: 100%;
-            max-width: 100%;
-            box-sizing: border-box;
-            padding: 12px;
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+            padding: 12px !important;
+            overflow-x: hidden;
         }
         .news-list {
-            width: 100%;
-            max-width: 100%;
-            box-sizing: border-box;
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+            overflow-x: hidden;
         }
         .news-item {
             width: 100% !important;
@@ -202,21 +214,35 @@
             box-sizing: border-box !important;
             padding: 6px !important;
             gap: 8px !important;
+            display: flex !important;
+            flex-wrap: nowrap !important;
+            overflow-x: hidden;
         }
         .news-item > div:first-child {
             width: 60px !important;
+            max-width: 60px !important;
             height: 45px !important;
-            flex-shrink: 0;
+            flex-shrink: 0 !important;
+            box-sizing: border-box !important;
+        }
+        .news-item > div:first-child img {
+            max-width: 100% !important;
+            height: auto !important;
+            box-sizing: border-box !important;
         }
         .news-item > div:last-child {
-            min-width: 0;
-            flex: 1;
-            overflow-wrap: break-word;
-            word-wrap: break-word;
+            min-width: 0 !important;
+            max-width: calc(100% - 68px) !important;
+            flex: 1 1 auto !important;
+            overflow-wrap: break-word !important;
+            word-wrap: break-word !important;
+            box-sizing: border-box !important;
         }
         .news-item .text-sm {
-            overflow-wrap: break-word;
-            word-wrap: break-word;
+            overflow-wrap: break-word !important;
+            word-wrap: break-word !important;
+            max-width: 100% !important;
+            word-break: break-word !important;
         }
         .news-category-title {
             font-size: 1rem;
@@ -231,20 +257,44 @@
     /* より小さいスマホ（400px以下、iPhone 12など）の微調整 */
     @media (max-width: 400px) {
         .announcements-section, .news-section {
-            margin: 16px 12px;
-            padding: 12px;
-            width: calc(100% - 24px);
+            margin: 16px 12px !important;
+            padding: 12px !important;
+            width: calc(100% - 24px) !important;
+            max-width: calc(100% - 24px) !important;
+            box-sizing: border-box !important;
+            overflow-x: hidden !important;
         }
         .news-category {
-            padding: 8px;
+            padding: 8px !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+            overflow-x: hidden !important;
         }
         .news-item {
             padding: 4px !important;
             gap: 6px !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+            overflow-x: hidden !important;
         }
         .news-item > div:first-child {
             width: 50px !important;
+            max-width: 50px !important;
             height: 38px !important;
+            flex-shrink: 0 !important;
+            box-sizing: border-box !important;
+        }
+        .news-item > div:first-child img {
+            max-width: 100% !important;
+            height: auto !important;
+            box-sizing: border-box !important;
+        }
+        .news-item > div:last-child {
+            max-width: calc(100% - 58px) !important;
+            min-width: 0 !important;
+            box-sizing: border-box !important;
         }
         .news-category-title {
             font-size: 0.9rem;
@@ -252,6 +302,20 @@
         }
         div[style*="grid-template-columns: 1fr 1fr"] {
             gap: 16px !important;
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+        .news-list-container {
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+            overflow-x: hidden !important;
+        }
+        .news-list {
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+            overflow-x: hidden !important;
         }
     }
 </style>
