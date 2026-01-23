@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>@yield('title', '就労支援サービス')</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('images/logo.ico') }}">
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('images/logo.ico') }}">
@@ -266,7 +266,7 @@
             transition: max-height 0.3s ease-out;
         }
         .mobile-menu.active {
-            max-height: 100vh;
+            max-height: calc(var(--vh, 1vh) * 100);
             overflow-y: auto;
         }
         .mobile-menu .nav-item {
@@ -452,8 +452,12 @@
         .nav-link-btn:hover {
             background-color: #0346b0;
         }
+        :root {
+            --vh: 1vh;
+            --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+        }
         .main-content {
-            min-height: calc(100vh - 200px);
+            min-height: calc(var(--vh, 1vh) * 100 - 200px);
             padding: 40px 20px 120px 20px;
         }
         /* スマホ表示時の認証ボタンブロック（デスクトップでは非表示） */
@@ -498,9 +502,10 @@
             width: 100%;
             background-color: #ffffffe6;
             padding: 12px 0;
+            padding-bottom: calc(12px + var(--safe-area-inset-bottom));
             box-shadow: 0 -2px 8px rgba(180,180,180,0.05);
             position: fixed;
-            bottom: 0;
+            bottom: var(--safe-area-inset-bottom);
             left: 0;
             z-index: 100;
         }
@@ -1765,6 +1770,32 @@
                     }
                 }
             }
+        });
+
+        // iPhoneのビューポート高さの変動に対応
+        function setViewportHeight() {
+            const vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+
+        // 初回設定
+        setViewportHeight();
+
+        // リサイズ時とスクロール時に更新（iPhoneのアドレスバー非表示時に対応）
+        let resizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(setViewportHeight, 100);
+        });
+
+        window.addEventListener('scroll', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(setViewportHeight, 100);
+        });
+
+        // オリエンテーション変更時にも更新
+        window.addEventListener('orientationchange', function() {
+            setTimeout(setViewportHeight, 100);
         });
     </script>
 </body>
