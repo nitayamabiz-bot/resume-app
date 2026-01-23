@@ -2,6 +2,10 @@
 
 @section('title', '履歴書作成 - 就労支援サービス')
 
+@section('description', 'ネパール人の方向けの履歴書作成サービス。日本語とネパール語に対応した履歴書を簡単に作成できます。PDF形式でダウンロード可能です。')
+
+@section('keywords', 'ネパール,履歴書,履歴書作成,就職活動,PDF,履歴書テンプレート')
+
 @push('head')
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <style>

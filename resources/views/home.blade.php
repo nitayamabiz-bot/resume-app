@@ -2,6 +2,47 @@
 
 @section('title', 'トップページ - 就労支援サービス')
 
+@section('description', '日本で生活・就労するネパール人の方向けの就労支援サービス。ビザ・家族・転職・永住・役所の手続き、履歴書・職務経歴書作成、就職・アルバイト情報、賃貸・SIM・ネット回線情報などを提供しています。')
+
+@section('keywords', 'ネパール,就労支援,ビザ,在留資格,履歴書,職務経歴書,就職,アルバイト,賃貸,SIM,ネット回線,行政手続き')
+
+@section('structured_data')
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'WebSite',
+    'name' => '就労支援サービス',
+    'url' => url('/'),
+    'description' => '日本で生活・就労するネパール人の方向けの就労支援サービス',
+    'inLanguage' => ['ja', 'ne'],
+    'potentialAction' => [
+        '@type' => 'SearchAction',
+        'target' => url('/') . '?search={search_term_string}',
+        'query-input' => 'required name=search_term_string',
+    ],
+], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+</script>
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'Service',
+    'serviceType' => '就労支援サービス',
+    'provider' => [
+        '@type' => 'Organization',
+        'name' => '就労支援サービス',
+    ],
+    'areaServed' => [
+        '@type' => 'Country',
+        'name' => 'Japan',
+    ],
+    'availableChannel' => [
+        '@type' => 'ServiceChannel',
+        'serviceUrl' => url('/'),
+    ],
+], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+</script>
+@endsection
+
 @section('content')
 <style>
     .main-content {
@@ -337,7 +378,7 @@
     </div>
 
     <!-- ニュースエリア -->
-    @if($domesticNews->count() > 0 || $internationalNews->count() > 0)
+    @if(($domesticNews->count() > 0) || ($internationalNews->count() > 0))
     <div class="news-section">
         <h2 class="text-xl font-bold mb-2 text-center" style="color: #3E5387; margin-top: 0;">
             ニュース / समाचार
@@ -385,7 +426,7 @@
                             <circle cx="0.3" cy="0.3" r="0.15" fill="#ffffff"/>
                             <circle cx="0.3" cy="1.7" r="0.15" fill="#ffffff"/>
                         </svg>
-        </span>
+                    </span>
                     <span>国外ニュース / अन्तर्राष्ट्रिय समाचार</span>
                 </h3>
                 <div class="news-list-container">

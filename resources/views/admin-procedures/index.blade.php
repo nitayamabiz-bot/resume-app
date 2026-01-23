@@ -2,6 +2,10 @@
 
 @section('title', '行政手続きガイド - 就労支援サービス')
 
+@section('description', '日本で生活・就労するネパール人の方向けの行政手続きガイド。ビザ更新、在留資格変更、住民票、健康保険などの手続き方法を詳しく解説しています。')
+
+@section('keywords', 'ネパール,行政手続き,ビザ更新,在留資格,住民票,健康保険,入管手続き')
+
 @section('content')
 <style>
     .admin-procedures-page {

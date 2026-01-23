@@ -2,6 +2,10 @@
 
 @section('title', 'お問い合わせ - 就労支援サービス')
 
+@section('description', '就労支援サービスへのお問い合わせページ。ご質問やご要望がございましたら、お気軽にお問い合わせください。日本語・ネパール語対応。')
+
+@section('keywords', 'ネパール,お問い合わせ,問い合わせ,サポート,ヘルプ')
+
 @section('content')
 <style>
     .page-content {

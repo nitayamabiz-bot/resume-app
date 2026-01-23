@@ -2,6 +2,10 @@
 
 @section('title', 'アルバイト - 就労支援サービス')
 
+@section('description', 'ネパール人の方向けのアルバイト情報サイト。パートタイム・短期・日雇いなど様々なアルバイト求人情報を提供しています。')
+
+@section('keywords', 'ネパール,アルバイト,パートタイム,短期,日雇い,バイト,求人')
+
 @section('content')
 <style>
     .page-content {

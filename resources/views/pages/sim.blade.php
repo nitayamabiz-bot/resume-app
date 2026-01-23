@@ -2,6 +2,10 @@
 
 @section('title', 'SIM - 就労支援サービス')
 
+@section('description', 'ネパール人の方向けのSIMカード比較サイト。格安SIM・データSIMなど様々なSIMカードプランを比較できます。')
+
+@section('keywords', 'ネパール,SIM,格安SIM,データSIM,モバイル,スマホ')
+
 @section('content')
 <style>
     .page-content {

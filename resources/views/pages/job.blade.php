@@ -2,6 +2,10 @@
 
 @section('title', '就職 - 就労支援サービス')
 
+@section('description', 'ネパール人の方向けの就職情報サイト。正社員・派遣・契約社員など様々な雇用形態の求人情報を提供しています。')
+
+@section('keywords', 'ネパール,就職,正社員,派遣,契約社員,求人,転職,就活')
+
 @section('content')
 <style>
     .page-content {

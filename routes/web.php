@@ -13,6 +13,15 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResumeController;
 use Illuminate\Support\Facades\Route;
 
+// サイトマップ
+Route::get('/sitemap.xml', function () {
+    $sitemapPath = public_path('sitemap.xml');
+    if (file_exists($sitemapPath)) {
+        return response()->file($sitemapPath, ['Content-Type' => 'application/xml']);
+    }
+    return response('Sitemap not found', 404);
+})->name('sitemap');
+
 // トップページ
 Route::get('/', [HomeController::class, 'index'])->name('home');
 

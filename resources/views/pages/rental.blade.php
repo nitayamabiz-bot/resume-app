@@ -2,6 +2,10 @@
 
 @section('title', '賃貸 - 就労支援サービス')
 
+@section('description', 'ネパール人の方向けの賃貸物件情報サイト。外国人向けの賃貸物件を検索できます。')
+
+@section('keywords', 'ネパール,賃貸,物件,アパート,マンション,外国人向け賃貸')
+
 @section('content')
 <style>
     .page-content {

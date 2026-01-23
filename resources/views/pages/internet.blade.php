@@ -2,6 +2,10 @@
 
 @section('title', 'ネット回線 - 就労支援サービス')
 
+@section('description', 'ネパール人の方向けのインターネット回線比較サイト。光回線・モバイル回線など様々なインターネットサービスを比較できます。')
+
+@section('keywords', 'ネパール,インターネット,光回線,モバイル回線,WiFi,ネット回線比較')
+
 @section('content')
 <style>
     .page-content {
