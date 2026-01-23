@@ -165,19 +165,58 @@
             margin: 20px 16px;
             padding: 16px;
             width: calc(100% - 32px);
+            box-sizing: border-box;
         }
         .announcements-list {
             max-height: 350px !important; /* スマホでは少し短くする */
+            width: 100%;
+            box-sizing: border-box;
         }
         .news-list-container {
             height: 350px !important; /* スマホでは少し短くする */
+            width: 100%;
+            box-sizing: border-box;
         }
         /* ニュースの2段組みを1段にする */
         div[style*="grid-template-columns: 1fr 1fr"] {
             grid-template-columns: 1fr !important;
+            gap: 20px !important;
+            width: 100%;
+            box-sizing: border-box;
         }
         .news-category {
             margin-bottom: 20px;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+        }
+        .news-list {
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+        .news-item {
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+            padding: 6px !important;
+            gap: 8px !important;
+        }
+        .news-item > div:first-child {
+            width: 60px !important;
+            height: 45px !important;
+            flex-shrink: 0;
+        }
+        .news-item > div:last-child {
+            min-width: 0;
+            flex: 1;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+        .news-item .text-sm {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
         .news-category-title {
             font-size: 1rem;
@@ -186,6 +225,33 @@
         .news-category-title .flag-icon {
             width: 24px;
             height: 18px;
+        }
+    }
+
+    /* より小さいスマホ（400px以下、iPhone 12など）の微調整 */
+    @media (max-width: 400px) {
+        .announcements-section, .news-section {
+            margin: 16px 12px;
+            padding: 12px;
+            width: calc(100% - 24px);
+        }
+        .news-category {
+            padding: 8px;
+        }
+        .news-item {
+            padding: 4px !important;
+            gap: 6px !important;
+        }
+        .news-item > div:first-child {
+            width: 50px !important;
+            height: 38px !important;
+        }
+        .news-category-title {
+            font-size: 0.9rem;
+            padding: 8px 12px;
+        }
+        div[style*="grid-template-columns: 1fr 1fr"] {
+            gap: 16px !important;
         }
     }
 </style>
@@ -207,7 +273,7 @@
 
     <!-- ニュースエリア -->
     @if($domesticNews->count() > 0 || $internationalNews->count() > 0)
-    <div class="news-section" style="width: 100%; max-width: 1000px; margin: 20px auto; border: 2px solid #e5e7eb; border-radius: 8px; background-color: #ffffff; padding: 16px 24px 24px 24px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); box-sizing: border-box;">
+    <div class="news-section">
         <h2 class="text-xl font-bold mb-2 text-center" style="color: #3E5387; margin-top: 0;">
             ニュース / समाचार
         </h2>
@@ -284,7 +350,7 @@
 
     <!-- お知らせエリア -->
     @if($announcements->count() > 0)
-    <div class="announcements-section" style="width: 100%; max-width: 1000px; margin: 40px auto; border: 2px solid #e5e7eb; border-radius: 8px; background-color: #ffffff; padding: 16px 24px 24px 24px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); box-sizing: border-box;">
+    <div class="announcements-section">
         <h2 class="text-xl font-bold text-center mb-2" style="color: #3E5387; margin: 0 0 12px 0;">
             お知らせ / सूचना
         </h2>
