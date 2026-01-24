@@ -1,123 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://hamro-life-japan.com/</loc>
-    <lastmod>2026-01-24T22:01:47+09:00</lastmod>
+    <lastmod>2026-01-24T22:20:41+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="ja" href="https://hamro-life-japan.com/" />
   </url>
   <url>
     <loc>https://hamro-life-japan.com/admin-procedures</loc>
-    <lastmod>2026-01-24T22:01:47+09:00</lastmod>
+    <lastmod>2026-01-24T22:20:41+09:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="ja" href="https://hamro-life-japan.com/admin-procedures" />
   </url>
   <url>
     <loc>https://hamro-life-japan.com/resume</loc>
-    <lastmod>2026-01-24T22:01:47+09:00</lastmod>
+    <lastmod>2026-01-24T22:20:41+09:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ja" href="https://hamro-life-japan.com/resume" />
   </url>
   <url>
-    <loc>https://hamro-life-japan.com/create</loc>
-    <lastmod>2026-01-24T22:01:47+09:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://hamro-life-japan.com/create" />
-  </url>
-  <url>
     <loc>https://hamro-life-japan.com/career-history</loc>
-    <lastmod>2026-01-24T22:01:47+09:00</lastmod>
+    <lastmod>2026-01-24T22:20:41+09:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ja" href="https://hamro-life-japan.com/career-history" />
   </url>
   <url>
-    <loc>https://hamro-life-japan.com/career-history/create</loc>
-    <lastmod>2026-01-24T22:01:47+09:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://hamro-life-japan.com/career-history/create" />
-  </url>
-  <url>
     <loc>https://hamro-life-japan.com/job</loc>
-    <lastmod>2026-01-24T22:01:47+09:00</lastmod>
+    <lastmod>2026-01-24T22:20:41+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ja" href="https://hamro-life-japan.com/job" />
   </url>
   <url>
     <loc>https://hamro-life-japan.com/parttime</loc>
-    <lastmod>2026-01-24T22:01:47+09:00</lastmod>
+    <lastmod>2026-01-24T22:20:41+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ja" href="https://hamro-life-japan.com/parttime" />
   </url>
   <url>
     <loc>https://hamro-life-japan.com/rental</loc>
-    <lastmod>2026-01-24T22:01:47+09:00</lastmod>
+    <lastmod>2026-01-24T22:20:41+09:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ja" href="https://hamro-life-japan.com/rental" />
   </url>
   <url>
     <loc>https://hamro-life-japan.com/internet</loc>
-    <lastmod>2026-01-24T22:01:47+09:00</lastmod>
+    <lastmod>2026-01-24T22:20:41+09:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ja" href="https://hamro-life-japan.com/internet" />
   </url>
   <url>
     <loc>https://hamro-life-japan.com/sim</loc>
-    <lastmod>2026-01-24T22:01:47+09:00</lastmod>
+    <lastmod>2026-01-24T22:20:41+09:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ja" href="https://hamro-life-japan.com/sim" />
   </url>
   <url>
     <loc>https://hamro-life-japan.com/campaign</loc>
-    <lastmod>2026-01-24T22:01:47+09:00</lastmod>
+    <lastmod>2026-01-24T22:20:41+09:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="ja" href="https://hamro-life-japan.com/campaign" />
   </url>
   <url>
     <loc>https://hamro-life-japan.com/privacy-policy</loc>
-    <lastmod>2026-01-24T22:01:47+09:00</lastmod>
+    <lastmod>2026-01-24T22:20:41+09:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="ja" href="https://hamro-life-japan.com/privacy-policy" />
-  </url>
-  <url>
-    <loc>https://hamro-life-japan.com/contact</loc>
-    <lastmod>2026-01-24T22:01:47+09:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://hamro-life-japan.com/contact" />
-  </url>
-  <url>
-    <loc>https://hamro-life-japan.com/advertisement</loc>
-    <lastmod>2026-01-24T22:01:47+09:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://hamro-life-japan.com/advertisement" />
-  </url>
-  <url>
-    <loc>https://hamro-life-japan.com/coming-soon</loc>
-    <lastmod>2026-01-24T22:01:47+09:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://hamro-life-japan.com/coming-soon" />
-  </url>
-  <url>
-    <loc>https://hamro-life-japan.com/work-permit</loc>
-    <lastmod>2026-01-24T22:01:47+09:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://hamro-life-japan.com/work-permit" />
   </url>
 </urlset>
