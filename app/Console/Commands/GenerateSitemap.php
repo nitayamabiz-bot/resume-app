@@ -42,6 +42,8 @@ class GenerateSitemap extends Command
             ['name' => 'internet', 'priority' => '0.7', 'changefreq' => 'weekly'],
             ['name' => 'sim', 'priority' => '0.7', 'changefreq' => 'weekly'],
             ['name' => 'campaign', 'priority' => '0.6', 'changefreq' => 'weekly'],
+            ['name' => 'contact.create', 'priority' => '0.7', 'changefreq' => 'monthly'],
+            ['name' => 'advertisement.create', 'priority' => '0.7', 'changefreq' => 'monthly'],
             ['name' => 'privacy-policy', 'priority' => '0.6', 'changefreq' => 'monthly'],
         ];
 
