@@ -3,5 +3,21 @@ Allow: /
 Disallow: /admin/
 Disallow: /login
 Disallow: /register
+Disallow: /create
+Disallow: /resume/choose-auth
+Disallow: /resume/confirm
+Disallow: /resume/save
+Disallow: /resume-download
+Disallow: /resume/generate-motivation
+Disallow: /career-history/create
+Disallow: /career-history/confirm
+Disallow: /career-history/save
+Disallow: /career-history/download
+Disallow: /career-history/generate-*
+Disallow: /profile
+Disallow: /verify-email
+Disallow: /confirm-password
+Disallow: /reset-password
+Disallow: /forgot-password
 
 Sitemap: https://hamro-life-japan.com/sitemap.xml

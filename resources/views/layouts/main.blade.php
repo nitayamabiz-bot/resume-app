@@ -10,16 +10,23 @@
     <meta name="keywords" content="@yield('keywords', 'ネパール,就労支援,ビザ,在留資格,履歴書,職務経歴書,就職,アルバイト,賃貸,SIM,ネット回線,行政手続き')">
     <meta name="author" content="就労支援サービス">
     <meta name="robots" content="@yield('robots', 'index, follow')">
-    <link rel="canonical" href="{{ url()->current() }}">
+    @php
+        // 正規URLを生成（末尾スラッシュなし、クエリパラメータなし）
+        // サイトマップと一致させるため、すべてのページで末尾スラッシュなし
+        $currentPath = parse_url(url()->current(), PHP_URL_PATH);
+        $baseUrl = rtrim(config('sitemap.base_url'), '/');
+        $canonicalUrl = $baseUrl . ($currentPath === '/' ? '/' : rtrim($currentPath, '/'));
+    @endphp
+    <link rel="canonical" href="{{ $canonicalUrl }}">
     
     {{-- Language Alternates --}}
-    <link rel="alternate" hreflang="ja" href="{{ url()->current() }}">
-    <link rel="alternate" hreflang="ne" href="{{ url()->current() }}">
-    <link rel="alternate" hreflang="x-default" href="{{ url()->current() }}">
+    <link rel="alternate" hreflang="ja" href="{{ $canonicalUrl }}">
+    <link rel="alternate" hreflang="ne" href="{{ $canonicalUrl }}">
+    <link rel="alternate" hreflang="x-default" href="{{ $canonicalUrl }}">
     
     {{-- Open Graph / Facebook --}}
     <meta property="og:type" content="website">
-    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:url" content="{{ $canonicalUrl }}">
     <meta property="og:title" content="@yield('og:title', '就労支援サービス')">
     <meta property="og:description" content="@yield('og:description', '日本で生活・就労するネパール人の方向けの就労支援サービス。ビザ・家族・転職・永住・役所の手続き、履歴書・職務経歴書作成、就職・アルバイト情報、賃貸・SIM・ネット回線情報などを提供しています。')">
     <meta property="og:image" content="@yield('og:image', asset('images/logo.webp'))">
@@ -28,7 +35,7 @@
     
     {{-- Twitter Card --}}
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="{{ url()->current() }}">
+    <meta name="twitter:url" content="{{ $canonicalUrl }}">
     <meta name="twitter:title" content="@yield('twitter:title', '就労支援サービス')">
     <meta name="twitter:description" content="@yield('twitter:description', '日本で生活・就労するネパール人の方向けの就労支援サービス。ビザ・家族・転職・永住・役所の手続き、履歴書・職務経歴書作成、就職・アルバイト情報、賃貸・SIM・ネット回線情報などを提供しています。')">
     <meta name="twitter:image" content="@yield('twitter:image', asset('images/logo.webp'))">

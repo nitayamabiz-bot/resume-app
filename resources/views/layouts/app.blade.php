@@ -7,6 +7,13 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
+        @php
+            $currentPath = parse_url(url()->current(), PHP_URL_PATH);
+            $baseUrl = rtrim(config('sitemap.base_url'), '/');
+            $canonicalUrl = $baseUrl . ($currentPath === '/' ? '/' : rtrim($currentPath, '/'));
+        @endphp
+        <link rel="canonical" href="{{ $canonicalUrl }}">
+
         <!-- Favicon -->
         <link rel="icon" type="image/x-icon" href="{{ asset('images/logo.ico') }}">
         <link rel="shortcut icon" type="image/x-icon" href="{{ asset('images/logo.ico') }}">
