@@ -14,6 +14,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             \App\Http\Middleware\LogAccess::class,
         ]);
+
+        // セキュリティ強化: すべてのリクエストにセキュリティヘッダーを追加
+        $middleware->web(append: [
+            \Illuminate\Http\Middleware\FrameGuard::class, // X-Frame-Options
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         // CSRFトークンエラー（419）の処理

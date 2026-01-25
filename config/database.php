@@ -38,8 +38,8 @@ return [
             'prefix' => '',
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
             'busy_timeout' => null,
-            'journal_mode' => null,
-            'synchronous' => null,
+            'journal_mode' => 'WAL', // 書き込み性能とデータ整合性の向上
+            'synchronous' => 'NORMAL', // パフォーマンスと安全性のバランス
             'transaction_mode' => 'DEFERRED',
         ],
 
@@ -60,6 +60,9 @@ return [
             'engine' => null,
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 (PHP_VERSION_ID >= 80500 ? \Pdo\Mysql::ATTR_SSL_CA : \PDO::MYSQL_ATTR_SSL_CA) => env('MYSQL_ATTR_SSL_CA'),
+                (PHP_VERSION_ID >= 80500 ? \Pdo\Mysql::ATTR_SSL_VERIFY_SERVER_CERT : \PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT) => env('MYSQL_ATTR_SSL_VERIFY_SERVER_CERT', true),
+                \PDO::ATTR_EMULATE_PREPARES => false, // SQLインジェクション対策: プリペアドステートメントを強制
+                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION, // エラー時に例外を投げる
             ]) : [],
         ],
 

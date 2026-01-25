@@ -1,0 +1,9 @@
+# データベースファイルへの直接アクセスを完全に防止
+<FilesMatch "\.(sqlite|db|sql)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# すべてのファイルへのアクセスを拒否
+Order allow,deny
+Deny from all

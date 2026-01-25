@@ -37,6 +37,19 @@
     
     # Referrer Policy
     Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    
+    # Content Security Policy (CSP) - XSS対策強化
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com https://www.gstatic.com https://www.google.com/recaptcha https://www.gstatic.com/recaptcha; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; frame-src 'self' https://www.google.com;"
+    
+    # Strict Transport Security (HSTS) - HTTPS強制（本番環境のみ）
+    # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    
+    # Permissions Policy - 不要な機能を無効化
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+    
+    # Remove server information
+    Header unset Server
+    Header unset X-Powered-By
 </IfModule>
 
 # Compression
@@ -69,6 +82,12 @@
 <IfModule mod_rewrite.c>
     RewriteRule ^storage/ - [F,L]
     RewriteRule ^bootstrap/cache/ - [F,L]
+    # データベースファイルへの直接アクセスを防止
+    RewriteRule ^database/.*\.sqlite$ - [F,L]
+    RewriteRule ^database/.*\.db$ - [F,L]
+    # .envファイルへのアクセスを防止
+    RewriteRule ^\.env$ - [F,L]
+    RewriteRule ^\.env\.example$ - [F,L]
 </IfModule>
 
 <Limit GET POST>

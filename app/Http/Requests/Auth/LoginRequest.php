@@ -42,7 +42,8 @@ class LoginRequest extends FormRequest
         $this->ensureIsNotRateLimited();
 
         if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
-            RateLimiter::hit($this->throttleKey());
+            // セキュリティ強化: ロックアウト時間を15分に延長
+            RateLimiter::hit($this->throttleKey(), 900); // 900秒 = 15分
 
             throw ValidationException::withMessages([
                 'email' => trans('auth.failed'),
@@ -59,7 +60,11 @@ class LoginRequest extends FormRequest
      */
     public function ensureIsNotRateLimited(): void
     {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+        // セキュリティ強化: ログイン試行回数を5回から3回に減らし、ロックアウト時間を延長
+        $maxAttempts = 3;
+        $decayMinutes = 15; // 15分間ロックアウト
+
+        if (! RateLimiter::tooManyAttempts($this->throttleKey(), $maxAttempts)) {
             return;
         }
 
