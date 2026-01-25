@@ -65,7 +65,9 @@
         opacity: 0.3;
         z-index: -1;
         pointer-events: none;
-        will-change: transform; /* パフォーマンス最適化 */
+        /* パフォーマンス最適化: will-changeを削除し、transform3dでGPU加速 */
+        transform: translate3d(0, 0, 0);
+        backface-visibility: hidden;
     }
     
     .center-content {

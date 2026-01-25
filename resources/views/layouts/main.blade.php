@@ -44,14 +44,20 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('images/logo.ico') }}">
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('images/logo.ico') }}">
     <link rel="apple-touch-icon" href="{{ asset('images/logo.webp') }}">
-    <link rel="preload" href="{{ asset('images/logo.webp') }}" as="image">
     
     {{-- Preconnect for Performance --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    {{-- Preload critical resources (LCP改善) --}}
+    <link rel="preload" href="{{ asset('images/logo.webp') }}" as="image" fetchpriority="high">
     <style>
         /* クリティカルCSS: レイアウトシフトを防ぐための初期スタイル */
+        /* FCPを早めるため、初期表示を改善 */
         html {
+            visibility: visible;
+            opacity: 1;
+        }
+        html.loading {
             visibility: hidden;
             opacity: 0;
         }
@@ -848,7 +854,9 @@
             }
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Sans+JP:wght@400;600&display=swap" rel="stylesheet">
+    {{-- フォント読み込み最適化: 非ブロッキングで読み込み（FCP改善） --}}
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Sans+JP:wght@400;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Sans+JP:wght@400;600&display=swap" rel="stylesheet"></noscript>
     @stack('styles')
     <style>
         /* ヘッダーエリアを完全に分離・保護 - コンテンツ部分のスタイルが一切影響しないように */
@@ -1855,21 +1863,24 @@
         // 定期的にも更新（念のため）
         setInterval(setViewportHeight, 500);
 
-        // FOUCを防ぐ: ページ読み込み完了時に表示
+        // FOUCを防ぐ: ページ読み込み完了時に表示（FCPを早めるため改善）
         (function() {
             function showPage() {
+                document.documentElement.classList.remove('loading');
                 document.documentElement.classList.add('loaded');
             }
             
+            // 初期状態をloadingに設定（FCPを早めるため、すぐに表示）
             if (document.readyState === 'loading') {
+                document.documentElement.classList.add('loading');
                 document.addEventListener('DOMContentLoaded', showPage);
             } else {
                 // DOMContentLoadedが既に発火している場合
                 showPage();
             }
             
-            // フォールバック: 一定時間経過後も表示
-            setTimeout(showPage, 100);
+            // フォールバック: 一定時間経過後も表示（短縮してFCPを早める）
+            setTimeout(showPage, 50);
         })();
     </script>
 </body>

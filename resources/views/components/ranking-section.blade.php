@@ -244,7 +244,7 @@
                         {!! $ranking['ad_code'] !!}
                     </div>
                 @else
-                    <img src="{{ $ranking['image'] }}" alt="{{ $ranking['name'] }}" class="ranking-image">
+                    <img src="{{ $ranking['image'] }}" alt="{{ $ranking['name'] }}" class="ranking-image" loading="lazy" width="300" height="250" decoding="async">
                 @endif
                 <div class="ranking-article">
                     <div class="ranking-article-nepali">
