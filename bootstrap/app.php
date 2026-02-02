@@ -13,6 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->web(append: [
             \App\Http\Middleware\LogAccess::class,
+            \App\Http\Middleware\ForceCanonicalUrl::class, // Search Console: 正規URLへ301リダイレクト
         ]);
 
         // セキュリティ強化: すべてのリクエストにセキュリティヘッダーを追加
