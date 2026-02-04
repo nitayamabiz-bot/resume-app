@@ -526,8 +526,8 @@
         .footer {
             width: 100%;
             background-color: #ffffffe6;
-            padding: 12px 0;
-            padding-bottom: calc(12px + var(--safe-area-inset-bottom));
+            padding: 12px 0 6px;
+            padding-bottom: calc(6px + var(--safe-area-inset-bottom));
             box-shadow: 0 -2px 8px rgba(180,180,180,0.05);
             position: fixed;
             bottom: 0;
@@ -545,7 +545,7 @@
         .ad-slider {
             position: relative;
             width: 100%;
-            height: 80px;
+            height: 76px;
             overflow: hidden;
             border-radius: 8px;
             background-color: #f3f4f6;
@@ -580,12 +580,15 @@
         }
         .ad-indicators {
             position: absolute;
-            bottom: 10px;
+            bottom: 8px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
             gap: 8px;
             z-index: 10;
+        }
+        .ad-slider {
+            padding-bottom: 4px;
         }
         .ad-indicator {
             width: 8px;
@@ -620,14 +623,16 @@
                 margin-bottom: 0 !important;
             }
             .ad-slider {
-                height: 70px;
+                height: 66px;
+                padding-bottom: 4px;
             }
             .ad-indicator {
                 width: 6px;
                 height: 6px;
             }
             .footer {
-                padding: 10px 0;
+                padding: 10px 0 4px;
+                padding-bottom: calc(4px + var(--safe-area-inset-bottom));
             }
             
             /* スマホ表示時のヘッダーレイアウト */
@@ -1572,6 +1577,7 @@
                 @php
                     $slideIndex = 0;
                     $hasVinayaka = file_exists(public_path('images/ads/vinayaka.webp'));
+                    $hasAd1 = file_exists(public_path('images/ads/ad1.webp'));
                     $hasAd2 = file_exists(public_path('images/ads/ad2.webp'));
                     $hasAd3 = file_exists(public_path('images/ads/ad3.jpg'));
                     $hasAd4 = file_exists(public_path('images/ads/ad4.jpg'));
@@ -1581,6 +1587,13 @@
                     <div class="ad-slide">
                         <a href="https://tabelog.com/fukuoka/A4001/A400202/40057305/" target="_blank" rel="noopener noreferrer">
                             <img src="{{ asset('images/ads/vinayaka.webp') }}" alt="VINAYAKA ネパール＆インドレストラン">
+                        </a>
+                    </div>
+                    @endif
+                    @if($hasAd1)
+                    <div class="ad-slide">
+                        <a href="{{ route('advertisement.create') }}">
+                            <img src="{{ asset('images/ads/ad1.webp') }}" alt="広告募集" loading="lazy" onerror="this.src='https://via.placeholder.com/1200x120/0346b0/FFFFFF?text=広告募集+Advertisement+Application'">
                         </a>
                     </div>
                     @endif
@@ -1615,15 +1628,18 @@
                     @if($hasVinayaka)
                     <span class="ad-indicator active" data-slide="0"></span>
                     @endif
+                    @if($hasAd1)
                     <span class="ad-indicator {{ !$hasVinayaka ? 'active' : '' }}" data-slide="1"></span>
-                    @if($hasAd2)
-                    <span class="ad-indicator" data-slide="2"></span>
                     @endif
-                    @if($hasAd3)
+                    <span class="ad-indicator {{ !$hasVinayaka && !$hasAd1 ? 'active' : '' }}" data-slide="2"></span>
+                    @if($hasAd2)
                     <span class="ad-indicator" data-slide="3"></span>
                     @endif
-                    @if($hasAd4)
+                    @if($hasAd3)
                     <span class="ad-indicator" data-slide="4"></span>
+                    @endif
+                    @if($hasAd4)
+                    <span class="ad-indicator" data-slide="5"></span>
                     @endif
                 </div>
             </div>
