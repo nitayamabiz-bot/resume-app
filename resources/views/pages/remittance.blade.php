@@ -99,20 +99,26 @@
         display: inline-flex;
         align-items: center;
         gap: 10px;
-        background: #fff;
-        color: var(--wise-accent);
+        background: linear-gradient(135deg, var(--wise-accent) 0%, #6366f1 100%);
+        color: #fff;
         padding: 16px 32px;
-        border-radius: 12px;
+        border-radius: 14px;
         font-weight: 600;
         font-size: 1.0625rem;
         text-decoration: none;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-        transition: transform 0.2s, box-shadow 0.2s;
+        box-shadow: 0 4px 20px rgba(79, 70, 229, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
     }
     .remittance-hero-cta:hover {
         transform: translateY(-2px);
-        box-shadow: 0 14px 48px rgba(0,0,0,0.2);
-        color: var(--wise-accent-hover);
+        box-shadow: 0 8px 28px rgba(79, 70, 229, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+        filter: brightness(1.05);
+    }
+    .remittance-hero-cta-text {
+        display: inline-block;
+        text-align: center;
+        line-height: 1.5;
     }
     @media (max-width: 768px) {
         .remittance-hero {
@@ -618,7 +624,7 @@
                 <span class="remittance-hero-sub-ne">पारदर्शी शुल्क र मध्य बजार दर। बैंक भन्दा राम्रो दरमा विश्वमा पैसा पठाउनुहोस्। Wise सेवाको परिचय।</span>
             </p>
             <a href="https://wise.prf.hn/click/camref:1101l5CK5N" target="_blank" rel="noopener noreferrer" class="remittance-hero-cta">
-                Wise 公式サイトへ / Wise आधिकारिक साइटमा जानुहोस्
+                <span class="remittance-hero-cta-text">Wise 公式サイトへ<br>Wise आधिकारिक साइटमा जानुहोस्</span>
                 <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
             </a>
         </div>
