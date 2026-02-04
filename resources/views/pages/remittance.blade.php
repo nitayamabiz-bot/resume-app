@@ -1,5 +1,11 @@
 @extends('layouts.main')
 
+@push('head')
+    {{-- Wiseヒーローロゴを即時表示するため先読み --}}
+    <link rel="preconnect" href="https://wise-creative.prf.hn" crossorigin>
+    <link rel="preload" href="https://wise-creative.prf.hn/source/camref:1101l5CK5N/creativeref:1011l101119" as="image" fetchpriority="high">
+@endpush
+
 @section('title', '送金サービス紹介 - Wise | 就労支援サービス')
 
 @section('description', '国際送金サービスWise（ワイズ）の紹介。手数料が透明・為替は中間レート・74%が20秒以内に到着。日本からネパールなど世界へ送金する方へ。')
@@ -616,7 +622,7 @@
     <section class="remittance-hero">
         <div class="remittance-hero-inner">
             <a href="https://wise.prf.hn/click/camref:1101l5CK5N/creativeref:1011l101119" target="_blank" rel="noopener noreferrer sponsored" class="remittance-hero-logo">
-                <img src="https://wise-creative.prf.hn/source/camref:1101l5CK5N/creativeref:1011l101119" width="420" height="180" alt="Wise">
+                <img src="https://wise-creative.prf.hn/source/camref:1101l5CK5N/creativeref:1011l101119" width="420" height="180" alt="Wise" fetchpriority="high" loading="eager">
             </a>
             <h1>国境をこえた送金を、<br>シンプルに。<br><span class="remittance-hero-sub-ne" style="display: block; margin-top: 12px; font-size: 1.1rem;">सीमा पार पैसा पठाउनु सजिलो।</span></h1>
             <p class="remittance-hero-sub">

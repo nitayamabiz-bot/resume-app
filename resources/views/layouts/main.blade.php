@@ -50,6 +50,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     {{-- Preload critical resources (LCP改善) --}}
     <link rel="preload" href="{{ asset('images/logo.webp') }}" as="image" fetchpriority="high">
+    @stack('head')
     <style>
         /* クリティカルCSS: レイアウトシフトを防ぐための初期スタイル */
         /* FCPを早めるため、初期表示を改善 */
