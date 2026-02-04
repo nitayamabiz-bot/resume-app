@@ -1,7 +1,8 @@
 <?php
 
 $baseUrl = env('SITEMAP_BASE_URL') ?: 'https://hamro-life-japan.com';
-if (str_contains($baseUrl, 'localhost')) {
+// 本番インデックス用：localhost が含まれる場合は本番URLに固定（Cron・キャッシュに依存しない）
+if ($baseUrl === '' || str_contains((string) $baseUrl, 'localhost')) {
     $baseUrl = 'https://hamro-life-japan.com';
 }
 

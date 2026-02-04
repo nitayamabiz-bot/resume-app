@@ -26,7 +26,11 @@ class GenerateSitemap extends Command
      */
     public function handle(): int
     {
-        $baseUrl = rtrim(config('sitemap.base_url'), '/');
+        $baseUrl = rtrim((string) config('sitemap.base_url'), '/');
+        // 本番インデックス用：localhost が含まれる場合は本番URLに固定（Cron・サーバー環境に依存しない）
+        if ($baseUrl === '' || str_contains($baseUrl, 'localhost')) {
+            $baseUrl = 'https://hamro-life-japan.com';
+        }
 
         $now = now()->toAtomString();
 
@@ -42,6 +46,7 @@ class GenerateSitemap extends Command
             ['name' => 'internet', 'priority' => '0.7', 'changefreq' => 'weekly'],
             ['name' => 'sim', 'priority' => '0.7', 'changefreq' => 'weekly'],
             ['name' => 'campaign', 'priority' => '0.6', 'changefreq' => 'weekly'],
+            ['name' => 'remittance', 'priority' => '0.8', 'changefreq' => 'weekly'],
             ['name' => 'contact.create', 'priority' => '0.7', 'changefreq' => 'monthly'],
             ['name' => 'advertisement.create', 'priority' => '0.7', 'changefreq' => 'monthly'],
             ['name' => 'privacy-policy', 'priority' => '0.6', 'changefreq' => 'monthly'],
