@@ -50,6 +50,10 @@ Route::get('/sim', function () {
     return view('pages.sim');
 })->name('sim');
 
+Route::get('/remittance', function () {
+    return view('pages.remittance');
+})->name('remittance');
+
 // 開発中ページ
 Route::get('/coming-soon', function () {
     return view('pages.coming-soon');

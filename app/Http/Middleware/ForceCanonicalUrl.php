@@ -18,6 +18,12 @@ class ForceCanonicalUrl
             return $next($request);
         }
 
+        // ローカルでは一切リダイレクトしない（.env や config に依存しない）
+        $host = $request->getHost();
+        if (str_ends_with($host, '.test') || str_contains($host, 'localhost')) {
+            return $next($request);
+        }
+
         $baseUrl = rtrim((string) config('sitemap.base_url'), '/');
         if ($baseUrl === '' || str_contains($baseUrl, 'localhost')) {
             return $next($request);
