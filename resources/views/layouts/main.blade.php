@@ -1349,7 +1349,7 @@
                             <svg class="dropdown-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                             </svg>
-                            <span>履歴書 / बायोडाटा</span>
+                            <span>履歴書 / बायोडाटा (CV)</span>
                         </a>
                         <a href="{{ route('career-history.index') }}" class="dropdown-item {{ request()->routeIs('career-history.*') ? 'active' : '' }}">
                             <svg class="dropdown-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1490,7 +1490,7 @@
                                 </svg>
                                 履歴書
                             </span>
-                            <span class="nav-item-sub">बायोडाटा</span>
+                            <span class="nav-item-sub">बायोडाटा (CV)</span>
                         </a>
                         <a href="{{ route('career-history.index') }}" class="nav-item {{ request()->routeIs('career-history.*') ? 'active' : '' }}" style="padding-left: 32px;">
                             <span class="nav-item-main">
@@ -1526,7 +1526,7 @@
         <div class="nav-links">
             @auth
                 @if(Auth::user()->email === 'info@hamro-life-japan.com')
-                    <a href="{{ route('admin.dashboard') }}" class="nav-link-btn" style="display: inline-block; text-decoration: none; cursor: pointer; pointer-events: auto;">管理者画面 <span class="inline-text" style="font-size: 0.7rem; opacity: 0.9;">/ व्यवस्थापन प्यानल</span></a>
+                    <a href="{{ route('admin.dashboard') }}" class="nav-link-btn" style="display: inline-block; text-decoration: none; cursor: pointer; pointer-events: auto;">管理画面</a>
                     <span class="nav-link">{{ Auth::user()->name }}</span>
                     <form method="POST" action="{{ route('logout') }}" style="display: inline;">
                         @csrf
@@ -1550,7 +1550,7 @@
         <div class="mobile-auth-links">
             @auth
                 @if(Auth::user()->email === 'info@hamro-life-japan.com')
-                    <a href="{{ route('admin.dashboard') }}" class="nav-link-btn" style="display: inline-block; text-decoration: none; cursor: pointer; pointer-events: auto;">管理者画面 <span class="inline-text" style="font-size: 0.7rem; opacity: 0.9;">/ व्यवस्थापन प्यानल</span></a>
+                    <a href="{{ route('admin.dashboard') }}" class="nav-link-btn" style="display: inline-block; text-decoration: none; cursor: pointer; pointer-events: auto;">管理画面</a>
                     <span class="nav-link">{{ Auth::user()->name }}</span>
                     <form method="POST" action="{{ route('logout') }}" style="display: inline;">
                         @csrf
