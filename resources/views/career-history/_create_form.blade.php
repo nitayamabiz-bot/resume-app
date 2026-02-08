@@ -585,8 +585,11 @@
                     }
                 }
                 
-                // モーダルを閉じる
-                closeCareerInfoModal();
+                // 生成終わったら小画面を閉じる（ガードを外してから閉じる）
+                isGeneratingCareerInfo = false;
+                document.getElementById('career-info-modal').classList.add('hidden');
+                document.getElementById('career-info-generate-form').reset();
+                currentCareerRow = null;
             } else {
                 throw new Error(data.message || '情報の生成に失敗しました。');
             }
