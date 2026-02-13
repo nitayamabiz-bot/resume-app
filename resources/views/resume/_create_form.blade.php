@@ -856,6 +856,8 @@
                 तपाईंले खाता खोलेर लगइन गर्नुभयो भने, तपाईंको प्रविष्ट गरेको जानकारी सुरक्षित भण्डारण हुन्छ, र AI द्वारा स्वतः पाठ निर्माण गर्ने सुविधा र
                 प्रमाण फोटो (ID फोटो) दर्ता गर्ने सुविधा पनि प्रयोग गर्न सक्नुहुन्छ।
             </p>
+            <p class="text-xs text-red-600 mt-3">※ ブラウザはChromeまたはSafariのご利用を推奨いたします。</p>
+            <p class="text-xs text-red-600 mt-0.5">※ Chrome वा Safari प्रयोग गर्न सिफारिस गरिन्छ।</p>
         </div>
     </div>
     
@@ -1244,7 +1246,7 @@
                 
                 <div>
                     <label class="block font-medium mb-0.5 text-xs" style="box-sizing: border-box;">
-                        志望動機、アピールポイントを簡単に書いてください。言語は問いません。
+                        志望動機、アピールポイントを簡単に書いてください。言語は問いません。<span class="block text-gray-600 mt-0.5" style="font-family: 'Noto Sans Devanagari', Arial, sans-serif;">तपाईंको तयारी र आफूलाई प्रस्तुत गर्न सक्ने बुँदाहरू सजिलै लेख्नुहोस्। भाषा को बारेमा सोधपुछ छैन।</span>
                     </label>
                     <textarea id="modal-additional-info" name="additional_info" rows="2"
                         class="w-full border rounded px-2 py-1 focus:outline-none focus:ring-blue-400 focus:ring-2 resize-none text-sm"
